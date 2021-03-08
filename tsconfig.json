@@ -1,0 +1,18 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "watch": false,
+    "target": "ES6",
+    "outDir": "dist/generated"
+  },
+  "exclude": [
+    "src/popup/*",
+    "src/todoManager/*",
+    "src/shared/*",
+    "src/manager",
+    "src/background",
+    "archive"
+  ],
+  "include": ["src/**/*"]
+}

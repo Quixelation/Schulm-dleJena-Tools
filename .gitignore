@@ -1,0 +1,8 @@
+node_modules
+dist/generated/**
+!dist/generated/**/
+!dist/generated/**/.gitkeep
+SmJT_*.zip
+*.pem
+*.crx
+notes.md

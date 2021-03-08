@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["es6", "dom"],
+
+    "target": "es6",
+    "paths": {
+      "@shared/*": ["../*"]
+    }
+  }
+}

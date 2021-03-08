@@ -1,0 +1,24 @@
+{
+  "devDependencies": {
+    "@types/chrome": "0.0.128",
+    "readline-sync": "^1.4.10",
+    "snowpack": "^3.0.11"
+  },
+  "dependencies": {},
+  "scripts": {
+    "publish": "npm run build && node build.js",
+    "build": "tsc && npm run popup-build && npm run todo-build && npm run manager-build && npm run background-build",
+    "popup-dev": "cd src/popup && npm run dev",
+    "popup-build": "cd src/popup && npm run build",
+    "todo-dev": "cd src/todoManager && npm run dev",
+    "todo-build": "cd src/todoManager && npm run build",
+    "manager-build": "cd src/manager && npm run build",
+    "background-build": "cd src/background && npm run build",
+    "install": "npm run install-todo && npm run install-manager && npm run install-popup && npm run install-background",
+    "install-todo": "cd src/todoManager && npm i",
+    "install-manager": "cd src/manager && npm i",
+    "install-background": "cd src/background && npm i",
+    "install-popup": "cd src/popup && npm i",
+    "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\""
+  }
+}
