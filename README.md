@@ -10,7 +10,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
  [Chrome<br>(/Chromium Edge)](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://schulmoodle-jena-tools.vercel.app/firefox)
 --- | ---
  ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/quixelation/schulmoodlejena-tools?style=flat-square)
- ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) | 
+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) |
 
 ## Funktionen
 
@@ -76,8 +76,14 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 ### Erstellen einer exakten Kopie
 
 1. `npm run install`
-2. `npm run build`
+2. `web-ext build`
 3. Alles im `dist` Ordner
+
+### Testen
+
+1. `npm run install`
+2. `cd dist`
+3. `web-ext run dist`
 
 ## Versionierung
 
