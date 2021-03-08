@@ -9,7 +9,7 @@ const manifestFile = fs.readFileSync("dist/manifest.json");
 const manifest = JSON.parse(manifestFile);
 console.log("Current Version > " + manifest.version);
 var newVersion = readlineSync.question("New Version     > ");
-if (newVersion == "" || newVersion === manifest.version) {
+if (newVersion == "") {
   throw new Error("Versionsfehler");
 }
 manifest.version = newVersion;
