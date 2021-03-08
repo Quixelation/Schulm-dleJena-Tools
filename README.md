@@ -14,6 +14,8 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 
 ## Funktionen
 
+- ### Änderungen ansehen
+  Anzahl der Änderungen (auf dem Dashboard) auf Knopfdruck sehen: ![Änderungen ansehen Bild](/assets/changes.png)
 - ### Dashboard-Design
 
   - **Kürzere Kursnamen**<br>
@@ -27,7 +29,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 
 - ### Todomanager
 
-  - > Der Todomanager bietet eine Todo-Liste, welche immer am linken Bildschirmrand verfügbar ist.
+  > Der Todomanager bietet eine Todo-Liste, welche immer am linken Bildschirmrand verfügbar ist.
 
   - **Erstellung neuer Todos**<br>
     Der Benutzer kann Todos erstellen. Diese werden außerhalb von Moodle, in dem Speicher der Erweiterung gespeichert.
@@ -48,6 +50,18 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 
   - **Nicht verfügbare Themen verbergen**<br>
     Moodle zeigt Themen, welche "Nicht Verfügbar" sind, trotzdem an. Der Benutzer kann diese nun ausblenden. Diese Funktion blendet alle Themen, welche von Moodle die `hidden`-klasse zugeordnet bekommen haben, aus.
+
+- ### Downloads
+  **PDF-Dateien** werden nun **automatisch heruntergeladen**, sobald der Benutzer diese auf Moodle öffnet.
+- ### Go-To-Dashboard
+
+  Es gibt nun mehr Buttons/Links, welche zum Dashboard führen:
+
+  - Ein großer Button/Link in der Navigationsleiste, oben.
+  - Ein großer Button/Link im Navigationsbereich, links.
+
+- ### Impressum(-spflicht)
+  Die SchulmoodleJena Website erfüllt nun die Impressumspflicht, indem ein Link zum Impressum in dem Footer-Bereich hinzugefügt wird.
 
 ## Entwickler
 
