@@ -1,5 +1,8 @@
-chrome.storage.sync.get(["biggerVideo"], (val) => {
-  var enabled: boolean = val["biggerVideo"] === true;
+import { storage } from "@shared/types";
+
+export default function (params: { options: storage }) {
+  const { options } = params;
+  var enabled: boolean = options["biggerVideo"] === true;
   console.log("Hello from adjustVid");
   if (enabled) {
     window.addEventListener("load", () => {
@@ -36,4 +39,4 @@ chrome.storage.sync.get(["biggerVideo"], (val) => {
       item.parentElement.parentElement.style.maxWidth = "";
     });
   }
-});
+}
