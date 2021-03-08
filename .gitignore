@@ -8,3 +8,4 @@ SmJT_*.zip
 notes.md
 versions/*
 .vercel
+dist/web-ext-artifacts

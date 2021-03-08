@@ -9,6 +9,8 @@
   "scripts": {
     "publish": "npm run build && node build.js",
     "build": "tsc && npm run popup-build && npm run todo-build && npm run manager-build && npm run background-build",
+    "pack": "cd dist && web-ext build --overwrite-dest",
+    "code": "node build.js",
     "popup-dev": "cd src/popup && npm run dev",
     "popup-build": "cd src/popup && npm run build",
     "todo-dev": "cd src/todoManager && npm run dev",

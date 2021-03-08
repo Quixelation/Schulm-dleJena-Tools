@@ -76,23 +76,24 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 ### Erstellen einer exakten Kopie
 
 1. `npm run install`
-2. `web-ext build`
-3. Alles im `dist` Ordner
+2. `npm run pack`
+3. Datei in `\dist\web-ext-artifacts`
 
 ### Testen
 
 1. `npm run install`
 2. `cd dist`
-3. `web-ext run dist`
+3. `web-ext run`
 
 ## Versionierung
 
 > Da es bei diesem Code, für den Endbenutzer, nicht unbedingt "`breaking changes`" gibt, wurde entschieden, dem "Semantic Versioning" Standard _nicht_ zu folgen.
 
-`<MAJOR>.<PATCH>`
+`<MAJOR>.<MINOR>.<PATCH>`
 
-1. `MAJOR` - Es wurden neue Funktionen hinzugefügt
-2. `PATCH` - Es wurden Probleme und Bugs behoben
+1. `MAJOR` - Es wurden breaking changes vorgenommen.
+2. `MINOR` - Es wurden neue Funktionen hinzugefügt
+3. `PATCH` - Es wurden Probleme und Bugs behoben
 
 ## Copyright
 

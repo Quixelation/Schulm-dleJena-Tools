@@ -1,10 +1,10 @@
 const { exec } = require("child_process");
 (async () => {
   const zipper = exec(
-    `powershell Compress-Archive tsconfig.json,package.json,package-lock.json,README.md,dist,src SmJT_${newVersion.replace(
-      /\./g,
-      "-"
-    )}.zip`,
+    `powershell Compress-Archive ${fs
+      .readdirSync("./dist")
+      .map((item) => "./dist/" + item)
+      .join(",")} SmJT_${newVersion.replace(/\./g, "-")}.zip`,
     function (error, stdout, stderr) {
       if (error) {
         console.log(error.stack);
