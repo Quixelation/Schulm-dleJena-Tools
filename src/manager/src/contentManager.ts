@@ -128,9 +128,10 @@ export default function () {
     document.querySelector("section.block_myoverview").insertAdjacentElement(
       "beforebegin",
       cardButton({
+        id: "DetectChangesBtn",
         options: { text: "Änderungen ansehen", icon: "rocket", link: "#" },
         onclick: () => {
-          console.log("HELLO FROM CLICKLISTERNER!!!!");
+          document.getElementById("DetectChangesBtn").remove();
           document
             .querySelectorAll(".card-deck.dashboard-card-deck > div")
             .forEach((element) => {
