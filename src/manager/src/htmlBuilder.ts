@@ -3,6 +3,7 @@ interface htmlBuilderArgs<optionsGen> {
   style?: string;
   options?: optionsGen;
   onclick?: Function;
+  id?: string;
 }
 interface htmlSingleContainerBuilderArgs<T> extends htmlBuilderArgs<T> {
   child: HTMLElement;
@@ -36,6 +37,9 @@ function applyOptions(args: htmlSingleContainerBuilderArgs<any>) {
   if (args.onclick != null) {
     //@ts-ignore
     args.child.addEventListener("click", args.onclick);
+  }
+  if (args.id) {
+    args.child.id = args.id;
   }
   return args.child;
 }
