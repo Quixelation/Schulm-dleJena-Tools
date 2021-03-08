@@ -7,3 +7,4 @@ SmJT_*.zip
 *.crx
 notes.md
 versions/*
+.vercel
