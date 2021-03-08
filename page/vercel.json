@@ -1,0 +1,12 @@
+{
+  "redirects": [
+    {
+      "source": "/firefox",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/4.4/schulmoodlejena_tools-4.4-fx.xpi"
+    },
+    {
+      "source": "/chrome",
+      "destination": "https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph"
+    }
+  ]
+}
