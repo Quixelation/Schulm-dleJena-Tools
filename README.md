@@ -7,7 +7,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 ## Herunterladen
 
 <!-- prettier-ignore -->
- [Chrome](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://addons.mozilla.org/de/firefox/addon/schulmoodlejena-tools/)
+ [Chrome (/Chromium Edge)](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://addons.mozilla.org/de/firefox/addon/schulmoodlejena-tools/)
 --- | ---
  ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![Mozilla Add-on](https://img.shields.io/amo/v/schulmoodlejena-tools?label=Version&style=flat-square)
  ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) | ![Mozilla Add-on](https://img.shields.io/amo/users/schulmoodlejena-tools?label=Nutzer&style=flat-square)
