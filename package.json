@@ -15,7 +15,7 @@
     "todo-build": "cd src/todoManager && npm run build",
     "manager-build": "cd src/manager && npm run build",
     "background-build": "cd src/background && npm run build",
-    "install": "npm i && npm run install-todo && npm run install-manager && npm run install-popup && npm run install-background",
+    "install": "npm run install-todo && npm run install-manager && npm run install-popup && npm run install-background",
     "install-todo": "cd src/todoManager && npm i",
     "install-manager": "cd src/manager && npm i",
     "install-background": "cd src/background && npm i",
