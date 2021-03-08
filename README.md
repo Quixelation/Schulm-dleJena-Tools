@@ -9,8 +9,8 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 <!-- prettier-ignore -->
  [Chrome<br>(/Chromium Edge)](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://schulmoodle-jena-tools.vercel.app/firefox)
 --- | ---
- ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![Mozilla Add-on](https://img.shields.io/amo/v/schulmoodlejena-tools?label=Version&style=flat-square)
- ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) | ![Mozilla Add-on](https://img.shields.io/amo/users/schulmoodlejena-tools?label=Nutzer&style=flat-square)
+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/quixelation/schulmoodlejena-tools)
+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) | 
 
 ## Funktionen
 
