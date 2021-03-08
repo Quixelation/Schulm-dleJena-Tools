@@ -9,6 +9,10 @@
       "destination": "https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph"
     },
     {
+      "source": "/chromium",
+      "destination": "https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph"
+    },
+    {
       "source": "/github",
       "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/"
     },
