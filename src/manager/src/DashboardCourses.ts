@@ -90,20 +90,63 @@ function changeAll(params: { options: storage }) {
               "";
           }
 
-          if (Fächer[id].imageType == "emoji") {
+          //#region Img-Design
+          const cardImgDiv = item.children[0].children[0] as HTMLDivElement;
+          //* Emoji
+          if (
+            Fächer[id].imageType == "emoji" ||
+            Fächer[id].imageType == "emoji_bg"
+          ) {
             console.log("EmojiCourseIMage");
-            (item.children[0]
-              .children[0] as HTMLDivElement).style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
-              createEmojiImage(Fächer[id].emoji)
+            cardImgDiv.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
+              createEmojiImage(
+                Fächer[id].emoji,
+                options.dashboardEmojiFontSize,
+                Fächer[id].imageType == "emoji_bg" ? Fächer[id].color : null
+              )
             )}")`;
-          } else if (Fächer[id].imageType == "muster") {
-            (item.children[0]
-              .children[0] as HTMLDivElement).style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
-              createWavesImage(Fächer[id].color)
-            )}")`;
-            (item.children[0].children[0] as HTMLDivElement).style.transform =
-              "rotateZ(180deg)";
           }
+
+          //* Muster
+          else if (Fächer[id].imageType == "muster") {
+            const waves = createWavesImage(Fächer[id].color);
+            cardImgDiv.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
+              waves
+            )}")`;
+            cardImgDiv.style.transform = "rotateZ(180deg)";
+          }
+          //* Emoji + Muster
+          else if (Fächer[id].imageType == "emoji_muster") {
+            // Transform original Card to Waves
+            const waves = createWavesImage(Fächer[id].color);
+            cardImgDiv.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
+              waves
+            )}")`;
+            cardImgDiv.style.transform = "rotateZ(180deg)";
+
+            // Create new Emoji Card
+            const emojiCard = document.createElement("div");
+            emojiCard.className = "card-img dashboard-card-img";
+            emojiCard.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
+              createEmojiImage(Fächer[id].emoji, options.dashboardEmojiFontSize)
+            )}")`;
+
+            // Brining it all together
+            cardImgDiv.parentElement.style.position = "relative";
+            emojiCard.style.position = "absolute";
+            emojiCard.style.zIndex = "9";
+            cardImgDiv.parentElement.insertAdjacentElement(
+              "afterbegin",
+              emojiCard
+            );
+          }
+          //* BG
+          else if (Fächer[id].imageType == "bg") {
+            cardImgDiv.style.backgroundImage = ``;
+            cardImgDiv.style.background = Fächer[id].color;
+          }
+
+          //#endregion
         }
         // Wenn nicht 100% Fortschritt, dann Titel Fett
         if (

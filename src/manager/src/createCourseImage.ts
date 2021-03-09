@@ -1,10 +1,15 @@
 import { increase_brightness } from "./../../utils";
-function createEmojiImage(emoji: string) {
+function createEmojiImage(emoji: string, size: number, color?: string) {
+  console.log("color", emoji, color);
   return `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='170px' height='50px'> 
     <rect x='0' y='0' width='170' height='50'
-      style='fill:%2300000000 ;  fill-opacity: 0.0; '/> 
+      style='fill:#${
+        color != null ? color.slice(1) : "00000000"
+      } ;  fill-opacity: ${color ? "1" : "0"}; '/> 
     <text x='85' y='30' 
-      style='fill:white; text-anchor: middle; font-family:Arial' font-size='24' 
+      style='fill:white; text-anchor: middle; font-family:Arial' font-size='${
+        (size * 24) / 100
+      }' 
       transform=''> 
       ${emoji} 
     </text> 

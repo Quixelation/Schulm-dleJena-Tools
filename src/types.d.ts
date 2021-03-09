@@ -32,6 +32,7 @@ interface syncStorage {
   removeNavigationBlock: boolean;
   biggerVideo: boolean;
   allowMultipleDownloads: boolean;
+  dashboardEmojiFontSize: number;
 }
 
 interface localStorage {
@@ -58,7 +59,13 @@ interface fach {
 interface fächer {
   [id: string]: fach;
 }
-type fachImageTypes = "emoji" | "muster" | "original";
+type fachImageTypes =
+  | "emoji"
+  | "muster"
+  | "original"
+  | "emoji_muster"
+  | "emoji_bg"
+  | "bg";
 export {
   todoItem,
   todoType,
