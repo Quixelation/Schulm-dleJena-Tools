@@ -2,8 +2,9 @@ import { storage } from "@shared/types";
 function toggleNoEmptyTopics(force?: true) {
   if (force) {
     document.body.classList.add("no-empty-topics");
+  } else {
+    document.body.classList.toggle("no-empty-topics");
   }
-  document.body.classList.toggle("no-empty-topics");
   if (document.body.classList.contains("no-empty-topics")) {
     document.getElementById(
       "leereThemenAnzeigenTextVersteckenAnzeigen"
@@ -33,12 +34,19 @@ export default function (params: { options: storage }) {
       var href = location.href;
       const id = parseInt(href.slice(href.indexOf("id=") + 3));
       if (reversed_courses?.includes(id)) {
+        document.getElementById("ThemenReihenfolgeUmkehren").style.background =
+          "green";
         document
           .querySelector(".course-content ul.topics")
           .classList.add("reversed");
       }
       var noEmptyTopics: number[] = val["no-empty-topics"];
+      console.log("noEmptyTopics", noEmptyTopics);
+      console.log("id", id);
+      console.log("contains", noEmptyTopics?.includes(id));
       if (noEmptyTopics?.includes(id)) {
+        document.getElementById("LeereThemenAnzeigenBtn").style.background =
+          "green";
         toggleNoEmptyTopics(true);
       }
     });
@@ -48,8 +56,13 @@ export default function (params: { options: storage }) {
     const buttonsContainer = document.createElement("div");
     buttonsContainer.style.display = "flex";
 
-    const optionsArray: { onClick: (e: MouseEvent) => void; text: string }[] = [
+    const optionsArray: {
+      onClick: (e: MouseEvent) => void;
+      text: string;
+      id: string;
+    }[] = [
       {
+        id: "ThemenReihenfolgeUmkehren",
         onClick: (e) => {
           const isReversed = document
             .querySelector(".course-content ul.topics")
@@ -67,9 +80,15 @@ export default function (params: { options: storage }) {
               return item != id;
             });
             console.log("reversed_courses", reversed_courses);
+            document.getElementById(
+              "ThemenReihenfolgeUmkehren"
+            ).style.background = "";
             if (!isReversed) {
               console.log("pushId");
               reversed_courses.push(id);
+              document.getElementById(
+                "ThemenReihenfolgeUmkehren"
+              ).style.background = "green";
             }
             console.log("reversed_courses", reversed_courses);
             chrome.storage.sync.set({
@@ -83,6 +102,7 @@ export default function (params: { options: storage }) {
         text: "Reihenfolge der Themen umkehren <i class='fa fa-arrows-v' ></i>",
       },
       {
+        id: "LeereThemenAnzeigenBtn",
         text:
           "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
         onClick: (e) => {
@@ -103,9 +123,13 @@ export default function (params: { options: storage }) {
               return item != id;
             });
             console.log("no-empty-topics", reversed_courses);
-            if (!isChosen) {
+            //@ts-ignore
+            e.target.style.background = "";
+            if (isChosen) {
               console.log("pushId");
               reversed_courses.push(id);
+              //@ts-ignore
+              e.target.style.background = "green";
             }
             console.log("no-empty-topics", reversed_courses);
             chrome.storage.sync.set({
@@ -124,6 +148,7 @@ export default function (params: { options: storage }) {
       btn.style.width = "100%";
       btn.style.marginBottom = "10px";
       btn.addEventListener("click", option.onClick);
+      btn.id = option.id;
       buttonsContainer.append(btn);
     });
     //#endregion
