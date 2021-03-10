@@ -1,11 +1,24 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
+  import iro from "@jaames/iro";
+
   import { addCourse, findCourses } from "./ts/courses";
   import Button from "./Button.svelte";
   import { createEventDispatcher } from "svelte";
   import { fach, fachImageTypes } from "@shared/types";
 
   export let data: fach = null;
-
+  var colorPicker;
+  onMount(async () => {
+    //@ts-ignore
+    colorPicker = new iro.ColorPicker("#picker", {
+      width: 175,
+      // Set the initial color to pure red
+      color: data.color,
+      layoutDirection: "horizontal",
+    });
+  });
   export let longName: string = data?.long;
 
   export let id;
@@ -30,39 +43,13 @@
           "")
       : null;
     //#endregion
-    //#region radio
-    const selectedImageType: fachImageTypes = (() => {
-      const value = document
-        .querySelector("input[name=imageType]:checked")
-        .parentElement.textContent.toLowerCase()
-        .trim();
-      if (
-        (["emoji", "muster", "original"] as fachImageTypes[]).includes(
-          value as fachImageTypes
-        )
-      ) {
-        return value as fachImageTypes;
-      } else {
-        alert(
-          "Fehler: Falscher imageType! Wir bitten Sie darum, den Entwickler bescheid zu geben."
-        );
-      }
-    })();
 
-    (document.getElementById(
-      "muster_original_radio"
-    ) as HTMLInputElement).checked = true;
-    //#endregion
-    //#region color
-    const color = (document.getElementById("color-input") as HTMLInputElement)
-      ?.value;
-    //#endregion
     const sendingData: fach = {
       long: longName,
       short: shortName,
       emoji: courseEmoji,
-      color,
-      imageType: selectedImageType,
+      color: colorPicker.color.hexString,
+      imageType,
     };
     console.log("sendingData", sendingData);
     dispatch("save", { data: sendingData, id });
@@ -87,73 +74,37 @@
         value={data ? data.short || "" : ""}
       />
     </div>
-    <br /><label style="font-weight: 700" for="text-input">Kursbild:</label>
-    <form>
-      <label
-        on:change={(e) => {
-          //@ts-ignore
-          imageType = e.target.parentElement.textContent.toLowerCase().trim();
-        }}
-        style="display: flex; align-items: center"
-        ><input
-          type="radio"
-          name="imageType"
-          checked={data?.imageType === "original" || data == null}
-          id="muster_original_radio"
-        />
-        <span>Original</span></label
-      >
-      <label
-        on:change={(e) => {
-          //@ts-ignore
-          imageType = e.target.parentElement.textContent.toLowerCase().trim();
-        }}
-        style="display: flex; align-items: center"
-        ><input
-          checked={data?.imageType === "emoji"}
-          type="radio"
-          name="imageType"
-        />
-        <span>Emoji</span></label
-      >
-      <label
-        on:change={(e) => {
-          //@ts-ignore
-          imageType = e.target.parentElement.textContent.toLowerCase().trim();
-        }}
-        style="display: flex; align-items: center"
-        ><input
-          checked={data?.imageType === "muster"}
-          type="radio"
-          name="imageType"
-        /> <span>Muster</span></label
-      >
-    </form>
+    <br /><label style="font-weight: 700">Kursbild:</label>
+    <select
+      bind:value={imageType}
+      id="imageTypeSelect"
+      style="padding: 5px; padding-left: 2px;"
+    >
+      <option value="original">Original</option>
+      <option value="emoji">Emoji</option>
+      <option value="emoji_bg">Emoji mit farbigen Hintergrund</option>
+      <option value="emoji_muster">Emoji mit Muster</option>
+      <option value="muster">Muster</option>
+      <option value="bg">Farbe</option>
+    </select>
+
     <br />
-    {#if imageType === "emoji"}
-      <div>
-        <label for="text-input" style="font-weight: 700">Emoji:</label>
-        <input
-          style="margin-top: 2.5px; "
-          class="input"
-          id="emoji-input"
-          type="text"
-          value={data?.emoji ? data.emoji : ""}
-        />
-      </div>
-    {/if}
-    {#if imageType === "muster"}
-      <div>
-        <label for="color-input" style="font-weight: 700">Farbe:</label>
-        <input
-          style="margin-top: 2.5px; width: 100%; height: 36px"
-          class="input"
-          id="color-input"
-          type="color"
-          value={data?.color ? data.color : "#ff3e00"}
-        />
-      </div>
-    {/if}
+
+    <div>
+      <label for="text-input" style="font-weight: 700">Emoji:</label>
+      <input
+        style="margin-top: 2.5px; "
+        class="input"
+        id="emoji-input"
+        type="text"
+        value={data?.emoji ? data.emoji : ""}
+      />
+    </div>
+    <br />
+    <div>
+      <label for="color-input" style="font-weight: 700">Farbe:</label>
+    </div>
+    <div style="margin: auto; width: fit-content" id="picker" />
   </div>
   <br />
   <div

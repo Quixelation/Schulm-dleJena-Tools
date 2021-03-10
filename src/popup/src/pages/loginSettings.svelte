@@ -22,7 +22,7 @@
 <br />
 <FunctionToggle
   title="AutoFill-AutoLogin"
-  desc="!!! Automatischen Klicken des Einloggen Knopfes bei Eingabe. Nur für AutoFill!!!"
+  desc="Automatisches Einloggen nach Autofill durch Passwort-Manager"
   optionCode="autologin_untrusted"
   on:changed={connect}
 />
