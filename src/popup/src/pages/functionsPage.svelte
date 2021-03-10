@@ -7,8 +7,8 @@
 <h1 class="pageHeader">Allgemein</h1>
 <div style="width: 100%; display: flex; flex-direction: column">
   <FunctionToggle
-    title="Navigationsblock verstecken"
-    desc="Versteckt den Navigationsblock."
+    title="Dashboard Knopf"
+    desc="Zeigt einen Dashboard Knopf über dem Navigationsblock (links) an."
     optionCode="removeNavigationBlock"
     on:changed={connect}
   /><br />

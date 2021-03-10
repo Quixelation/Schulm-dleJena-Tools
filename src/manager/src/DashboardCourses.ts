@@ -228,7 +228,7 @@ function addInfo() {
                 "Es wurden neue Kurse erkannt. Aktualisiere diese Seite um Änderungen zu sehen.",
             }),
             span({
-              text: "(Schulm__dleJena Tools)",
+              text: "(SchulmoodleJena Tools)",
             }),
             freeVerticalSpace({ options: { height: "15px" } }),
             button({
@@ -253,7 +253,13 @@ function syncCourse(id: string, longName: string) {
       if (fächer[id] == undefined) {
         addInfo();
         const Fach = Object.keys(FächerList).filter((item) => {
-          return longName.includes(" " + item + " ");
+          return (
+            " " +
+            longName.replace(/[^a-z\d\s]+/gi, "").toLowerCase() +
+            " "
+          ).includes(
+            " " + item.replace(/[^a-z\d\s]+/gi, "").toLowerCase() + " "
+          );
         })?.[0];
         fächer[id] = {
           long: longName,

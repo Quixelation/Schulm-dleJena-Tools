@@ -1,5 +1,13 @@
 import { localStorage, storage, syncStorage } from "../../types";
-
+chrome.runtime.onInstalled.addListener(function (object) {
+  if ("install" === object.reason)
+    chrome.tabs.create(
+      { url: "https://smjt.robertstuendl.com/how-to-use" },
+      function (tab) {
+        console.log("New tab launched");
+      }
+    );
+});
 chrome.storage.sync.get(null, function (options) {
   const defaultOptions: storage = {
     usecoloredprogress: true,
