@@ -1,0 +1,24 @@
+name: "Build"
+
+on:
+  push:
+    branches: [master, development]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [master, development]
+
+jobs:
+  build-firefox:
+    name: "Build Firefox"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: "Zip"
+        run: "powershell Compress-Archive tsconfig.json,package.json,package-lock.json,README.md,dist,src code.zip"
+      - name: Upload
+        uses: actions/upload-artifact@v1
+        with:
+          name: SchulmoodleJena-Tools-Code
+          path: code.zip
