@@ -87,13 +87,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 
 ## Versionierung
 
-> Da es bei diesem Code, für den Endbenutzer, nicht unbedingt "`breaking changes`" gibt, wurde entschieden, dem "Semantic Versioning" Standard _nicht_ zu folgen.
-
-`<MAJOR>.<MINOR>.<PATCH>`
-
-1. `MAJOR` - Es wurden breaking changes vorgenommen.
-2. `MINOR` - Es wurden neue Funktionen hinzugefügt
-3. `PATCH` - Es wurden Probleme und Bugs behoben
+Je höher die Zahl, desto neuer ist die Version. Habe gerade kein richtiges System...
 
 ## Copyright
 
