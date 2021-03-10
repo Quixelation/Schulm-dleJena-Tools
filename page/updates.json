@@ -3,8 +3,8 @@
     "schulmoodlejenatools@example.com": {
       "updates": [
         {
-          "version": "4.4",
-          "update_link": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/4.4/schulmoodlejena_tools-4.4-fx.xpi"
+          "version": "0.9.2",
+          "update_link": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/0.9.2/schulmoodlejena_tools-0.9.2-fx.xpi"
         }
       ]
     }
