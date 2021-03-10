@@ -17,6 +17,10 @@
       "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/"
     },
     {
+      "source": "/info",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/blob/master/README.md"
+    },
+    {
       "source": "/",
       "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/"
     },
