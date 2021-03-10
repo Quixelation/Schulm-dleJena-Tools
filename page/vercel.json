@@ -22,7 +22,11 @@
     },
     {
       "source": "/",
-      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/"
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Einf%C3%BChrung"
+    },
+    {
+      "source": "/install",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Installation"
     },
     {
       "source": "/get",
