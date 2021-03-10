@@ -29,6 +29,10 @@
       "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Installation"
     },
     {
+      "source": "/how-to-use",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Benutzung"
+    },
+    {
       "source": "/get",
       "destination": "/api/get"
     }
