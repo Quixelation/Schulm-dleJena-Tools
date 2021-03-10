@@ -253,13 +253,13 @@ function syncCourse(id: string, longName: string) {
       if (fächer[id] == undefined) {
         addInfo();
         const Fach = Object.keys(FächerList).filter((item) => {
-          return longName.includes(item);
+          return longName.includes(" " + item + " ");
         })?.[0];
         fächer[id] = {
           long: longName,
           emoji: Fach ? FächerList[Fach] : "",
           imageType: FächerList[Fach] ? "emoji" : "original",
-          color: "",
+          color: "#ffffff",
           short: Fach,
         };
       }
