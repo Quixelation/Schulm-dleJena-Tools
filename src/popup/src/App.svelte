@@ -65,7 +65,7 @@
           class="title"
           style="margin-bottom: 0px; color: white; font-size: 1.25rem;"
         >
-          SchulmoodleJena Tools
+          Schulm**dleJena Tools
         </h2>
         <span style="margin-top: 0px; font-size: 9.5px;">
           by Robert Stündl & Clemens Grätz

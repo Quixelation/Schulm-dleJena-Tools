@@ -6,7 +6,7 @@
   import githubLogo from "./../../assets/GitHub_Logo.png";
 </script>
 
-<h1 style="margin-bottom: 0px; margin-top: 16px;">SchulmoodleJena Tools</h1>
+<h1 style="margin-bottom: 0px; margin-top: 16px;">Schulm**dleJena Tools</h1>
 <h3 style="margin-top: 0px; margin-bottom: 32px; color: #888888">
   Version {version}
 </h3>

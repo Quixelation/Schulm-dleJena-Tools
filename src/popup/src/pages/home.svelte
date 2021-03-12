@@ -4,6 +4,7 @@
   let page = _page;
   import { push, pop, replace } from "svelte-spa-router";
   import CoursesPage from "./coursesPage.svelte";
+  import { goToUrl } from "src/ts/communication";
 </script>
 
 <div class="flexContainer">
@@ -218,6 +219,34 @@
           }}
         >
           <div class="text">Info</div>
+          <div class="icon">
+            <svg
+              width="11px"
+              height="11px"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>prime</title>
+              <g
+                id="880b5b52-5578-436c-a64a-10a281e56ea6"
+                data-name="Arrow Left"
+              >
+                <path
+                  d="M7.77,23.58l-2.24-2a0.5,0.5,0,0,1,0-.71L13.43,12,5.5,3.13a0.5,0.5,0,0,1,0-.71l2.24-2a0.5,0.5,0,0,1,.71,0L18.8,12,8.48,23.54A0.5,0.5,0,0,1,7.77,23.58Z"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="linkListItem"
+          on:click={() => {
+            chrome.tabs.create({
+              url: "https://smjt.vercel.app/licenses.html",
+            });
+          }}
+        >
+          <div class="text">Lizensen</div>
           <div class="icon">
             <svg
               width="11px"

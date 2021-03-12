@@ -1,6 +1,6 @@
 ![Picture](/banner.png)
 
-# SchulmoodleJena-Tools ![GitHub manifest version (path)](https://img.shields.io/github/manifest-json/v/Quixelation/SchulmoodleJena-Tools?filename=dist%2Fmanifest.json&style=for-the-badge)
+# Schulm**dleJena-Tools ![GitHub manifest version (path)](https://img.shields.io/github/manifest-json/v/Quixelation/SchulmoodleJena-Tools?filename=dist%2Fmanifest.json&style=for-the-badge)
 
 Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulmoodle Jena bietet.
 
