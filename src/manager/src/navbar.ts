@@ -26,7 +26,7 @@ export default function prependNavBarButtons() {
       `<img style="height: 20px;" src="${chrome.runtime.getURL(
         "icons/icon.png"
       )}" /> Tools`,
-      "https://smjt.robertstuendl.com/how-to-use",
+      "https://smjt.robertstuendl.com/wiki",
       true,
       true
     )

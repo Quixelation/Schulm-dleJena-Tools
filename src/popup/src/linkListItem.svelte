@@ -33,8 +33,10 @@
     padding: {
       left: 5px + 10px;
       right: 5px + 10px;
+      top: 15px;
+      bottom: 15px;
     }
-    height: 45px;
+    //height: 45px;
 
     display: flex;
     justify-content: space-between;

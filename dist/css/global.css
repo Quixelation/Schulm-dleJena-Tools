@@ -91,3 +91,7 @@ body.no-empty-topics .emptyTopic {
 .topicsManagerBtn:not(:last-child) {
   margin-right: 7.5px;
 }
+
+.topicsButtonsContainer {
+  grid-gap: 7.5px;
+}

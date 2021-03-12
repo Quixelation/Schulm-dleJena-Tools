@@ -7,9 +7,41 @@
 </script>
 
 <div class="flexContainer">
+  <div class="TabsMenu">
+    <div
+      class="TabsMenuItem"
+      class:active={page === "main"}
+      on:click={() => {
+        setPage("main");
+        page = "main";
+      }}
+    >
+      <i class="material-icons ">settings</i>
+    </div>
+    <div
+      class="TabsMenuItem"
+      class:active={page === "courses"}
+      on:click={() => {
+        setPage("courses");
+        page = "courses";
+      }}
+    >
+      <i class="material-icons ">school</i>
+    </div>
+    <div
+      class="TabsMenuItem"
+      class:active={page === "info"}
+      on:click={() => {
+        setPage("info");
+        page = "info";
+      }}
+    >
+      <i class="material-icons ">info</i>
+    </div>
+  </div>
   <div
     class="linkList"
-    style="max-height: 496px; overflow: auto; margin: -10px; padding: 10px; margin-top: 0px; padding-top: 0px;"
+    style="max-height: 471px; overflow: auto; margin: -10px; padding: 10px; margin-top: 0px; padding-top: 0px;"
   >
     {#if page === "main"}
       <h1>Funktionen</h1>
@@ -262,38 +294,12 @@
       404 - PAGE NOT FOUND
     {/if}
   </div>
-  <div class="TabsMenu">
-    <i
-      class="material-icons TabsMenuItem"
-      class:active={page === "main"}
-      on:click={() => {
-        setPage("main");
-        page = "main";
-      }}>settings</i
-    >
-    <i
-      class="material-icons TabsMenuItem"
-      class:active={page === "courses"}
-      on:click={() => {
-        setPage("courses");
-        page = "courses";
-      }}>school</i
-    >
-    <i
-      class="material-icons TabsMenuItem"
-      class:active={page === "info"}
-      on:click={() => {
-        setPage("info");
-        page = "info";
-      }}>info</i
-    >
-  </div>
 </div>
 
 <style lang="scss">
   .flexContainer {
-    display: flex;
-    flex-direction: column-reverse;
+    display: grid;
+    grid-template-rows: 39px 1fr;
     .linkList {
       display: flex;
       flex-direction: column;
@@ -347,11 +353,13 @@
       }
     }
     .TabsMenu {
+      position: sticky;
+      top: -10px;
       z-index: 9;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 10px 0px;
+      padding: 2.5px 0px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       padding: {
         left: 5px + 10px;
@@ -367,14 +375,30 @@
         cursor: pointer;
         width: 100%;
         text-align: center;
-        transition: 0.25s ease text-shadow;
+        transition: 0.25s ease box-shadow, 0.25s ease transform;
         &:hover {
-          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
             0 1px 2px rgba(0, 0, 0, 0.24);
         }
-        &.active {
-          color: #ff3e00;
+        &:active {
+          transform: translateY(1px) translateZ(0);
         }
+        &.active {
+          background-color: #fd7c53;
+          color: white;
+
+          // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) inset,
+          //   0 1px 2px rgba(0, 0, 0, 0.24) inset;
+        }
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #efefef;
+        border-radius: 7.5px;
+        margin: 5px;
+        box-sizing: border-box;
       }
     }
   }

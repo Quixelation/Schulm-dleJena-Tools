@@ -10,10 +10,9 @@ import {
   button,
   freeVerticalSpace,
   h5,
+  icon,
 } from "./htmlBuilder";
-import contentManager, {
-  checkAndGenerateNewContentHeader,
-} from "./contentManager";
+import contentManager from "./contentManager";
 
 export default function (params: { options: storage }) {
   const { options } = params;
@@ -180,6 +179,31 @@ function changeAll(params: { options: storage }) {
           }
         } catch (err) {
           console.error("Default Colors Assign Error!", err);
+        }
+
+        try {
+          //TODO: Screen-Reader Support
+          const editBtn = document.createElement("button");
+          editBtn.className = "btn btn-link btn-icon icon-size-3 coursemenubtn";
+          // Used in the official Moodle Site
+          editBtn.type = "button";
+          editBtn.append(
+            icon({ options: { icon: "edit" }, style: "color: white;" })
+          );
+
+          /*
+            <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="icon fa fa-ellipsis-h fa-fw " aria-hidden="true"></i>
+                !!Missing:
+                !!    <span class="sr-only">
+                !!       Aktion für derzeitigen Kurs 10-F, Kunst, Surrealismus/ ISMEN
+                !!    </span>
+            </button>
+           */
+
+          item.querySelector(".card-body > div").append(editBtn);
+        } catch (e) {
+          e;
         }
 
         if (options["usecoloredprogress"] === true) {

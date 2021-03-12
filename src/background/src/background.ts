@@ -2,7 +2,7 @@ import { localStorage, storage, syncStorage } from "../../types";
 chrome.runtime.onInstalled.addListener(function (object) {
   if ("install" === object.reason)
     chrome.tabs.create(
-      { url: "https://smjt.robertstuendl.com/how-to-use" },
+      { url: "https://smjt.robertstuendl.com/first-install" },
       function (tab) {
         console.log("New tab launched");
       }

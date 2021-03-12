@@ -54,8 +54,10 @@ export default function (params: { options: storage }) {
 
     //#region OptionsCreator
     const buttonsContainer = document.createElement("div");
-    buttonsContainer.style.display = "flex";
-
+    buttonsContainer.style.display = "grid";
+    buttonsContainer.style.gridTemplateColumns =
+      "repeat(auto-fit, minmax(280px, 1fr))";
+    buttonsContainer.classList.add("topicsButtonsContainer");
     const optionsArray: {
       onClick: (e: MouseEvent) => void;
       text: string;
@@ -124,12 +126,15 @@ export default function (params: { options: storage }) {
             });
             console.log("no-empty-topics", reversed_courses);
             //@ts-ignore
-            e.target.style.background = "";
+            document.getElementById("LeereThemenAnzeigenBtn").style.background =
+              "";
             if (isChosen) {
               console.log("pushId");
               reversed_courses.push(id);
               //@ts-ignore
-              e.target.style.background = "green";
+              document.getElementById(
+                "LeereThemenAnzeigenBtn"
+              ).style.background = "green";
             }
             console.log("no-empty-topics", reversed_courses);
             chrome.storage.sync.set({

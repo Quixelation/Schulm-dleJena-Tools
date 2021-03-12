@@ -14,22 +14,7 @@
     });
   };
   getCourses();
-  let allowAutoDetec: number | true = 0;
-  chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
-    console.log(tab[0]);
-    if (
-      tab[0].title === "Dashboard" &&
-      tab[0].url.includes("https://moodle.jsp.jena.de/my/")
-    ) {
-      allowAutoDetec = true;
-    } else {
-      if (tab[0].url.includes("moodle.jsp.jena.de/")) {
-        allowAutoDetec = 1;
-      } else {
-        allowAutoDetec = 2;
-      }
-    }
-  });
+
   let gotoDash = () => {
     goToUrl("https://moodle.jsp.jena.de/my/", true);
   };
@@ -84,7 +69,8 @@
         }}>{registeredCourses[id].long}</LinkListItem
       >
     {:else}
-      <em>Keine eingetragenen Kurse gefunden.</em>
+      <em>Keine eingetragenen Kurse gefunden.</em><br />
+      <em>Kurse werden bei dem Besuch des Dashboards aktualisiert.</em>
     {/each}
   {/if}
 </div>

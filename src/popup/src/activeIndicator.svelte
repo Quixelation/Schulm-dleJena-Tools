@@ -1,15 +1,24 @@
 <script>
   let isActive = false;
-  chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
-    console.log(tab[0]);
-    isActive = tab[0].url.includes("moodle.jsp.jena.de");
-  });
+  try {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
+      console.log(tab[0]);
+      isActive = tab[0].url.includes("moodle.jsp.jena.de");
+    });
+  } catch (e) {
+    isActive = "moodle";
+  }
 </script>
 
 <div>
-  Tool ist für diese Webseite {#if isActive}<span style="color: #2ECC40"
-      >aktiv</span
-    >{:else}<span style="color: #FF4136">inaktiv</span>{/if}!
+  {#if isActive !== "moodle"}
+    Tool ist für diese Webseite
+    {#if isActive}
+      <span style="color: #2ECC40">aktiv</span>
+    {:else}
+      <span style="color: #FF4136">inaktiv</span>
+    {/if}!
+  {/if}
 </div>
 
 <style>
