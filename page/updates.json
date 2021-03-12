@@ -3,7 +3,7 @@
     "schulmoodlejenatools@example.com": {
       "updates": [
         {
-          "version": "2021.03.12",
+          "version": "2021.3.12.1",
           "update_link": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/2021.3.12.1/schulmoodlejena_tools-2021.3.12.1-fx.xpi"
         }
       ]
