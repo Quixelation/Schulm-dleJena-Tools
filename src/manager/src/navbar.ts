@@ -25,7 +25,7 @@ export default function prependNavBarButtons() {
     createNavBarButton(
       `<img style="height: 20px;" src="${chrome.runtime.getURL(
         "icons/icon.png"
-      )}" /> Tools`,
+      )}" /> Wiki`,
       "https://smjt.robertstuendl.com/wiki",
       true,
       true
