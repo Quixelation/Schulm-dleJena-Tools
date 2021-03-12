@@ -1,13 +1,13 @@
 {
   "manifest_version": 2,
-  "version": "2021.3.12",
+  "version": "2021.3.12.1",
   "name": "SchulmoodleJena Tools",
   "description": "Tools für das Jenaer Schulmoodle",
   "browser_specific_settings": {
     "gecko": {
       "id": "schulmoodlejenatools@example.com",
       "strict_min_version": "42.0",
-      "update_url": "https://schulmoodle-jena-tools.vercel.app/updates.json"
+      "update_url": "https://smjt.vercel.app/updates.json"
     }
   },
   "browser_action": {

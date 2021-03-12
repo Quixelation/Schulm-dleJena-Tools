@@ -3,12 +3,8 @@
     "schulmoodlejenatools@example.com": {
       "updates": [
         {
-          "version": "4.4.0",
-          "update_link": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/4.4.0/schulmoodlejena_tools-4.4.0-fx.xpi"
-        },
-        {
           "version": "2021.03.12",
-          "update_link": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/2021.03.12/schulmoodlejena_tools-2021.3.12-fx.xpi"
+          "update_link": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/2021.03.12.1/schulmoodlejena_tools-2021.3.12.1-fx.xpi"
         }
       ]
     }
