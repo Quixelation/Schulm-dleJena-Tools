@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "4.4.0",
+  "version": "2021.3.12",
   "name": "SchulmoodleJena Tools",
   "description": "Tools für das Jenaer Schulmoodle",
   "browser_specific_settings": {
@@ -36,8 +36,19 @@
         "https://moodle.jsp.jena.de/*",
         "https://moodle.jsp.jena.de/*"
       ],
-      "js": ["generated/manager.js", "generated/todo/bundle.js"],
+      "js": [
+        "generated/manager.js",
+        "generated/todo/bundle.js",
+        "generated/changes/bundle.js"
+      ],
       "css": ["css/global.css", "generated/todo/bundle.css"]
+    },
+    {
+      "matches": [
+        "https://moodle.jsp.jena.de/my*",
+        "https://moodle.jsp.jena.de/my*"
+      ],
+      "js": ["generated/changes/bundle.js"]
     },
     {
       "matches": [

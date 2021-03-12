@@ -12,6 +12,7 @@
     "src/shared/*",
     "src/manager",
     "src/background",
+    "src/changesManager",
     "archive"
   ],
   "include": ["src/**/*"]

@@ -1,11 +1,24 @@
 import { Activity, CourseTopics } from "./../types";
-export default function (courseHtmlData: string) {
+export default function (
+  courseHtmlData: string
+):
+  | {
+      status: "not-supported";
+    }
+  | {
+      status: "success";
+      list: CourseTopics;
+    }
+  | {
+      status: "error";
+      desc: string;
+    } {
   const list: CourseTopics = {};
   const html = document.createElement("html");
   html.innerHTML = courseHtmlData;
   const topics = html.querySelectorAll("ul.topics > li");
   if (html.querySelector("body").id == "page-course-view-tiles") {
-    return "Nicht Unterstützt";
+    return { status: "not-supported" };
   } else if (topics.length > 0) {
     try {
       topics.forEach((item) => {
@@ -32,12 +45,21 @@ export default function (courseHtmlData: string) {
         });
         list[item.getAttribute("data-sectionid")] = { activities, name };
       });
-      return list;
+      return {
+        status: "success",
+        list,
+      };
     } catch (err) {
       err;
-      return "Fehler: Error";
+      return {
+        status: "error",
+        desc: "",
+      };
     }
   } else {
-    return "Fehler: Nichts gefunden";
+    return {
+      status: "error",
+      desc: "Nichts gefunden",
+    };
   }
 }

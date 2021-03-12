@@ -12,7 +12,6 @@ import {
   h5,
   icon,
 } from "./htmlBuilder";
-import contentManager from "./contentManager";
 
 export default function (params: { options: storage }) {
   const { options } = params;
@@ -157,7 +156,6 @@ function changeAll(params: { options: storage }) {
         ) {
           (item.children[1].children[0].children[0].children[1]
             .children[2] as HTMLSpanElement).style.fontWeight = "bold";
-          contentManager();
         }
 
         //(item as HTMLDivElement).style.backgroundColor = "#0f172a";
@@ -181,30 +179,30 @@ function changeAll(params: { options: storage }) {
           console.error("Default Colors Assign Error!", err);
         }
 
-        try {
-          //TODO: Screen-Reader Support
-          const editBtn = document.createElement("button");
-          editBtn.className = "btn btn-link btn-icon icon-size-3 coursemenubtn";
-          // Used in the official Moodle Site
-          editBtn.type = "button";
-          editBtn.append(
-            icon({ options: { icon: "edit" }, style: "color: white;" })
-          );
+        // try {
+        //   //TODO: Screen-Reader Support
+        //   const editBtn = document.createElement("button");
+        //   editBtn.className = "btn btn-link btn-icon icon-size-3 coursemenubtn";
+        //   // Used in the official Moodle Site
+        //   editBtn.type = "button";
+        //   editBtn.append(
+        //     icon({ options: { icon: "edit" }, style: "color: white;" })
+        //   );
 
-          /*
-            <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="icon fa fa-ellipsis-h fa-fw " aria-hidden="true"></i>
-                !!Missing:
-                !!    <span class="sr-only">
-                !!       Aktion für derzeitigen Kurs 10-F, Kunst, Surrealismus/ ISMEN
-                !!    </span>
-            </button>
-           */
+        //   /*
+        //     <button class="btn btn-link btn-icon icon-size-3 coursemenubtn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        //         <i class="icon fa fa-ellipsis-h fa-fw " aria-hidden="true"></i>
+        //         !!Missing:
+        //         !!    <span class="sr-only">
+        //         !!       Aktion für derzeitigen Kurs 10-F, Kunst, Surrealismus/ ISMEN
+        //         !!    </span>
+        //     </button>
+        //    */
 
-          item.querySelector(".card-body > div").append(editBtn);
-        } catch (e) {
-          e;
-        }
+        //   item.querySelector(".card-body > div").append(editBtn);
+        // } catch (e) {
+        //   e;
+        // }
 
         if (options["usecoloredprogress"] === true) {
           if (item.querySelector(".progress-bar.bar") != null) {
