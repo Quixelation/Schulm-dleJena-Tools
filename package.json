@@ -1,20 +1,43 @@
 {
   "devDependencies": {
-    "@types/chrome": "0.0.128",
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "@vercel/node": "^1.9.0",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-typescript": "^8.1.0",
+    "@types/chrome": "^0.0.133",
+    "rollup": "^2.3.4",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "sass": "^1.32.5",
+    "svelte": "^3.0.0",
+    "svelte-preprocess": "^4.6.3",
+    "tslib": "^2.1.0",
+    "typescript": "^4.1.3",
+    "@types/chroma-js": "^2.1.3",
+    "@rollup/plugin-image": "^2.0.6"
   },
   "dependencies": {
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "browserify": "^17.0.0",
+    "tsify": "^5.0.2",
+    "sirv-cli": "^1.0.0",
+    "svelte-routing": "^1.5.0",
+    "chroma-js": "^2.1.0",
+    "@jaames/iro": "^5.3.2",
+    "cpx": "^1.5.0",
+    "svelte-preprocess": "^4.6.3",
+    "svelte-spa-router": "^3.1.0"
   },
   "scripts": {
     "build": "tsc && npm run popup-build && npm run todo-build && npm run manager-build && npm run background-build && npm run changes-build",
     "pack": "npm run build && cd dist && web-ext build --overwrite-dest",
     "code": "node build.js",
-    "popup-dev": "cd src/popup && npm run dev",
-    "popup-build": "cd src/popup && npm run build",
-    "todo-dev": "cd src/todoManager && npm run dev",
-    "todo-build": "cd src/todoManager && npm run build",
-    "changes-build": "cd src/changesManager && npm run build",
+    "popup-build": "cd src/popup && rollup -c",
+    "todo-build": "cd src/todoManager && rollup -c",
+    "changes-build": "cd src/changesManager && rollup -c",
     "manager-build": "cd src/manager && npm run build",
     "background-build": "cd src/background && npm run build",
     "install": "npm run install-todo && npm run install-manager && npm run install-popup && npm run install-background && npm run install-changes",
@@ -23,6 +46,7 @@
     "install-manager": "cd src/manager && npm i",
     "install-background": "cd src/background && npm i",
     "install-popup": "cd src/popup && npm i",
-    "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\""
+    "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
+    "license": "npm-license-generator --out-path=./page/licenses.html"
   }
 }
