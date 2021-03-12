@@ -59,7 +59,10 @@ if (!location.pathname.includes("/mod/quiz/")) {
       { match: null, script: meineKurse },
       { match: null, script: staticSidebarBlock },
       { match: null, script: login },
-      { match: location.pathname.slice(-4) === ".pdf", script: downloader },
+      {
+        match: location.pathname.slice(-4).toLocaleLowerCase() === ".pdf",
+        script: downloader,
+      },
       {
         match: location.pathname.startsWith("/course/view.php"),
         script: topicsManager,
