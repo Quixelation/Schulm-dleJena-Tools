@@ -87,7 +87,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle
 
 ## Versionierung
 
-Je höher die Zahl, desto neuer ist die Version. Habe gerade kein richtiges System...
+`<JAHR>.<MONAT>.<TAG>.<Nr?>`
 
 ## Copyright
 
