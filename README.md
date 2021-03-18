@@ -2,7 +2,7 @@
 
 # Schulm**dleJena-Tools ![GitHub manifest version (path)](https://img.shields.io/github/manifest-json/v/Quixelation/SchulmoodleJena-Tools?filename=dist%2Fmanifest.json&style=for-the-badge)
 
-Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulmoodle Jena bietet.
+Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle™ System der Jenaer Schulen bietet.
 
 ## Herunterladen
 
@@ -32,7 +32,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
   > Der Todomanager bietet eine Todo-Liste, welche immer am linken Bildschirmrand verfügbar ist.
 
   - **Erstellung neuer Todos**<br>
-    Der Benutzer kann Todos erstellen. Diese werden außerhalb von Moodle, in dem Speicher der Erweiterung gespeichert.
+    Der Benutzer kann Todos erstellen. Diese werden außerhalb von Moodle™, in dem Speicher der Erweiterung gespeichert.
 
   - **Todo-Kategorien**<br>
     Der Benutzer muss jeder Todo eine der folgenden Kategorien zuordnen:
@@ -49,10 +49,10 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
     Der Benutzer kann leere Themen ausblenden. Hierbei wird darauf geachtet, dass der Titel dem Schema `Thema <ZAHL>` folgt und dass dieses Thema keinen Inhalt hat.
 
   - **Nicht verfügbare Themen verbergen**<br>
-    Moodle zeigt Themen, welche "Nicht Verfügbar" sind, trotzdem an. Der Benutzer kann diese nun ausblenden. Diese Funktion blendet alle Themen, welche von Moodle die `hidden`-klasse zugeordnet bekommen haben, aus.
+    Moodle™ zeigt Themen, welche "Nicht Verfügbar" sind, trotzdem an. Der Benutzer kann diese nun ausblenden. Diese Funktion blendet alle Themen, welche von Moodle™ die `hidden`-klasse zugeordnet bekommen haben, aus.
 
 - ### Downloads
-  **PDF-Dateien** werden nun **automatisch heruntergeladen**, sobald der Benutzer diese auf Moodle öffnet.
+  **PDF-Dateien** werden nun **automatisch heruntergeladen**, sobald der Benutzer diese auf Moodle™ öffnet.
 - ### Go-To-Dashboard
 
   Es gibt nun mehr Buttons/Links, welche zum Dashboard führen:
@@ -87,7 +87,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Schulm
 
 ## Versionierung
 
-Je höher die Zahl, desto neuer ist die Version. Habe gerade kein richtiges System...
+`<JAHR>.<MONAT>.<TAG>.<Nr?>`
 
 ## Copyright
 
