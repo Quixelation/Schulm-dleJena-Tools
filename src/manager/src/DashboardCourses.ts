@@ -12,22 +12,17 @@ import {
   h5,
   icon,
 } from "./htmlBuilder";
+import { isTemplateExpression } from "typescript";
 
 export default function (params: { options: storage }) {
   const { options } = params;
 
   try {
-    changeAll({ options });
+    changeAllCards({ options });
   } catch (err) {
     err;
   }
   const courseNames = [];
-  var observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-      console.log("Mutation");
-      changeAll({ options });
-    });
-  });
 
   // Configuration of the observer:
   var config = {
@@ -37,11 +32,116 @@ export default function (params: { options: storage }) {
     subtree: true,
   };
 
-  // Pass in the target node, as well as the observer options
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      console.log("Mutation");
+      // const type = document
+      //   .querySelector("div[data-region='courses-view']")
+      //   .getAttribute("data-display");
+      changeAllCards({ options });
+      changeAllListItems({ options });
+    });
+  });
   observer.observe(document.querySelector("#block-region-content"), config);
 }
 
-function changeAll(params: { options: storage }) {
+function changeAllListItems(params: { options: storage }) {
+  const { options } = params;
+  const Fächer: fächer = options["fächer"];
+  document
+    .querySelectorAll("div[id^='courses-view'] ul.list-group li div.row")
+    .forEach((item) => {
+      if (item.getAttribute("data-moodlehelperenhanced") == "true") {
+        return;
+      } else {
+        item.setAttribute("data-moodlehelperenhanced", "true");
+      }
+      console.log("Changing Dashboard", item);
+
+      (item.parentElement as HTMLLIElement).style.backgroundColor = "#1E293B";
+
+      //#region NameSection
+      const nameSection = item.children[0];
+
+      const nameElement = nameSection.children[0]
+        .children[1] as HTMLAnchorElement;
+
+      const name = nameElement.innerText.trim();
+      console.log("name", name);
+
+      const id = getIdFromLink(nameElement.href);
+
+      //#region KursName + Emoji
+      var courseData = null;
+      if (Object.keys(Fächer).includes(id)) {
+        if (
+          options["shortcoursenames"] === true &&
+          Fächer[id].short !== undefined &&
+          Fächer[id].short?.trim() !== ""
+        ) {
+          courseData = {
+            short: Fächer[id].short,
+            emoji: Fächer[id].emoji,
+          };
+          nameElement.setAttribute("data-moodlehelperfilteredname", "true");
+          nameElement.style.fontSize = "20px";
+        }
+      }
+      //TODO: "Der Kurs ist als Favorit markiert." wieder hinzufügen. (Möglicherweise mit check, ob dieser String im textContent vorhanden ist)
+
+      //ScreenReader Text entfernen, damit später innerText verwendet werden kann und "Kursname" nicht erscheint
+      nameElement.querySelectorAll(".sr-only").forEach((e) => e.remove());
+      nameElement.innerHTML = `
+          <span style="display: grid; grid-template-columns: 35px auto; align-items: center">
+            <span style="justify-self: left">${
+              courseData ? courseData.emoji : ""
+            }</span>
+            <span>${
+              courseData ? courseData.short : nameElement.innerText
+            }</span>
+          </span>
+          `;
+      //#endregion
+
+      //Die Trennung zwischen den Listen-Elementen sichtbarer machen
+      item.parentElement.style.borderColor = "rgb(255,255,255,0.13)";
+
+      if (options["usecoloredprogress"] === true) {
+        var progressbar = item.querySelector(
+          ".progress-bar.bar"
+        ) as HTMLDivElement;
+        if (progressbar != null) {
+          const value = Number(
+            item
+              .querySelector(".progress-bar.bar")
+              .getAttribute("aria-valuenow")
+          );
+          const hsl = chroma
+            .scale(["#ff0000", "#00ff1e"])
+            .domain([0, 75, 95, 100])
+            .mode("hsl")(value)
+            .css();
+
+          nameElement.style.color = hsl;
+          if (value !== 100) {
+            nameElement.style.fontWeight = "bold";
+          }
+          progressbar.style.backgroundColor = hsl;
+
+          // Text unter der progressbar sichtbar machen mit Farbänderung
+          if (item.querySelector(".small") as HTMLSpanElement)
+            (item.querySelector(".small") as HTMLSpanElement).style.color =
+              "#cbd5e1";
+        }
+      }
+
+      nameSection.querySelector("div.text-muted.muted").remove();
+
+      //#endregion
+    });
+}
+
+function changeAllCards(params: { options: storage }) {
   const { options } = params;
   const Fächer: fächer = options["fächer"];
   document
