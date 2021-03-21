@@ -88,7 +88,3 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle
 ## Versionierung
 
 `<JAHR>.<MONAT>.<TAG>.<Nr?>`
-
-## Copyright
-
-Copyright &copy; 2021 Robert Stündl All Rights Reserved
