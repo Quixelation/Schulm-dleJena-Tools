@@ -1,5 +1,8 @@
 {
   "scripts": {
     "build": "browserify src/index.ts -p [ tsify -p tsconfig.json ] > ../../dist/generated/manager.js"
+  },
+  "devDependencies": {
+    "@types/cryptr": "^4.0.1"
   }
 }
