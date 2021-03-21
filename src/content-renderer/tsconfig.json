@@ -1,0 +1,11 @@
+{
+  "include": ["src/**/*", "src/node_modules", "./../utils.ts", "./scripts/*"],
+  "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
+
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["../*"]
+    }
+  }
+}
