@@ -1,5 +1,11 @@
 function getIdFromLink(link: string) {
   return link.slice(link.indexOf("id=") + 3);
 }
-
-export { getIdFromLink };
+function replaceSpecialChars(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/>/g, "&gt;")
+    .replace(/</g, "&lt;")
+    .replace(/"/g, "&quot;");
+}
+export { getIdFromLink, replaceSpecialChars };

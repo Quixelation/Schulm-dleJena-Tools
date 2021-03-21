@@ -1,6 +1,6 @@
 import { fächer, storage } from "@shared/types";
 import { createEmojiImage, createWavesImage } from "./createCourseImage";
-import { getIdFromLink } from "./utils";
+import { getIdFromLink, replaceSpecialChars } from "./utils";
 import { FächerList } from "./../../utils";
 import * as chroma from "chroma-js";
 import {
@@ -97,7 +97,9 @@ function changeAllListItems(params: { options: storage }) {
               courseData ? courseData.emoji : ""
             }</span>
             <span>${
-              courseData ? courseData.short : nameElement.innerText
+              courseData
+                ? courseData.short
+                : replaceSpecialChars(nameElement.innerText)
             }</span>
           </span>
           `;
