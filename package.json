@@ -1,4 +1,7 @@
 {
+  "name": "schulm-dlejena-tools",
+  "displayName": "Schulm**dleJena Tools",
+  "homepage": "https://smjt.vercel.app",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-image": "^2.0.6",
@@ -7,6 +10,7 @@
     "@types/chroma-js": "^2.1.3",
     "@types/chrome": "^0.0.133",
     "@vercel/node": "^1.9.0",
+    "license-compatibility-checker": "^0.3.5",
     "npm-license-generator": "^1.1.0",
     "readline-sync": "^1.4.10",
     "rollup": "^2.3.4",
@@ -49,5 +53,6 @@
     "install-popup": "cd src/popup && npm i",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
     "license": "npm-license-generator --out-path=./page/licenses.html"
-  }
+  },
+  "license": "GPL-3.0"
 }
