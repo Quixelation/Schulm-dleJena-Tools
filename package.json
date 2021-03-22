@@ -30,6 +30,7 @@
     "chroma-js": "^2.1.0",
     "cpx": "^1.5.0",
     "sirv-cli": "^1.0.0",
+    "sortablejs": "^1.13.0",
     "svelte-preprocess": "^4.6.3",
     "svelte-routing": "^1.5.0",
     "svelte-spa-router": "^3.1.0",
