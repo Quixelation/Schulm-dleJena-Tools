@@ -12,35 +12,39 @@ function getKeyToHash() {
   ) as HTMLSpanElement).innerText.trim();
 }
 
+/**
+ * @deprecated
+ */
 async function decryptToken(encryptedToken: string, key: string) {
   const cryptr = new Cryptr(await sha256(key));
   const decryptedString = cryptr.decrypt(encryptedToken);
   return decryptedString;
 }
 
+/**
+ * @deprecated
+ */
 async function encryptToken(token: string, key: string) {
   const cryptr = new Cryptr(await sha256(key));
   const encryptString = cryptr.encrypt(token);
   return encryptString;
 }
 
-encryptToken("Hello", "rob").then((e) => {
-  console.log(e);
-  decryptToken(e, "rob").then(console.log);
-});
-
 async function saveToken(token: string) {
-  chrome.storage.local.set({
-    apiToken: encryptToken(token, await sha256(getKeyToHash())),
-  });
+  // chrome.storage.local.set({
+  //   apiToken: encryptToken(token, await sha256(getKeyToHash())),
+  // });
+  //TODO: Cookies instead of SessionStorage
+  sessionStorage.setItem(sessionStorageKey, token);
 }
 
 function getToken() {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get("apiToken", async (values) => {
-      resolve(decryptToken(values["apiToken"], await sha256(getKeyToHash())));
-    });
-  });
+  // return new Promise((resolve, reject) => {
+  //   chrome.storage.local.get("apiToken", async (values) => {
+  //     resolve(decryptToken(values["apiToken"], await sha256(getKeyToHash())));
+  //   });
+  // });
+  return sessionStorage.getItem(sessionStorageKey);
 }
 
 function getTokenFromApi(
@@ -164,8 +168,25 @@ class MoodleClient {
   }
 }
 
+/**
+ * Funktion, welche auf der Login-Seite ausgeführt wird.
+ */
 function loginPageHandler() {
-  document.getElementById("loginbtn").addEventListener("click", (e) => {
+  //TODO: Add Check, if User Consented to special Login
+  const submitWoSmjt = document.createElement("button");
+  submitWoSmjt.className = "btn btn-primary btn-block mt-3";
+  submitWoSmjt.type = "submit";
+  submitWoSmjt.style.display = "flex";
+  submitWoSmjt.style.alignItems = "center";
+  submitWoSmjt.style.justifyContent = "center";
+  submitWoSmjt.innerHTML = `<span style="text-align: right; margin-right: 15px;">Login mit<br />Schulm**dleJena Tools</span><img style="height: 37.5px;" src="${chrome.runtime.getURL(
+    "icons/icon.svg"
+  )}"/>`;
+  submitWoSmjt.addEventListener("click", async (e) => {
+    e.preventDefault();
+    (e.target as HTMLButtonElement).disabled = true;
+    (e.target as HTMLButtonElement).innerText = "Lädt...";
+
     const username = (document.getElementById("username") as HTMLInputElement)
       .value;
     const password = (document.getElementById("password") as HTMLInputElement)
@@ -173,8 +194,15 @@ function loginPageHandler() {
     console.log("Getting TOken with", { username, password });
     getTokenFromApi(username, password).then((value) => {
       saveToken(value.token);
+      (document.getElementById("login") as HTMLFormElement).submit();
     });
   });
+  document
+    .getElementById("loginbtn")
+    .insertAdjacentElement("beforebegin", submitWoSmjt);
+
+  document.getElementById("loginbtn").classList.remove("btn-primary");
+  document.getElementById("loginbtn").classList.add("btn-secondary");
 }
 
 export { loginPageHandler };

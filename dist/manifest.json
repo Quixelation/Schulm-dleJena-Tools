@@ -58,5 +58,5 @@
       "js": ["generated/adjustVideo.js"]
     }
   ],
-  "web_accessible_resources": ["icons/icon.png"]
+  "web_accessible_resources": ["icons/icon.png", "icons/icon.svg"]
 }
