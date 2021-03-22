@@ -10,6 +10,7 @@ import staticSidebarBlock from "./staticSidebarBlock";
 import login from "./login";
 import syncCourses from "./syncTopics";
 import topicsManager from "./topicsManager";
+import sortableCourses from "./sortableCourses";
 if (!location.pathname.includes("/mod/quiz/")) {
   chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     console.log("Message", { msg, sender });
@@ -54,6 +55,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
     const scripts: { match?: string | boolean; script: Function }[] = [
       { match: null, script: prependNavBarButtons },
       { match: "/my/", script: DashboardCourses },
+      { match: "/my/", script: sortableCourses },
       { match: null, script: navigationBlock },
       { match: null, script: footer },
       { match: null, script: meineKurse },

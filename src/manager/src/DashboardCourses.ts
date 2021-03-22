@@ -19,6 +19,7 @@ export default function (params: { options: storage }) {
 
   try {
     changeAllCards({ options });
+    changeAllListItems({ options });
   } catch (err) {
     err;
   }
@@ -44,7 +45,6 @@ export default function (params: { options: storage }) {
   });
   observer.observe(document.querySelector("#block-region-content"), config);
 }
-
 function changeAllListItems(params: { options: storage }) {
   const { options } = params;
   const Fächer: fächer = options["fächer"];
