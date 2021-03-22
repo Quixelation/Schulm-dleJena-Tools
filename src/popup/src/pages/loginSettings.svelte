@@ -26,6 +26,13 @@
   optionCode="autologin_untrusted"
   on:changed={connect}
 />
+<br />
+<FunctionToggle
+  title="Standartmäßig API benutzen (empfohlen)"
+  desc="Benutzt Standartmäßig die Login-Daten um einen Token für die Moodle Webservices API zu generieren. Dies wird benötigt, um viele weitere Features zu ermöglichen. Mehr Infos unter https://smjt.vercel.app/apitoken"
+  optionCode="apitoken"
+  on:changed={connect}
+/>
 
 <style>
   .pageHeader {

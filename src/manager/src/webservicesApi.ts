@@ -186,16 +186,28 @@ function loginPageHandler() {
     e.preventDefault();
     (e.target as HTMLButtonElement).disabled = true;
     (e.target as HTMLButtonElement).innerText = "Lädt...";
-
-    const username = (document.getElementById("username") as HTMLInputElement)
-      .value;
-    const password = (document.getElementById("password") as HTMLInputElement)
-      .value;
-    console.log("Getting TOken with", { username, password });
-    getTokenFromApi(username, password).then((value) => {
-      saveToken(value.token);
-      (document.getElementById("login") as HTMLFormElement).submit();
-    });
+    //TODO: Only fire this 1 time in 30 days
+    //TODO: Toggle second loginBtn to "Lädt" & disabled
+    if (
+      confirm(
+        "Schulm**dleJena Tools verwendet deine Login-Daten um sich direkt bei den Moodle-Servern anzumelden und um weitere coole Features zu ermöglichen. Dabei speichern wir NIEMALS deine Login-Daten! Dieses Verfahren wird übrigens auch in der offiziellen Moodle-App angewendet."
+      )
+    ) {
+      const username = (document.getElementById("username") as HTMLInputElement)
+        .value;
+      const password = (document.getElementById("password") as HTMLInputElement)
+        .value;
+      getTokenFromApi(username, password).then((value) => {
+        saveToken(value.token);
+        (document.getElementById("login") as HTMLFormElement).submit();
+      });
+    } else {
+      (e.target as HTMLButtonElement).disabled = false;
+      //TODO: Replace with variable to make always same as before.
+      (e.target as HTMLButtonElement).innerHTML = `<span style="text-align: right; margin-right: 15px;">Login mit<br />Schulm**dleJena Tools</span><img style="height: 37.5px;" src="${chrome.runtime.getURL(
+        "icons/icon.svg"
+      )}"/>`;
+    }
   });
   document
     .getElementById("loginbtn")
