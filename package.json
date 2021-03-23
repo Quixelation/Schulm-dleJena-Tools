@@ -48,7 +48,9 @@
     "manager-build": "cd src/manager && npm run build && node -e 'console.log(new Date())'",
     "background-build": "cd src/background && npm run build",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
-    "license": "npm-license-generator --out-path=./page/licenses.html"
+    "license": "npm-license-generator --out-path=./page/licenses.html",
+    "check-licenses": "npx license-compatibility-checker",
+    "show-licenses": "npx license-checker --summary"
   },
   "license": "GPL-3.0"
 }
