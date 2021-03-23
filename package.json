@@ -47,12 +47,6 @@
     "changes-build": "cd src/changesManager && rollup -c",
     "manager-build": "cd src/manager && npm run build && node -e 'console.log(new Date())'",
     "background-build": "cd src/background && npm run build",
-    "install": "npm run install-todo && npm run install-manager && npm run install-popup && npm run install-background && npm run install-changes",
-    "install-todo": "cd src/todoManager && npm i",
-    "install-changes": "cd src/changesManager && npm i",
-    "install-manager": "cd src/manager && npm i",
-    "install-background": "cd src/background && npm i",
-    "install-popup": "cd src/popup && npm i",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
     "license": "npm-license-generator --out-path=./page/licenses.html"
   },
