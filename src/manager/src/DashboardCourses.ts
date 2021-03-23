@@ -12,7 +12,7 @@ import {
   h5,
   icon,
 } from "./htmlBuilder";
-import { isTemplateExpression } from "typescript";
+import { activate as activateSortable } from "./sortableCourses";
 
 export default function (params: { options: storage }) {
   const { options } = params;
@@ -35,7 +35,6 @@ export default function (params: { options: storage }) {
 
   var observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-      console.log("Mutation");
       // const type = document
       //   .querySelector("div[data-region='courses-view']")
       //   .getAttribute("data-display");
@@ -44,7 +43,13 @@ export default function (params: { options: storage }) {
     });
   });
   observer.observe(document.querySelector("#block-region-content"), config);
+
+  //TODO: Add observer to observe the "data-display" Attribute of "div[data-region='courses-view']", that contains the info about Card/List. This should be fired for changesManager or sortableCourses
 }
+
+//TODO: Add changesManager to manager.
+//TODO: make detection if mainCourses are shown public to all function (by making it an event(?))
+
 function changeAllListItems(params: { options: storage }) {
   const { options } = params;
   const Fächer: fächer = options["fächer"];
@@ -56,7 +61,6 @@ function changeAllListItems(params: { options: storage }) {
       } else {
         item.setAttribute("data-moodlehelperenhanced", "true");
       }
-      console.log("Changing Dashboard", item);
 
       (item.parentElement as HTMLLIElement).style.backgroundColor = "#1E293B";
 
@@ -67,7 +71,6 @@ function changeAllListItems(params: { options: storage }) {
         .children[1] as HTMLAnchorElement;
 
       const name = nameElement.innerText.trim();
-      console.log("name", name);
 
       const id = getIdFromLink(nameElement.href);
 
@@ -142,8 +145,18 @@ function changeAllListItems(params: { options: storage }) {
       //#endregion
     });
 }
-
+var fired = false;
 function changeAllCards(params: { options: storage }) {
+  if (!fired) {
+    if (
+      document.querySelectorAll(
+        "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']"
+      ).length > 0
+    ) {
+      activateSortable();
+      fired = true;
+    }
+  }
   const { options } = params;
   const Fächer: fächer = options["fächer"];
   document
@@ -154,7 +167,6 @@ function changeAllCards(params: { options: storage }) {
       } else {
         item.setAttribute("data-moodlehelperenhanced", "true");
       }
-      console.log("Changing Dashboard");
 
       // remove bg-white class: no need for white bg ^_____^
       let bgWhiteTempItem = item.querySelector(".bg-white");
@@ -197,7 +209,6 @@ function changeAllCards(params: { options: storage }) {
             Fächer[id].imageType == "emoji" ||
             Fächer[id].imageType == "emoji_bg"
           ) {
-            console.log("EmojiCourseIMage");
             cardImgDiv.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
               createEmojiImage(
                 Fächer[id].emoji,

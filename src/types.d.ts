@@ -33,6 +33,7 @@ interface syncStorage {
   biggerVideo: boolean;
   allowMultipleDownloads: boolean;
   dashboardEmojiFontSize: number;
+  sortedCourses: string[];
 }
 
 interface localStorage {
