@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "lib": ["esnext", "dom"],
-
+    "rootDir": "src",
     "target": "es5",
     "paths": {
       "@shared/*": ["../*"]
