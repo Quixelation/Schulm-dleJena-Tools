@@ -114,6 +114,13 @@ function span(args: htmlTextBuilderArgs<null>) {
     child: elem,
   });
 }
+
+/**
+ *
+ * @deprecated use Heading with type `h5` instead
+ * @param args
+ * @returns
+ */
 function h5(args: htmlTextBuilderArgs<null>) {
   const elem = document.createElement("h5");
 
@@ -124,6 +131,7 @@ function h5(args: htmlTextBuilderArgs<null>) {
     child: elem,
   });
 }
+
 function bold(args: htmlTextBuilderArgs<null>) {
   const elem = document.createElement("b");
 
@@ -134,6 +142,28 @@ function bold(args: htmlTextBuilderArgs<null>) {
     child: elem,
   });
 }
+
+function Heading(
+  args: htmlTextBuilderArgs<{ type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" }>
+) {
+  if (args.options?.type == null) {
+    if (args.options == null) {
+      //@ts-ignore: Property 'type' is missing in type '{}' but required in type '{ type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"; }'.ts(2741)
+      args.options = {};
+    }
+    args.options.type = "h1";
+  }
+
+  const elem = document.createElement(args.options.type);
+
+  elem.innerHTML = args.text;
+
+  return applyOptions({
+    ...args,
+    child: elem,
+  });
+}
+
 function cardButton(
   args: htmlMultiContainerBuilderArgs<{
     link: string;
@@ -216,4 +246,5 @@ export {
   freeVerticalSpace,
   button,
   h5,
+  Heading,
 };
