@@ -2,8 +2,9 @@ import { Activity, CourseTopics, storage } from "@shared/types";
 import course2json from "./course2json";
 import { card, cardButton, container, Heading, vertFlex } from "./htmlBuilder";
 
-//TODO: Add Cache for other parts of manager
 //TODO: Show number of uncheckable Courses
+
+var cachedChanges: contentCheckerOutput[] = null;
 
 export default function (params: { options: storage }) {
   const { options } = params;
@@ -94,10 +95,19 @@ function checkAll(): Promise<changesNr> {
     const allIds: string[] = [];
     document
       .querySelectorAll(
-        "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']"
+        (() => {
+          switch (getViewType()) {
+            case "card":
+              return "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']";
+            case "list":
+              return "ul.list-group li.list-group-item.course-listitem";
+            default:
+              return null;
+          }
+        })()
       )
       .forEach((item) => {
-        var href = (item.children[0] as HTMLLinkElement).href;
+        var href = item.querySelector("a").href;
         var id = href.slice(href.indexOf("id=") + 3);
         allIds.push(id);
       });
@@ -144,6 +154,9 @@ function checkAll(): Promise<changesNr> {
       promises.push(contentChecker(item));
     });
     Promise.all(promises).then((values: contentCheckerOutput[]) => {
+      cachedChanges = values;
+      generateDashboardChangeDescriptors(values);
+      console.log("Called Promise.all().then()");
       const result: changesNr = {
         changes: 0,
         added: 0,
@@ -156,10 +169,6 @@ function checkAll(): Promise<changesNr> {
         result.changes += item.changes;
         result.added += item.added;
         result.removed += item.removed;
-        const dashboardCard = document.querySelector(
-          `div[data-course-id='${item.id}'`
-        );
-        dashboardCard.prepend(generateDashboardCardHeader(item));
       });
       resolveMain(result);
     });
@@ -280,8 +289,67 @@ function generateDashboardCardHeader(content: contentCheckerOutput) {
   elem.style.padding = "5px";
   elem.style.color = "white";
   elem.style.fontWeight = "bold";
-  //prettier-ignore
-  elem.innerHTML = `${
+  elem.innerHTML = generateTitleText(content);
+  return elem;
+}
+
+function generateDashboardListTag(content: contentCheckerOutput) {
+  console.log("Generating Tag");
+  const tag = document.createElement("div");
+  if (content.status !== "success") {
+    tag.style.backgroundColor = "#FF851B";
+  } else if (content.changes > 0) {
+    tag.style.backgroundColor = "#FF4136";
+  } else {
+    tag.style.backgroundColor = "#2ECC40";
+  }
+
+  tag.style.fontSize = "13px";
+  tag.style.marginLeft = "5px";
+  tag.style.padding = "5px 10px";
+  tag.style.color = "white";
+  tag.style.borderRadius = "999999999px";
+  tag.innerHTML = generateTitleText(content);
+  return tag;
+}
+
+function getViewType() {
+  return document
+    .querySelector("div[data-region='courses-view']")
+    .getAttribute("data-display") as "card" | "list" | "summary";
+}
+
+/**
+ * Schaut, ob ListView oder CardView und ruft basierend darauf entweder `generateDashboardListTag` oder `generateDashboardCardHeader`
+ * @param values Array der Values
+ */
+function generateDashboardChangeDescriptors(values: contentCheckerOutput[]) {
+  console.log("Generating Dashboard Descriptors");
+  const type = getViewType();
+  console.log("the type is", type);
+  values.forEach((item) => {
+    if (type === "card") {
+      const dashboardCard = document.querySelector(
+        `div[data-course-id='${item.id}']`
+      );
+      dashboardCard.prepend(generateDashboardCardHeader(item));
+    } else if (type === "list") {
+      document
+        .querySelector(`li[data-course-id='${item.id}']`)
+        .children[0].children[0].children[0].children[0].children[0].append(
+          generateDashboardListTag(item)
+        );
+    }
+  });
+}
+
+/**
+ * Generiert den Text, welcher auf den Karten / Listen-elementen angezeigt wird
+ * @param content
+ * @returns Der Generierte Text
+ */
+function generateTitleText(content: contentCheckerOutput) {
+  return `${
     content.allNew
       ? "<abbr title='Das Tool hatte vorher noch keine Daten von diesem Kurs. Öffne diesen Kurs, damit das Tool diesen analysieren kann.'>Alles Neu</abbr>"
       : `${
@@ -294,7 +362,25 @@ function generateDashboardCardHeader(content: contentCheckerOutput) {
             : "Fehler" + (content.errorDesc ? `: ${content.errorDesc}` : "")
         }`
   }`;
-  return elem;
 }
 
-export { checkAll, changesNr };
+//TODO: Docs
+/**
+ *  Generate Descriptors again from cachedChanges. Can be used after ViewType changes.
+ */
+function renewChangeDescriptors() {
+  console.log("TEST: renews");
+  //TODO: Check if ViewType has actually changed; maybe with var that saved last ViewType
+  if (cachedChanges !== null) {
+    console.log("RENEWING");
+    generateDashboardChangeDescriptors(cachedChanges);
+  }
+}
+
+export {
+  checkAll,
+  changesNr,
+  cachedChanges,
+  generateDashboardCardHeader,
+  renewChangeDescriptors,
+};
