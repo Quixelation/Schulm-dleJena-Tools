@@ -13,7 +13,8 @@ import {
   icon,
 } from "./htmlBuilder";
 import { activate as activateSortable } from "./sortableCourses";
-
+import { renewChangeDescriptors } from "./changesManager";
+var dashboardEvents;
 export default function (params: { options: storage }) {
   const { options } = params;
 
@@ -32,14 +33,22 @@ export default function (params: { options: storage }) {
     characterData: true,
     subtree: true,
   };
-
+  var lastViewType = document
+    .querySelector("div[data-region='courses-view']")
+    .getAttribute("data-display");
   var observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-      // const type = document
-      //   .querySelector("div[data-region='courses-view']")
-      //   .getAttribute("data-display");
       changeAllCards({ options });
       changeAllListItems({ options });
+
+      const type = document
+        .querySelector("div[data-region='courses-view']")
+        .getAttribute("data-display");
+      if (type !== lastViewType && ["card", "list"].includes(type)) {
+        // Für den ChangeManager die Kurs-Header aktualisieren, weil die verloren gehen, wenn der "ViewType" gewechselt wird.
+        renewChangeDescriptors();
+      }
+      lastViewType = type;
     });
   });
   observer.observe(document.querySelector("#block-region-content"), config);
@@ -47,7 +56,6 @@ export default function (params: { options: storage }) {
   //TODO: Add observer to observe the "data-display" Attribute of "div[data-region='courses-view']", that contains the info about Card/List. This should be fired for changesManager or sortableCourses
 }
 
-//TODO: Add changesManager to manager.
 //TODO: make detection if mainCourses are shown public to all function (by making it an event(?))
 
 function changeAllListItems(params: { options: storage }) {
@@ -95,7 +103,7 @@ function changeAllListItems(params: { options: storage }) {
       //ScreenReader Text entfernen, damit später innerText verwendet werden kann und "Kursname" nicht erscheint
       nameElement.querySelectorAll(".sr-only").forEach((e) => e.remove());
       nameElement.innerHTML = `
-          <span style="display: grid; grid-template-columns: 35px auto; align-items: center">
+          <span style="display: grid; grid-template-columns: 35px auto auto; align-items: center">
             <span style="justify-self: left">${
               courseData ? courseData.emoji : ""
             }</span>
