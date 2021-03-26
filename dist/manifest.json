@@ -36,19 +36,8 @@
         "https://moodle.jsp.jena.de/*",
         "https://moodle.jsp.jena.de/*"
       ],
-      "js": [
-        "generated/manager.js",
-        "generated/todo/bundle.js",
-        "generated/changes/bundle.js"
-      ],
+      "js": ["generated/manager.js", "generated/todo/bundle.js"],
       "css": ["css/global.css", "generated/todo/bundle.css"]
-    },
-    {
-      "matches": [
-        "https://moodle.jsp.jena.de/my*",
-        "https://moodle.jsp.jena.de/my*"
-      ],
-      "js": ["generated/changes/bundle.js"]
     },
     {
       "matches": [
