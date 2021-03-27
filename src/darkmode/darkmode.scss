@@ -1,0 +1,23 @@
+//TODO: make `body.darkmode`
+body {
+  .block {
+    background-color: rgb(27, 30, 31);
+  }
+  &#page-my-index {
+    background: rgb(24, 26, 27);
+  }
+  nav.navbar {
+    background-color: rgb(24, 26, 27);
+    .navbar-brand {
+      .site-name {
+        color: white;
+        > span {
+          color: #ff3e00 !important;
+        }
+      }
+    }
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+  }
+}
