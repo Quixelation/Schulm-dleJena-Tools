@@ -41,7 +41,7 @@
         "generated/todo/bundle.js",
         "generated/changes/bundle.js"
       ],
-      "css": ["css/global.css", "generated/todo/bundle.css"]
+      "css": ["css/global.css", "generated/todo/bundle.css", "css/darkmode.css"]
     },
     {
       "matches": [
