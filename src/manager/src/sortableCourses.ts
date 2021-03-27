@@ -2,6 +2,8 @@ import { storage } from "@shared/types";
 
 import * as Sortable from "sortablejs";
 
+import tippy from "tippy.js";
+
 //import { AutoScroll } from "sortablejs";
 
 import { button, cardButton, span } from "./htmlBuilder";
@@ -20,6 +22,7 @@ function initializeSortable() {
   //     onclick: activateSorting,
   //   })
   // );
+  //TODO: Add Sorting for List-View
   var el = document.querySelector(
     "div.card-deck.dashboard-card-deck"
   ) as HTMLDivElement;
@@ -50,6 +53,7 @@ function saveAndDeactivate() {
 
   deactivateSortable();
 }
+//TODO: Deactive changing ViewType while sorting w/ title="Not Supported while sorting"
 
 function activate() {
   //Activate and Deactivate for sorting
@@ -59,6 +63,23 @@ function activate() {
     sortable.sort(value.sortedCourses);
     deactivateSortable();
     var status = false;
+
+    //TODO: animation not working; probably missing css
+    tippy("#sortingdropdown", {
+      content:
+        "Es gibt bekannte Inkompatibilitäten mit der Drag&Drop-Sortierung!",
+      animation: "shift-away-subtle",
+      hideOnClick: false,
+    });
+
+    var displaydropdownTippy = tippy("#displaydropdown", {
+      content: "Beende zuerst die Sortierung",
+      animation: "shift-away-subtle",
+      hideOnClick: false,
+    })?.[0];
+    console.log("displaydropdownTippy", displaydropdownTippy);
+
+    displaydropdownTippy.disable?.();
 
     const sortButton = document.createElement("button");
     sortButton.className = "btn btn-outline-primary mb-1 mr-1";
@@ -73,6 +94,9 @@ function activate() {
         document
           .getElementById("SortCoursesButtonIconId")
           .classList.remove("fa-hand-paper-o");
+
+        displaydropdownTippy.enable?.();
+        document.getElementById("displaydropdown").classList.add("disabled");
         status = true;
       } else if (status === true) {
         // Falls sortieren AN ist.
@@ -87,12 +111,15 @@ function activate() {
           .getElementById("SortCoursesButtonIconId")
           .classList.add("fa-hand-paper-o");
 
+        document.getElementById("displaydropdown").classList.remove("disabled");
+        displaydropdownTippy.disable?.();
         status = false;
       } else {
         // Some Random Numbers :)
         alert("Ran into Error: #78542846879674465");
       }
     });
+    sortButton.id = "sortableCoursesSortButton";
 
     const buttonIcon = document.createElement("i");
     buttonIcon.className = "icon fa fa-hand-paper-o fa-fw";
@@ -106,6 +133,10 @@ function activate() {
     document
       .querySelector("div[data-region='filter']")
       .children[0].insertAdjacentElement("afterend", sortButton);
+    tippy("#sortableCoursesSortButton", {
+      content: "Kurse durch Drag&Drop sortieren",
+      animation: "shift-away-subtle",
+    });
   });
 }
 
