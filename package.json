@@ -52,7 +52,8 @@
     "install-background": "cd src/background && npm i",
     "install-popup": "cd src/popup && npm i",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
-    "license": "npm-license-generator --out-path=./page/licenses.html"
+    "license": "npm-license-generator --out-path=./page/licenses.html",
+    "darkmode-build": "sass src/darkmode/darkmode.scss dist/css/darkmode.css"
   },
   "license": "GPL-3.0"
 }
