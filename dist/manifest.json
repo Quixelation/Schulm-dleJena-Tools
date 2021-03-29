@@ -58,5 +58,14 @@
       "js": ["generated/adjustVideo.js"]
     }
   ],
-  "web_accessible_resources": ["icons/icon.png"]
+  "web_accessible_resources": ["icons/icon.png"],
+  "commands": {
+    "panik-key": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+0"
+      },
+      "description": "Öffnet Moodle",
+      "global": true
+    }
+  }
 }

@@ -8,6 +8,11 @@ chrome.runtime.onInstalled.addListener(function (object) {
       }
     );
 });
+chrome.commands.onCommand.addListener(function (command) {
+  if (command === "panik-key") {
+    chrome.tabs.create({ url: "https://moodle.jsp.jena.de/my", active: true });
+  }
+});
 chrome.storage.sync.get(null, function (options) {
   const defaultOptions: storage = {
     usecoloredprogress: true,
