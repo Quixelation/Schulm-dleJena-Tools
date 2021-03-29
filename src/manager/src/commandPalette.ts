@@ -36,6 +36,23 @@ export default function (params: { options: storage }) {
           document.body.classList.toggle("schulm-dlejena-tools-forgetica");
         },
       },
+      {
+        name: "Feedback",
+        handler: () =>
+          (location.href = `mailto:robert.st.stuendl@gmail.com?subject=${encodeURIComponent(
+            "fb-smjt: <BETREFF>"
+          )}&body=${encodeURIComponent(
+            `(Es sind keine Formalitäten notwendig)\n\n\n\nWichtige Infos: (Bitte nicht entfernen)\nVersion: ${
+              chrome.runtime.getManifest().version
+            }\nVersionName: ${
+              chrome.runtime.getManifest().version_name
+            }\nuser-agent: ${navigator.userAgent}\n\n`
+          )}`),
+      },
+      {
+        name: "Wiki öffnen",
+        handler: () => window.open("http://smjt.vercel.app/wiki", "_newtab"),
+      },
     ],
   });
   commandPal.start();
