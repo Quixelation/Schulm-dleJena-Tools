@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
-  "version": "2021.3.21",
+  "version": "2021.3.29",
+  "version_name": "2021.3.21 >> 2021.3.29 (command-pal)",
   "name": "Schulm**dleJena Tools",
   "description": "Inoffizielles Tools für das Moodle™ System der Jenaer Schulen.",
   "browser_specific_settings": {
@@ -41,7 +42,11 @@
         "generated/todo/bundle.js",
         "generated/changes/bundle.js"
       ],
-      "css": ["css/global.css", "generated/todo/bundle.css"]
+      "css": [
+        "css/global.css",
+        "generated/todo/bundle.css",
+        "css/command-pal/theme-light.css"
+      ]
     },
     {
       "matches": [
