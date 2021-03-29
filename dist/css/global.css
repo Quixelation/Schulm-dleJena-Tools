@@ -95,3 +95,8 @@ body.no-empty-topics .emptyTopic {
 .topicsButtonsContainer {
   grid-gap: 7.5px;
 }
+
+body.schulm-dlejena-tools-forgetica,
+body.schulm-dlejena-tools-forgetica * {
+  font-family: "Sans Forgetica";
+}
