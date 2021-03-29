@@ -15,6 +15,7 @@
     "src/manager",
     "src/background",
     "src/changesManager",
+    "src/settings",
     "archive"
   ],
   "include": ["src/**/*"]
