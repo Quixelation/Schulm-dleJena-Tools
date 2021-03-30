@@ -32,6 +32,11 @@
   "author": "Robert Steffen Stündl",
   "content_scripts": [
     {
+      "matches": ["https://moodle.jsp.jena.de/", "https://moodle.jsp.jena.de/"],
+      "js": ["generated/settings/build/bundle.js"],
+      "css": ["generated/settings/build/bundle.css"]
+    },
+    {
       "matches": [
         "https://moodle.jsp.jena.de/*",
         "https://moodle.jsp.jena.de/*"
@@ -58,5 +63,8 @@
       "js": ["generated/adjustVideo.js"]
     }
   ],
-  "web_accessible_resources": ["icons/icon.png"]
+  "web_accessible_resources": [
+    "icons/icon.png",
+    "generated/settings/index.html"
+  ]
 }
