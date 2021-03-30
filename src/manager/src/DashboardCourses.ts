@@ -12,7 +12,7 @@ import {
   h5,
   icon,
 } from "./htmlBuilder";
-import { activate as activateSortable } from "./sortableCourses";
+import { activate as activateSortable, sortCourses } from "./sortableCourses";
 import { renewChangeDescriptors } from "./changesManager";
 var dashboardEvents;
 export default function (params: { options: storage }) {
@@ -44,11 +44,36 @@ export default function (params: { options: storage }) {
       const type = document
         .querySelector("div[data-region='courses-view']")
         .getAttribute("data-display");
-      if (type !== lastViewType && ["card", "list"].includes(type)) {
+      var newTypeSeen: boolean = false;
+      if (
+        type === "card" &&
+        document.querySelectorAll(
+          "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']"
+        ).length > 0
+      ) {
+        newTypeSeen = true;
+      } else if (
+        type === "list" &&
+        document.querySelectorAll(
+          "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem"
+        ).length > 0
+      ) {
+        newTypeSeen = true;
+      }
+      console.log({ type, newTypeSeen });
+      if (
+        type !== lastViewType &&
+        ["card", "list"].includes(type) &&
+        newTypeSeen
+      ) {
+        console.log("Call Change Listener");
+        lastViewType = type;
         // Für den ChangeManager die Kurs-Header aktualisieren, weil die verloren gehen, wenn der "ViewType" gewechselt wird.
         renewChangeDescriptors();
+
+        //Die Kurse nach dem Ansichts-Wechsel für die neue Ansicht sortieren
+        sortCourses();
       }
-      lastViewType = type;
     });
   });
   observer.observe(document.querySelector("#block-region-content"), config);
@@ -57,10 +82,20 @@ export default function (params: { options: storage }) {
 }
 
 //TODO: make detection if mainCourses are shown public to all function (by making it an event(?))
-
+var fired = false;
 function changeAllListItems(params: { options: storage }) {
   const { options } = params;
   const Fächer: fächer = options["fächer"];
+  if (!fired) {
+    if (
+      document.querySelectorAll(
+        "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem"
+      ).length > 0
+    ) {
+      activateSortable();
+      fired = true;
+    }
+  }
   document
     .querySelectorAll("div[id^='courses-view'] ul.list-group li div.row")
     .forEach((item) => {
@@ -153,7 +188,7 @@ function changeAllListItems(params: { options: storage }) {
       //#endregion
     });
 }
-var fired = false;
+
 function changeAllCards(params: { options: storage }) {
   if (!fired) {
     if (
