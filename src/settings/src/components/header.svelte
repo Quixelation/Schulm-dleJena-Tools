@@ -18,6 +18,8 @@
   .header {
     /* height: 3rem; */
     background-color: #ff3e00;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -32,11 +34,12 @@
     border-bottom-right-radius: 7.5px;
   }
   h1 {
-    color: white;
+    color: #fff;
     margin: 0;
+    font-weight: 500;
   }
   h4 {
-    color: #ffffffd9;
+    color: #fff;
     padding: 20px;
     margin: 0px;
     padding: 0px;

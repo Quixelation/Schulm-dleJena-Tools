@@ -1,7 +1,7 @@
 import App from "./App.svelte";
 try {
-  document.querySelector("div.sitetopic").remove();
-
+  //@ts-ignore
+  document.querySelector("#region-main").style.display = "none";
   //*New Section
   const newSection = document.createElement("section");
   newSection.className = "block card mb-3";

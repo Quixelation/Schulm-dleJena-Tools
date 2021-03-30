@@ -7,10 +7,12 @@
     | "large"
     | "sticky"
     | "hover";
+  export let noPadding: boolean = false;
 </script>
 
 <div
   class="card"
+  class:noPadding
   class:smallestShadow={shadow === "smallest"}
   class:smallShadow={shadow === "small"}
   class:mediumShadow={shadow === "medium"}
@@ -29,6 +31,10 @@
     padding: 1rem;
     background-color: #ffffff;
     margin-bottom: 15px;
+    transition: box-shadow 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
+  }
+  .card.noPadding {
+    padding: 0;
   }
   .card.highlightCard {
     border: 2.5px solid #ff3e0080;

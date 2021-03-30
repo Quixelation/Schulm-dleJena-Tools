@@ -3,15 +3,16 @@
   export let description: string;
   import Card from "./../components/card.svelte";
   import ToggleInput from "./../components/toggleInput.svelte";
+  let active: boolean = false;
 </script>
 
-<Card>
+<Card shadow={active ? "smallest" : null}>
   <div style="display: flex; justify-content: space-between">
     <h2 style="margin: 0px; margin-bottom: 5px; font-weight: 500">
       {title}
     </h2>
     <div>
-      <ToggleInput />
+      <ToggleInput bind:value={active} />
     </div>
   </div>
   <div style="color: #737373">{description}</div>

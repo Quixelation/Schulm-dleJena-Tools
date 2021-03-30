@@ -1,4 +1,8 @@
-<input type="checkbox" class="toggle" />
+<script lang="ts">
+  export let value: boolean = false;
+</script>
+
+<input bind:checked={value} type="checkbox" class="toggle" />
 
 <style>
   input[type="checkbox"] {
@@ -23,7 +27,7 @@
     margin: 0;
 
     background: hsl(0, 0%, 75%);
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
   }
   .toggle:after {
     content: "";
