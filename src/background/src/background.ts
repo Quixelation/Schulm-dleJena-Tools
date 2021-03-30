@@ -10,7 +10,16 @@ chrome.runtime.onInstalled.addListener(function (object) {
 });
 chrome.commands.onCommand.addListener(function (command) {
   if (command === "panik-key") {
-    chrome.tabs.create({ url: "https://moodle.jsp.jena.de/my", active: true });
+    chrome.tabs.query({ url: "*://moodle.jsp.jena.de/*" }, function (value) {
+      if (value.length > 0) {
+        chrome.tabs.update(value[0].id, { highlighted: true });
+      } else {
+        chrome.tabs.create({
+          url: "https://moodle.jsp.jena.de/my",
+          active: true,
+        });
+      }
+    });
   }
 });
 chrome.storage.sync.get(null, function (options) {
