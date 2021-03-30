@@ -25,8 +25,6 @@
       forumPostClone.querySelector("header").classList.remove("row");
       console.log(sitetopicCard);
       forumPost2.append(forumPostClone);
-
-      document.querySelector("#region-main").style.display = "none";
     } catch (e) {
       console.warn(e);
     }
