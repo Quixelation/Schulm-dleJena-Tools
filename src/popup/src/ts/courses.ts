@@ -1,4 +1,4 @@
-import { fächer, fach, fachImageTypes } from "./../../../types";
+import { fächer, fach } from "./../../../types";
 const fächer = {
   Kunst: "🎨",
   Astronomie: "🌌",
@@ -41,7 +41,7 @@ function findCourses(givenInnerHTML: string): { name: string; id: number }[] {
         console.log(
           item.children[1].children[0].children[0].children[1].children[2]
         );
-        var href = (item.children[0] as HTMLLinkElement).href;
+        const href = (item.children[0] as HTMLLinkElement).href;
         const id = parseInt(href.slice(href.indexOf("id=") + 3));
 
         if (!foundCourses.find((item) => item.id == id)) {
@@ -52,7 +52,7 @@ function findCourses(givenInnerHTML: string): { name: string; id: number }[] {
   return foundCourses;
 }
 
-function getAutoCourseName(longName: string) {
+function getAutoCourseName(longName: string): string | null {
   const filtered = Object.keys(fächer).filter((item) =>
     longName.includes(item)
   );
@@ -64,12 +64,12 @@ function getAutoCourseName(longName: string) {
   }
 }
 
-function getAutoAssets(courseName: string) {
+function getAutoAssets(courseName: string): string {
   return fächer[courseName];
 }
 
 function getRegisteredCourses(): Promise<fächer> {
-  return new Promise<fächer>((resolve, reject) => {
+  return new Promise<fächer>((resolve) => {
     chrome.storage.sync.get("fächer", (val) => {
       console.log(val);
       resolve(val.fächer);
@@ -84,37 +84,49 @@ function addCourse(params: fach, id: string): Promise<null> {
     );
   }
   return new Promise<null>((resolve, reject) => {
-    getRegisteredCourses().then((val) => {
-      const data: fach = { ...params };
-      val[String(id)] = data;
-      chrome.storage.sync.set({ fächer: val }, () => {
+    getRegisteredCourses()
+      .then((val) => {
+        const data: fach = { ...params };
+        val[String(id)] = data;
+        chrome.storage.sync.set({ fächer: val }, () => {
+          resolve(null);
+        });
+      })
+      .catch(reject);
+  });
+}
+
+function deleteCourse(id: string, callback?: () => null): Promise<null> {
+  return new Promise((resolve) => {
+    chrome.storage.sync.get("fächer", ({ fächer: fächer }) => {
+      console.log(fächer);
+      delete fächer[id];
+      chrome.storage.sync.set({ fächer }, () => {
+        callback();
         resolve(null);
       });
     });
   });
 }
 
-function deleteCourse(id: string, callback?: Function) {
-  chrome.storage.sync.get("fächer", ({ fächer: fächer }) => {
-    console.log(fächer);
-    delete fächer[id];
-    chrome.storage.sync.set({ fächer }, () => {
-      callback();
-    });
-  });
-}
-
-function editCourse(params: fach, id: string, callback?: Function) {
-  if (id == undefined || id == null) {
-    alert(
-      "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren."
-    );
-  }
-  chrome.storage.sync.get("fächer", ({ fächer: fächer }) => {
-    console.log(fächer);
-    fächer[id] = params;
-    chrome.storage.sync.set({ fächer }, () => {
-      callback();
+function editCourse(
+  params: fach,
+  id: string,
+  callback?: () => null
+): Promise<null> {
+  return new Promise((resolve) => {
+    if (id == undefined || id == null) {
+      alert(
+        "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren."
+      );
+    }
+    chrome.storage.sync.get("fächer", ({ fächer: fächer }) => {
+      console.log(fächer);
+      fächer[id] = params;
+      chrome.storage.sync.set({ fächer }, () => {
+        callback();
+        resolve(null);
+      });
     });
   });
 }

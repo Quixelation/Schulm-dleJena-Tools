@@ -6,10 +6,10 @@ function padding(
   if (typeof text === "number") {
     text = String(text);
   }
-  var currentLength = text.length;
-  var needToAdapt = desiredLength - currentLength;
+  const currentLength = text.length;
+  const needToAdapt = desiredLength - currentLength;
   if (needToAdapt > 0) {
-    var padding = "";
+    let padding = "";
     for (var x = 0; x < needToAdapt; x++) {
       padding += paddingChar;
     }

@@ -1,15 +1,8 @@
-import {
-  fächer,
-  storage,
-  CourseTopics,
-  Activity,
-  localStorage,
-} from "@shared/types";
+import { storage, localStorage } from "@shared/types";
 import course2json from "./course2json";
 import { getIdFromLink } from "./utils";
 
-export default function (params: { options: storage }) {
-  const { options } = params;
+export default function (): void {
   try {
     const list = course2json(document.body.innerHTML);
     console.log("LISTE", list);

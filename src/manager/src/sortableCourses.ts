@@ -6,9 +6,7 @@ import tippy from "tippy.js";
 
 //import { AutoScroll } from "sortablejs";
 
-import { button, cardButton, span } from "./htmlBuilder";
-
-var sortable: Sortable;
+let sortable: Sortable;
 
 /**
  * Erstellt eine neue Sortable Instanz
@@ -22,29 +20,29 @@ function initializeSortable() {
   //     onclick: activateSorting,
   //   })
   // );
-  //TODO: Add Sorting for List-View
-  var el = document.querySelector(
-    "div[data-region='paged-content-page'] > ul.list-group"
-  ) as HTMLDivElement;
-  if (el === null) {
-    var el = document.querySelector(
-      "div.card-deck.dashboard-card-deck"
-    ) as HTMLDivElement;
-  }
 
   //Sortable.mount(new AutoScroll());
 
-  sortable = Sortable.create(el, {
-    animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
-    easing: "cubic-bezier(1, 0, 0, 1)", // Easing for animation. Defaults to null. See https://easings.net/ for examples.
-    swapThreshold: 1,
+  sortable = Sortable.create(
+    document.querySelector(
+      "div[data-region='paged-content-page'] > ul.list-group"
+    )
+      ? document.querySelector(
+          "div[data-region='paged-content-page'] > ul.list-group"
+        )
+      : document.querySelector("div.card-deck.dashboard-card-deck"),
+    {
+      animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
+      easing: "cubic-bezier(1, 0, 0, 1)", // Easing for animation. Defaults to null. See https://easings.net/ for examples.
+      swapThreshold: 1,
 
-    //Autoscroll see https://github.com/SortableJS/Sortable/tree/master/plugins/AutoScroll
-    scroll: true, // Enable the plugin. Can be HTMLElement.
-    scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
-    scrollSpeed: 10, // px, speed of the scrolling
-    bubbleScroll: true, // apply autoscroll to all parent elements, allowing for easier movement
-  });
+      //Autoscroll see https://github.com/SortableJS/Sortable/tree/master/plugins/AutoScroll
+      scroll: true, // Enable the plugin. Can be HTMLElement.
+      scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
+      scrollSpeed: 10, // px, speed of the scrolling
+      bubbleScroll: true, // apply autoscroll to all parent elements, allowing for easier movement
+    }
+  );
 }
 
 function deactivateSortable() {
@@ -74,7 +72,7 @@ const disabledDisplayTippyContent =
  * @returns Key, unter welchem die Sortierungsdaten für die zurzeitige Ansicht gespeichert sind.
  */
 function getSaveKey() {
-  var key: string;
+  let key: string;
   if (
     document.querySelector(
       "div[data-region='paged-content-page'] > ul.list-group"
@@ -88,7 +86,7 @@ function getSaveKey() {
   return key;
 }
 
-async function sortCourses() {
+async function sortCourses(): Promise<void> {
   console.log("Sorting Courses");
   //TODO: Possibly Add Check for undefined
   chrome.storage.sync.get([getSaveKey()], (value: storage) => {
@@ -99,10 +97,9 @@ async function sortCourses() {
     return;
   });
 }
-
-async function activate() {
+let status = false;
+async function activate(): Promise<void> {
   await sortCourses();
-  var status = false;
 
   //TODO: animation not working; probably missing css
   tippy("#sortingdropdown", {
@@ -112,7 +109,7 @@ async function activate() {
     hideOnClick: false,
   });
 
-  var displaydropdownTippy = tippy("#displaydropdown", {
+  const displaydropdownTippy = tippy("#displaydropdown", {
     content: defaultDisplayTippyContent,
     animation: "shift-away-subtle",
     hideOnClick: false,

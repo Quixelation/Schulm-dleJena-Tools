@@ -1,5 +1,4 @@
-import { createEmojiImage, createWavesImage } from "./createCourseImage";
-import { fächer, syncStorage, localStorage, storage } from "./../../types";
+import { syncStorage, localStorage, storage } from "./../../types";
 import prependNavBarButtons from "./navbar";
 import DashboardCourses from "./DashboardCourses";
 import navigationBlock from "./navigationBlock";
@@ -16,7 +15,7 @@ import commandPalette from "./commandPalette";
 import changesManager from "./changesManager";
 
 if (!location.pathname.includes("/mod/quiz/")) {
-  var newStyle = document.createElement("style");
+  const newStyle = document.createElement("style");
   newStyle.appendChild(
     document.createTextNode(
       "\
@@ -63,17 +62,20 @@ if (!location.pathname.includes("/mod/quiz/")) {
   //   target.dispatchEvent(evt);
   //   console.log("THERE EVENT", { name, target, options });
   // }
-  const syncStorage: Promise<syncStorage> = new Promise((resolve, reject) => {
+  const syncStorage: Promise<syncStorage> = new Promise((resolve) => {
     chrome.storage.sync.get(null, resolve);
   });
-  const localStorage: Promise<localStorage> = new Promise((resolve, reject) => {
+  const localStorage: Promise<localStorage> = new Promise((resolve) => {
     chrome.storage.local.get(null, resolve);
   });
 
   Promise.all([syncStorage, localStorage]).then((values) => {
     const options: storage = { ...values[0], ...values[1] };
 
-    const scripts: { match?: string | boolean; script: Function }[] = [
+    const scripts: {
+      match?: string | boolean;
+      script: (params: { options: storage }) => void;
+    }[] = [
       { match: null, script: prependNavBarButtons },
       { match: "/my/", script: DashboardCourses },
       { match: "/my/", script: changesManager },
