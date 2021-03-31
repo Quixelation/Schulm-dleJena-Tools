@@ -9,7 +9,11 @@
     "@rollup/plugin-typescript": "^8.1.0",
     "@types/chroma-js": "^2.1.3",
     "@types/chrome": "^0.0.133",
+    "@types/sortablejs": "^1.10.6",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
     "@vercel/node": "^1.9.0",
+    "eslint": "^7.22.0",
     "license-compatibility-checker": "^0.3.5",
     "npm-license-generator": "^1.1.0",
     "readline-sync": "^1.4.10",
@@ -31,9 +35,11 @@
     "command-pal": "^0.2.7",
     "cpx": "^1.5.0",
     "sirv-cli": "^1.0.0",
+    "sortablejs": "^1.13.0",
     "svelte-preprocess": "^4.6.3",
     "svelte-routing": "^1.5.0",
     "svelte-spa-router": "^3.1.0",
+    "tippy.js": "^6.3.1",
     "tsify": "^5.0.2",
     "typescript": "^4.2.3"
   },
@@ -46,14 +52,11 @@
     "changes-build": "cd src/changesManager && rollup -c",
     "manager-build": "cd src/manager && npm run build && node -e 'console.log(new Date())'",
     "background-build": "cd src/background && npm run build",
-    "install": "npm run install-todo && npm run install-manager && npm run install-popup && npm run install-background && npm run install-changes",
-    "install-todo": "cd src/todoManager && npm i",
-    "install-changes": "cd src/changesManager && npm i",
-    "install-manager": "cd src/manager && npm i",
-    "install-background": "cd src/background && npm i",
-    "install-popup": "cd src/popup && npm i",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
-    "license": "npm-license-generator --out-path=./page/licenses.html"
+    "license": "npm-license-generator --out-path=./page/licenses.html",
+    "check-licenses": "npx license-compatibility-checker",
+    "show-licenses": "npx license-checker --summary",
+    "lint": "eslint . --ext .ts"
   },
   "license": "GPL-3.0"
 }

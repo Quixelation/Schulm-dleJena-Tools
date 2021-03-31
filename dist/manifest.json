@@ -2,6 +2,7 @@
   "manifest_version": 2,
   "version": "2021.3.29",
   "version_name": "2021.3.21 >> 2021.3.31 (development)",
+
   "name": "Schulm**dleJena Tools",
   "description": "Inoffizielles Tools für das Moodle™ System der Jenaer Schulen.",
   "browser_specific_settings": {
@@ -37,11 +38,7 @@
         "https://moodle.jsp.jena.de/*",
         "https://moodle.jsp.jena.de/*"
       ],
-      "js": [
-        "generated/manager.js",
-        "generated/todo/bundle.js",
-        "generated/changes/bundle.js"
-      ],
+      "js": ["generated/manager.js", "generated/todo/bundle.js"],
       "css": [
         "css/global.css",
         "generated/todo/bundle.css",
@@ -53,7 +50,7 @@
         "https://moodle.jsp.jena.de/my*",
         "https://moodle.jsp.jena.de/my*"
       ],
-      "js": ["generated/changes/bundle.js"]
+      "css": ["css/tippy.css"]
     },
     {
       "matches": [

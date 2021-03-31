@@ -5,7 +5,7 @@ import {
   Activity,
   localStorage,
 } from "@shared/types";
-import course2json from "./../../shared/course2json";
+import course2json from "./course2json";
 import { getIdFromLink } from "./utils";
 
 export default function (params: { options: storage }) {

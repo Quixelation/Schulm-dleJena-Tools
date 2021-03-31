@@ -10,7 +10,10 @@ import staticSidebarBlock from "./staticSidebarBlock";
 import login from "./login";
 import syncCourses from "./syncTopics";
 import topicsManager from "./topicsManager";
+
 import commandPalette from "./commandPalette";
+
+import changesManager from "./changesManager";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   var newStyle = document.createElement("style");
@@ -73,6 +76,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
     const scripts: { match?: string | boolean; script: Function }[] = [
       { match: null, script: prependNavBarButtons },
       { match: "/my/", script: DashboardCourses },
+      { match: "/my/", script: changesManager },
       { match: null, script: navigationBlock },
       { match: null, script: footer },
       { match: null, script: commandPalette },

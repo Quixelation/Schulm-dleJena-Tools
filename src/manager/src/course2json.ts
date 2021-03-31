@@ -1,4 +1,4 @@
-import { Activity, CourseTopics } from "./../types";
+import { Activity, CourseTopics } from "../../types";
 export default function (
   courseHtmlData: string
 ):

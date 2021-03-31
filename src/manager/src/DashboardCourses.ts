@@ -12,13 +12,15 @@ import {
   h5,
   icon,
 } from "./htmlBuilder";
-import { isTemplateExpression } from "typescript";
-
+import { activate as activateSortable, sortCourses } from "./sortableCourses";
+import { renewChangeDescriptors } from "./changesManager";
+var dashboardEvents;
 export default function (params: { options: storage }) {
   const { options } = params;
 
   try {
     changeAllCards({ options });
+    changeAllListItems({ options });
   } catch (err) {
     err;
   }
@@ -31,23 +33,69 @@ export default function (params: { options: storage }) {
     characterData: true,
     subtree: true,
   };
-
+  var lastViewType = document
+    .querySelector("div[data-region='courses-view']")
+    .getAttribute("data-display");
   var observer = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
-      console.log("Mutation");
-      // const type = document
-      //   .querySelector("div[data-region='courses-view']")
-      //   .getAttribute("data-display");
       changeAllCards({ options });
       changeAllListItems({ options });
+
+      const type = document
+        .querySelector("div[data-region='courses-view']")
+        .getAttribute("data-display");
+      var newTypeSeen: boolean = false;
+      if (
+        type === "card" &&
+        document.querySelectorAll(
+          "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']"
+        ).length > 0
+      ) {
+        newTypeSeen = true;
+      } else if (
+        type === "list" &&
+        document.querySelectorAll(
+          "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem"
+        ).length > 0
+      ) {
+        newTypeSeen = true;
+      }
+      console.log({ type, newTypeSeen });
+      if (
+        type !== lastViewType &&
+        ["card", "list"].includes(type) &&
+        newTypeSeen
+      ) {
+        console.log("Call Change Listener");
+        lastViewType = type;
+        // Für den ChangeManager die Kurs-Header aktualisieren, weil die verloren gehen, wenn der "ViewType" gewechselt wird.
+        renewChangeDescriptors();
+
+        //Die Kurse nach dem Ansichts-Wechsel für die neue Ansicht sortieren
+        sortCourses();
+      }
     });
   });
   observer.observe(document.querySelector("#block-region-content"), config);
+
+  //TODO: Add observer to observe the "data-display" Attribute of "div[data-region='courses-view']", that contains the info about Card/List. This should be fired for changesManager or sortableCourses
 }
 
+//TODO: make detection if mainCourses are shown public to all function (by making it an event(?))
+var fired = false;
 function changeAllListItems(params: { options: storage }) {
   const { options } = params;
   const Fächer: fächer = options["fächer"];
+  if (!fired) {
+    if (
+      document.querySelectorAll(
+        "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem"
+      ).length > 0
+    ) {
+      activateSortable();
+      fired = true;
+    }
+  }
   document
     .querySelectorAll("div[id^='courses-view'] ul.list-group li div.row")
     .forEach((item) => {
@@ -56,7 +104,6 @@ function changeAllListItems(params: { options: storage }) {
       } else {
         item.setAttribute("data-moodlehelperenhanced", "true");
       }
-      console.log("Changing Dashboard", item);
 
       (item.parentElement as HTMLLIElement).style.backgroundColor = "#1E293B";
 
@@ -67,7 +114,6 @@ function changeAllListItems(params: { options: storage }) {
         .children[1] as HTMLAnchorElement;
 
       const name = nameElement.innerText.trim();
-      console.log("name", name);
 
       const id = getIdFromLink(nameElement.href);
 
@@ -92,7 +138,7 @@ function changeAllListItems(params: { options: storage }) {
       //ScreenReader Text entfernen, damit später innerText verwendet werden kann und "Kursname" nicht erscheint
       nameElement.querySelectorAll(".sr-only").forEach((e) => e.remove());
       nameElement.innerHTML = `
-          <span style="display: grid; grid-template-columns: 35px auto; align-items: center">
+          <span style="display: grid; grid-template-columns: 35px auto auto; align-items: center">
             <span style="justify-self: left">${
               courseData ? courseData.emoji : ""
             }</span>
@@ -144,6 +190,16 @@ function changeAllListItems(params: { options: storage }) {
 }
 
 function changeAllCards(params: { options: storage }) {
+  if (!fired) {
+    if (
+      document.querySelectorAll(
+        "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']"
+      ).length > 0
+    ) {
+      activateSortable();
+      fired = true;
+    }
+  }
   const { options } = params;
   const Fächer: fächer = options["fächer"];
   document
@@ -154,7 +210,6 @@ function changeAllCards(params: { options: storage }) {
       } else {
         item.setAttribute("data-moodlehelperenhanced", "true");
       }
-      console.log("Changing Dashboard");
 
       // remove bg-white class: no need for white bg ^_____^
       let bgWhiteTempItem = item.querySelector(".bg-white");
@@ -197,7 +252,6 @@ function changeAllCards(params: { options: storage }) {
             Fächer[id].imageType == "emoji" ||
             Fächer[id].imageType == "emoji_bg"
           ) {
-            console.log("EmojiCourseIMage");
             cardImgDiv.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
               createEmojiImage(
                 Fächer[id].emoji,

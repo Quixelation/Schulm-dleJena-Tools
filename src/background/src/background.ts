@@ -42,6 +42,7 @@ chrome.storage.sync.get(null, function (options) {
     courseInfo: {},
     allowMultipleDownloads: false,
     dashboardEmojiFontSize: 100,
+    sortedCourses: [],
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";
