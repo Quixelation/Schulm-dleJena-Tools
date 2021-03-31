@@ -10,7 +10,7 @@ function padding(
   const needToAdapt = desiredLength - currentLength;
   if (needToAdapt > 0) {
     let padding = "";
-    for (var x = 0; x < needToAdapt; x++) {
+    for (let x = 0; x < needToAdapt; x++) {
       padding += paddingChar;
     }
     text = padding + text;
@@ -18,7 +18,7 @@ function padding(
   return text;
 }
 
-function increase_brightness(hex: string, percent: number) {
+function increase_brightness(hex: string, percent: number): string {
   // strip the leading # if it's there
   hex = hex.replace(/^\s*#|\s*$/g, "");
 
@@ -27,7 +27,7 @@ function increase_brightness(hex: string, percent: number) {
     hex = hex.replace(/(.)/g, "$1$1");
   }
 
-  var r = parseInt(hex.substr(0, 2), 16),
+  const r = parseInt(hex.substr(0, 2), 16),
     g = parseInt(hex.substr(2, 2), 16),
     b = parseInt(hex.substr(4, 2), 16);
 

@@ -1,6 +1,6 @@
-import { NowRequest, NowResponse } from "@vercel/node";
+import { VercelRequest, VercelResponse } from "@vercel/node";
 
-export default (request: NowRequest, response: NowResponse) => {
+export default (request: VercelRequest, response: VercelResponse): void => {
   const userAgent = request.headers["user-agent"];
   if (userAgent.indexOf("Chrome") != -1) {
     response.redirect("/chrome");

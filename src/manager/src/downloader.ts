@@ -1,9 +1,9 @@
 import { storage } from "@shared/types";
 
-export default function (params: { options: storage }) {
+export default function (params: { options: storage }): void {
   const { options } = params;
   const url = location;
-  var id: number | true;
+  let id: number | true;
   if (url.pathname.slice(0, "/pluginfile.php/".length) == "/pluginfile.php/") {
     id = parseInt(
       url.pathname.slice(

@@ -1,9 +1,9 @@
-import { localStorage, storage, syncStorage } from "../../types";
+import { localStorage, storage } from "../../types";
 chrome.runtime.onInstalled.addListener(function (object) {
   if ("install" === object.reason)
     chrome.tabs.create(
       { url: "https://smjt.robertstuendl.com/first-install" },
-      function (tab) {
+      function () {
         console.log("New tab launched");
       }
     );
@@ -42,7 +42,8 @@ chrome.storage.sync.get(null, function (options) {
     courseInfo: {},
     allowMultipleDownloads: false,
     dashboardEmojiFontSize: 100,
-    sortedCourses: [],
+    sortedCourses_cards: [],
+    sortedCourses_list: [],
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";
@@ -63,7 +64,7 @@ chrome.storage.local.get(null, function (options) {
 chrome.runtime.onConnect.addListener(function (externalPort) {
   console.log("runtimeConnect");
   externalPort.onDisconnect.addListener(function () {
-    var ignoreError = chrome.runtime.lastError;
+    // const ignoreError = chrome.runtime.lastError;
     console.log("runtimeDicConnect");
     chrome.tabs.query({ active: true }, (tab) => {
       console.log(tab[0]);

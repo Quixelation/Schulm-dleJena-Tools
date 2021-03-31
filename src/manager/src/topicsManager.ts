@@ -1,4 +1,3 @@
-import { storage } from "@shared/types";
 function toggleNoEmptyTopics(force?: true) {
   if (force) {
     document.body.classList.add("no-empty-topics");

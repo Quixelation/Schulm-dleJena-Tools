@@ -1,7 +1,7 @@
 import { storage } from "@shared/types";
 import { cardButton } from "./htmlBuilder";
 
-export default function (params: { options: storage }) {
+export default function (params: { options: storage }): void {
   const { options } = params;
 
   if (options["removeNavigationBlock"] === true) {

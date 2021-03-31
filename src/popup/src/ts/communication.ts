@@ -1,4 +1,4 @@
-function goToUrl(url: string, close?: true) {
+function goToUrl(url: string, close?: true): void {
   chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
     console.log(tab[0]);
 
@@ -9,7 +9,7 @@ function goToUrl(url: string, close?: true) {
   });
 }
 let changed = false;
-function connect() {
+function connect(): void {
   console.log("Connect to Runtime");
   if (changed) return;
   changed = true;

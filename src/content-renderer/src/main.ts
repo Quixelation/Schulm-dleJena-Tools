@@ -1,3 +1,4 @@
+/* eslint-disable */
 //@ts-nocheck RollUp erkennt Typescript nicht... <(＿　＿)>
 import App from "./App.svelte";
 
@@ -6,7 +7,7 @@ sectionElem.id = "AsideSectionElem_TodosManager";
 sectionElem.classList.add("block_navigation", "block", "card", "mb-3");
 document.querySelector("#block-region-side-pre").prepend(sectionElem);
 
-var app = new App({
+const app = new App({
   target: document.querySelector("section#AsideSectionElem_TodosManager"),
   props: {},
 });

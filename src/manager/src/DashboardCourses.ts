@@ -10,12 +10,11 @@ import {
   button,
   freeVerticalSpace,
   h5,
-  icon,
 } from "./htmlBuilder";
 import { activate as activateSortable, sortCourses } from "./sortableCourses";
 import { renewChangeDescriptors } from "./changesManager";
-var dashboardEvents;
-export default function (params: { options: storage }) {
+
+export default function (params: { options: storage }): void {
   const { options } = params;
 
   try {
@@ -24,27 +23,27 @@ export default function (params: { options: storage }) {
   } catch (err) {
     err;
   }
-  const courseNames = [];
+  // const courseNames = [];
 
   // Configuration of the observer:
-  var config = {
+  const config = {
     attributes: true,
     childList: true,
     characterData: true,
     subtree: true,
   };
-  var lastViewType = document
+  let lastViewType = document
     .querySelector("div[data-region='courses-view']")
     .getAttribute("data-display");
-  var observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
+  const observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function () {
       changeAllCards({ options });
       changeAllListItems({ options });
 
       const type = document
         .querySelector("div[data-region='courses-view']")
         .getAttribute("data-display");
-      var newTypeSeen: boolean = false;
+      let newTypeSeen = false;
       if (
         type === "card" &&
         document.querySelectorAll(
@@ -82,7 +81,7 @@ export default function (params: { options: storage }) {
 }
 
 //TODO: make detection if mainCourses are shown public to all function (by making it an event(?))
-var fired = false;
+let fired = false;
 function changeAllListItems(params: { options: storage }) {
   const { options } = params;
   const Fächer: fächer = options["fächer"];
@@ -113,12 +112,12 @@ function changeAllListItems(params: { options: storage }) {
       const nameElement = nameSection.children[0]
         .children[1] as HTMLAnchorElement;
 
-      const name = nameElement.innerText.trim();
+      // const name = nameElement.innerText.trim();
 
       const id = getIdFromLink(nameElement.href);
 
       //#region KursName + Emoji
-      var courseData = null;
+      let courseData = null;
       if (Object.keys(Fächer).includes(id)) {
         if (
           options["shortcoursenames"] === true &&
@@ -155,7 +154,7 @@ function changeAllListItems(params: { options: storage }) {
       item.parentElement.style.borderColor = "rgb(255,255,255,0.13)";
 
       if (options["usecoloredprogress"] === true) {
-        var progressbar = item.querySelector(
+        const progressbar = item.querySelector(
           ".progress-bar.bar"
         ) as HTMLDivElement;
         if (progressbar != null) {
@@ -212,7 +211,7 @@ function changeAllCards(params: { options: storage }) {
       }
 
       // remove bg-white class: no need for white bg ^_____^
-      let bgWhiteTempItem = item.querySelector(".bg-white");
+      const bgWhiteTempItem = item.querySelector(".bg-white");
       if (bgWhiteTempItem) {
         bgWhiteTempItem.classList.remove("bg-white");
       }
@@ -317,7 +316,7 @@ function changeAllCards(params: { options: storage }) {
         //(item as HTMLDivElement).style.backgroundColor = "#0f172a";
         (item as HTMLDivElement).style.backgroundColor = "#1E293B";
 
-        var smallFooterCard = item.querySelector(
+        const smallFooterCard = item.querySelector(
           ".card-footer .small"
         ) as HTMLSpanElement;
         if (smallFooterCard) smallFooterCard.style.color = "#cbd5e1";
@@ -325,7 +324,7 @@ function changeAllCards(params: { options: storage }) {
         try {
           (item.children[1].children[0].children[0].children[1]
             .children[2] as HTMLSpanElement).style.color = `#39CCCC`;
-          var theProgressBar = item.querySelector(
+          const theProgressBar = item.querySelector(
             ".progress-bar.bar"
           ) as HTMLDivElement;
           if (theProgressBar) {
@@ -389,7 +388,7 @@ function changeAllCards(params: { options: storage }) {
     });
 }
 
-var addedInfoToPage = false;
+let addedInfoToPage = false;
 function addInfo() {
   if (!addedInfoToPage) {
     document.querySelector("header#page-header").insertAdjacentElement(
@@ -422,12 +421,12 @@ function addInfo() {
   }
 }
 const syncCourseCue: { id: string; longName: string }[] = [];
-var syncCourseWorking = false;
+let syncCourseWorking = false;
 function syncCourse(id: string, longName: string) {
   if (!syncCourseWorking) {
     syncCourseWorking = true;
     chrome.storage.sync.get("fächer", (args: { fächer: fächer }) => {
-      var { fächer } = args;
+      const { fächer } = args;
       if (fächer[id] == undefined) {
         addInfo();
         const Fach = Object.keys(FächerList).filter((item) => {
