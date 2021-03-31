@@ -49,7 +49,6 @@
     "code": "node build.js",
     "popup-build": "cd src/popup && rollup -c",
     "todo-build": "cd src/todoManager && rollup -c",
-    "changes-build": "cd src/changesManager && rollup -c",
     "manager-build": "cd src/manager && npm run build && node -e 'console.log(new Date())'",
     "background-build": "cd src/background && npm run build",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
