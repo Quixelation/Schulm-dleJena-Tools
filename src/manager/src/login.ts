@@ -2,15 +2,29 @@ import { storage } from "@shared/types";
 
 export default function (params: { options: storage }) {
   const { options } = params;
-  function checkAndLogin({ passIn, userIn }, optionValue: any) {
-    console.log({ passIn, userIn });
-    if (userIn && passIn && optionValue) {
+
+  /**
+   * Checkt beim Call, ob Benutzername und Passwort eingegeben wurden und loggt den Benutzer, wenn beides gemacht wurde, ein.
+   * @param data Die Booleans, ob Benutzername & Passwort eingegeben wurden
+   */
+  function checkAndLogin(data: { passIn: boolean; userIn: boolean }) {
+    console.log({
+      passIn: data.passIn,
+      userIn: data.userIn,
+    });
+    if (data.userIn && data.passIn && options["autologin_untrusted"]) {
       localStorage.setItem("MoodleHelperTools_ReDirect", "true");
       document.getElementById("loginbtn").click();
     }
   }
+
+  /**
+   * Der Login Knopf auf der Startseite, oben rechts
+   */
   var loginContA = document.querySelector(".usermenu .login a");
   console.log(loginContA);
+
+  // Startseite. Von Hier entweder zum Login oder zum Dashboard
   if (location.href === "https://moodle.jsp.jena.de/") {
     var loginContA = document.querySelector(".usermenu .login a");
     console.log({ loginContA });
@@ -24,20 +38,52 @@ export default function (params: { options: storage }) {
       localStorage.removeItem("MoodleHelperTools_ReDirect");
       location.replace("https://moodle.jsp.jena.de/my/");
     }
-  } else if (location.href === "https://moodle.jsp.jena.de/login/index.php") {
-    var userIn = false;
-    var passIn = false;
-    document.getElementById("password").addEventListener("input", (e) => {
-      if (true) {
-        userIn = true;
-        checkAndLogin({ passIn, userIn }, options["autologin_untrusted"]);
+  }
+
+  // Login Seite.
+  else if (location.href === "https://moodle.jsp.jena.de/login/index.php") {
+    if (!options["autologin_untrusted"]) {
+      const login_form = document.getElementById("login");
+      const login_button = document.getElementById("loginbtn");
+      login_button.style.marginBottom = "15px";
+      login_form.insertAdjacentHTML(
+        "afterend",
+        '<span style="color: grey;">Benutzt du einen<br><b>Passwort-Manager</b>?<br />Dann kanst du<br><b>"AutoFill-AutoLogin"</b> in den <b>Schulm**dleJena Tools Einstelungen</b> einschalten, um dich noch schneller Anzumelden!</span>'
+      );
+    } else {
+      var userIn = false;
+      var passIn = false;
+
+      const input_username = document.getElementById("username");
+      const input_password = document.getElementById("password");
+
+      // Check both, for the occasion the extension loaded too late
+      {
+        if ((input_username as HTMLInputElement | null)?.value?.length > 0) {
+          userIn = true;
+          checkAndLogin({ passIn, userIn });
+        }
+        if ((input_password as HTMLInputElement | null)?.value?.length > 0) {
+          passIn = true;
+          checkAndLogin({ passIn, userIn });
+        }
       }
-    });
-    document.getElementById("username").addEventListener("input", (e) => {
-      if (true) {
-        passIn = true;
-        checkAndLogin({ passIn, userIn }, options["autologin_untrusted"]);
-      }
-    });
+
+      // Benutzername Observen
+      input_username.addEventListener("input", (e) => {
+        if ((e.target as HTMLInputElement | null)?.value?.length > 0) {
+          userIn = true;
+          checkAndLogin({ passIn, userIn });
+        }
+      });
+
+      // Passwort observen
+      input_password.addEventListener("input", (e) => {
+        if ((e.target as HTMLInputElement | null)?.value?.length > 0) {
+          passIn = true;
+          checkAndLogin({ passIn, userIn });
+        }
+      });
+    }
   }
 }
