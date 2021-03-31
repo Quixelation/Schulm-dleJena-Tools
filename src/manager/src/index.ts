@@ -99,9 +99,13 @@ if (!location.pathname.includes("/mod/quiz/")) {
           ? location.pathname.includes(script.match)
           : script.match)
       ) {
-        Promise.resolve().then(() => {
-          script.script({ options });
-        });
+        Promise.resolve()
+          .then(() => {
+            script.script({ options });
+          })
+          .catch((e) => {
+            console.warn(e);
+          });
       }
     });
 
