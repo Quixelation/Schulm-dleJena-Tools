@@ -10,7 +10,26 @@ import staticSidebarBlock from "./staticSidebarBlock";
 import login from "./login";
 import syncCourses from "./syncTopics";
 import topicsManager from "./topicsManager";
+import commandPalette from "./commandPalette";
+
 if (!location.pathname.includes("/mod/quiz/")) {
+  var newStyle = document.createElement("style");
+  newStyle.appendChild(
+    document.createTextNode(
+      "\
+@font-face {\
+    font-family: " +
+        "Sans Forgetica" +
+        ";\
+    src: url('" +
+        chrome.runtime.getURL("fonts/SansForgetica-Regular.otf") +
+        "') format('opentype');\
+}\
+"
+    )
+  );
+
+  document.head.appendChild(newStyle);
   chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     console.log("Message", { msg, sender });
     // If the received message has the expected format...
@@ -56,6 +75,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
       { match: "/my/", script: DashboardCourses },
       { match: null, script: navigationBlock },
       { match: null, script: footer },
+      { match: null, script: commandPalette },
       { match: null, script: meineKurse },
       { match: null, script: staticSidebarBlock },
       { match: null, script: login },
