@@ -14,6 +14,62 @@ import {
 import { activate as activateSortable, sortCourses } from "./sortableCourses";
 import { renewChangeDescriptors } from "./changesManager";
 
+function getViewType(): "list" | "card" | "summary" {
+  console.log(
+    document.querySelector(getCoursesQuerySelector(false, "card")),
+    getCoursesQuerySelector(false, "card")
+  );
+  if (document.querySelector(getCoursesQuerySelector(false, "card")) !== null) {
+    console.log(document.querySelector(getCoursesQuerySelector(false, "card")));
+    return "card";
+  } else if (
+    document.querySelector(getCoursesQuerySelector(false, "list")) !== null
+  ) {
+    console.log(document.querySelector(getCoursesQuerySelector(false, "list")));
+    return "list";
+  } else if (
+    document.querySelector(getCoursesQuerySelector(false, "summary")) !== null
+  ) {
+    console.log(
+      document.querySelector(getCoursesQuerySelector(false, "summary"))
+    );
+    return "summary";
+  } else {
+    //again,... some random numbers...
+    alert("Error getting ViewType #1156464946546");
+  }
+}
+/**
+ * Gibt den Query Selector für den passenden ViewType aus.
+ * 🛑 Gibt auch für `summary` aus!
+ */
+function getCoursesQuerySelector(
+  children: boolean,
+  type?: "card" | "list" | "summary"
+): string {
+  const viewType = type ?? getViewType();
+  type ? null : console.log("getCoursesQuerySelector__viewType", viewType);
+  if (viewType === "card") {
+    return (
+      "div[data-region='page-container'] div[data-region='paged-content-page'] > .card-deck" +
+      (children ? " .card[data-region='course-content']" : "")
+    );
+  } else if (viewType === "list") {
+    return (
+      "div[data-region='paged-content-page'] > ul.list-group" +
+      (children ? " > li.course-listitem" : "")
+    );
+  } else if (viewType === "summary") {
+    return (
+      'div[data-region="paged-content-page"] > div[role="list"]' +
+      (children ? ' > div[role="listitem"]' : "")
+    );
+  } else {
+    // rando nr for code-search
+    alert("viewType error #798465132");
+  }
+}
+
 export default function (params: { options: storage }): void {
   const { options } = params;
 
@@ -59,7 +115,7 @@ export default function (params: { options: storage }): void {
       ) {
         newTypeSeen = true;
       }
-      console.log({ type, newTypeSeen });
+
       if (
         type !== lastViewType &&
         ["card", "list"].includes(type) &&
@@ -163,8 +219,7 @@ function changeAllListItems(params: { options: storage }) {
               .querySelector(".progress-bar.bar")
               .getAttribute("aria-valuenow")
           );
-          const hsl = chroma
-            .scale(["#ff0000", "#00ff1e"])
+          const hsl = chromaScale(["#ff0000", "#00ff1e"])
             .domain([0, 75, 95, 100])
             .mode("hsl")(value)
             .css();
@@ -361,8 +416,7 @@ function changeAllCards(params: { options: storage }) {
 
         if (options["usecoloredprogress"] === true) {
           if (item.querySelector(".progress-bar.bar") != null) {
-            const hsl = chroma
-              .scale(["#ff0000", "#00ff1e"])
+            const hsl = chromaScale(["#ff0000", "#00ff1e"])
               .domain([0, 75, 95, 100])
               .mode("hsl")(
                 Number(
@@ -460,3 +514,5 @@ function syncCourse(id: string, longName: string) {
     syncCourseCue.push({ id, longName });
   }
 }
+
+export { getViewType, getCoursesQuerySelector };

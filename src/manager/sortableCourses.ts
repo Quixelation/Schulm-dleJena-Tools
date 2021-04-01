@@ -3,6 +3,7 @@ import { storage } from "src/types";
 import * as Sortable from "sortablejs";
 
 import tippy from "tippy.js";
+import { getCoursesQuerySelector, getViewType } from "./DashboardCourses";
 
 //import { AutoScroll } from "sortablejs";
 
@@ -22,7 +23,6 @@ function initializeSortable() {
   // );
 
   //Sortable.mount(new AutoScroll());
-  //TODO: Maybe sort the courses here
   sortable = Sortable.create(
     document.querySelector(
       "div[data-region='paged-content-page'] > ul.list-group"
@@ -51,52 +51,83 @@ function deactivateSortable() {
 }
 
 function saveAndDeactivate() {
-  const sortedCoursesArray = sortable.toArray();
-  console.log(sortedCoursesArray);
+  const sortedCoursesArray: string[] = [];
+  const cardContainer = document.querySelector(getCoursesQuerySelector(false));
 
-  chrome.storage.sync.set({ [getSaveKey()]: sortedCoursesArray });
+  Object.keys(cardContainer.children).forEach((index) => {
+    const child = cardContainer.children.item(parseInt(index));
+
+    sortedCoursesArray.push(child.getAttribute("data-course-id"));
+  });
+
+  console.log("", sortedCoursesArray);
+
+  chrome.storage.sync.set({ ["sortedCourses"]: sortedCoursesArray });
 
   deactivateSortable();
 }
-//TODO: Deactive changing ViewType while sorting w/ title="Not Supported while sorting"
 
 //TODO: Spellchecking
-const defaultDisplayTippyContent =
-  "Die Sortierung der Listen-Ansicht und der Karten-Ansicht werden getrennt voneinander gespeichert. Es gibt ein bekanntes Problem beim Wechseln der Ansicht; falls dieses Auftritt: einfach die Seite neuladen";
+
 const disabledDisplayTippyContent =
   "<b style='color: white; text-decoration: underline;text-decoration-color: #FF4136;text-decoration-thickness: 3px;'>Beende zuerst die Sortierung</b>";
 
-/**
- * Gibt den Key aus, unter welchem die Daten für die SOrtierung der zurzeitigen Ansicht gespeichert sind.
- * DOM-Content der Fächer muss dafür geladen sein.
- * @returns Key, unter welchem die Sortierungsdaten für die zurzeitige Ansicht gespeichert sind.
- */
-function getSaveKey() {
-  let key: string;
-  if (
-    document.querySelector(
-      "div[data-region='paged-content-page'] > ul.list-group"
-    ) === null
-  ) {
-    key = "sortedCourses_cards";
-  } else {
-    key = "sortedCourses_list";
-  }
-  console.log("SaveKey:", key);
-  return key;
-}
+// /**
+//  * Gibt den Key aus, unter welchem die Daten für die SOrtierung der zurzeitigen Ansicht gespeichert sind.
+//  * DOM-Content der Fächer muss dafür geladen sein.
+//  * @returns Key, unter welchem die Sortierungsdaten für die zurzeitige Ansicht gespeichert sind.
+//  */
+// function getSaveKey(): string | false {
+//   const viewType = getViewType();
+//   if (viewType === "card") {
+//     return "sortedCourses_cards";
+//   } else if (viewType === "list") {
+//     return "sortedCourses_list";
+//   } else {
+//     return false;
+//   }
+// }
 
 async function sortCourses(): Promise<void> {
   console.log("Sorting Courses");
   //TODO: Possibly Add Check for undefined
-  chrome.storage.sync.get([getSaveKey()], (value: storage) => {
-    //Activate and Deactivate for sorting
-    initializeSortable();
-    if (value[getSaveKey()]) sortable.sort(value[getSaveKey()]);
-    deactivateSortable();
+  chrome.storage.sync.get("sortedCourses", (value: storage) => {
+    const viewType = getViewType();
+    if (viewType === "summary") return;
+
+    //TODO: ListView
+    //CardViewType
+    const coursesContainer = document.querySelector(
+      getCoursesQuerySelector(false)
+    );
+
+    const coursesList: { [id: string]: Element } = {};
+    Object.keys(coursesContainer.children).forEach((index) => {
+      const child = coursesContainer.children.item(parseInt(index));
+      coursesList[child.getAttribute("data-course-id")] = child;
+    });
+    console.log("coursesList", coursesList);
+
+    const saveOrder: string[] = value["sortedCourses"];
+    if (saveOrder?.length > 0) {
+      console.log("saveOrder", saveOrder);
+      coursesContainer.innerHTML = "";
+      saveOrder.forEach((id) => {
+        console.log({ id, idC: coursesList[id] });
+        coursesContainer.append(coursesList[id]);
+      });
+      //TODO: Handle new / not in the system courses
+    }
+
+    //TODO: Remove
+    // //Activate and Deactivate for sorting
+    // initializeSortable();
+    // if (value[getSaveKey()]) sortable.sort(value[getSaveKey()]);
+    // deactivateSortable();
     return;
   });
 }
+
 let status = false;
 async function activate(): Promise<void> {
   await sortCourses();
@@ -110,46 +141,41 @@ async function activate(): Promise<void> {
   });
 
   const displaydropdownTippy = tippy("#displaydropdown", {
-    content: defaultDisplayTippyContent,
+    content: disabledDisplayTippyContent,
     animation: "shift-away-subtle",
     hideOnClick: false,
     allowHTML: true,
   })?.[0];
-  console.log("displaydropdownTippy", displaydropdownTippy);
+  displaydropdownTippy.disable();
 
   const sortButton = document.createElement("button");
   sortButton.className = "btn btn-outline-primary mb-1 mr-1";
   sortButton.addEventListener("click", () => {
+    function setSortSaveCoursesBtn(state: boolean): void {
+      buttonText.innerHTML = state ? "Speichern" : "Kurse sortieren";
+      document
+        .getElementById("SortCoursesButtonIconId")
+        .classList[state ? "add" : "remove"]("fa-hand-rock-o");
+      document
+        .getElementById("SortCoursesButtonIconId")
+        .classList[!state ? "add" : "remove"]("fa-hand-paper-o");
+
+      displaydropdownTippy[state ? "enable" : "disable"]();
+      document
+        .getElementById("displaydropdown")
+        .classList[state ? "add" : "remove"]("disabled");
+    }
+
     if (status === false) {
       // Falls sortieren AUS ist.
       initializeSortable();
-      buttonText.innerHTML = "Speichern";
-      document
-        .getElementById("SortCoursesButtonIconId")
-        .classList.add("fa-hand-rock-o");
-      document
-        .getElementById("SortCoursesButtonIconId")
-        .classList.remove("fa-hand-paper-o");
-
-      displaydropdownTippy.setContent(disabledDisplayTippyContent);
-      document.getElementById("displaydropdown").classList.add("disabled");
       status = true;
+      setSortSaveCoursesBtn(status);
     } else if (status === true) {
       // Falls sortieren AN ist.
       saveAndDeactivate();
-
-      buttonText.innerHTML = "Kurse sortieren";
-
-      document
-        .getElementById("SortCoursesButtonIconId")
-        .classList.remove("fa-hand-rock-o");
-      document
-        .getElementById("SortCoursesButtonIconId")
-        .classList.add("fa-hand-paper-o");
-
-      document.getElementById("displaydropdown").classList.remove("disabled");
-      displaydropdownTippy.setContent(defaultDisplayTippyContent);
       status = false;
+      setSortSaveCoursesBtn(status);
     } else {
       // Some Random Numbers :)
       alert("Ran into Error: #78542846879674465");
