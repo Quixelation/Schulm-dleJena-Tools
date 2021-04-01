@@ -46,7 +46,7 @@
   "scripts": {
     "pack": "npm run build && cd dist && web-ext build --overwrite-dest",
     "code": "node buildCodeZip.js",
-    "build": "tsc && npm run build:popup && npm run build:todo && npm run build:manager && npm run build:background",
+    "build": "npm run build:popup && npm run build:todo && npm run build:manager && npm run build:background",
     "build:popup": "cd src/popup && rollup -c",
     "build:todo": "cd src/todoManager && rollup -c",
     "build:manager": "cd src/manager && npm run build && node -e 'console.log(new Date())'",

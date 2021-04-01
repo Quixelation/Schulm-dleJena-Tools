@@ -1,5 +1,6 @@
 /* eslint-disable */
 //@ts-nocheck RollUp erkennt Typescript nicht... <(＿　＿)>
+
 import App from "./App.svelte";
 
 const sectionElem = document.createElement("section");
@@ -15,7 +16,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
 }
 export default app;
 
-function deleteTodoItem(key: string): Promise<void> {
+function deleteTodoItem(key) {
   return new Promise((resolve, reject) => {
     chrome.storage.sync.get(["todos"], (val) => {
       const { todos } = val;

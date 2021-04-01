@@ -51,13 +51,6 @@
         "https://moodle.jsp.jena.de/my*"
       ],
       "css": ["css/tippy.css"]
-    },
-    {
-      "matches": [
-        "http://moodle.jsp.jena.de/mod/resource/view.php*",
-        "https://moodle.jsp.jena.de/mod/resource/view.php*"
-      ],
-      "js": ["generated/adjustVideo.js"]
     }
   ],
   "commands": {

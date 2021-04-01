@@ -22,7 +22,7 @@ function initializeSortable() {
   // );
 
   //Sortable.mount(new AutoScroll());
-
+  //TODO: Maybe sort the courses here
   sortable = Sortable.create(
     document.querySelector(
       "div[data-region='paged-content-page'] > ul.list-group"
