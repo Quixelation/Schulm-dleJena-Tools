@@ -1,4 +1,4 @@
-import { storage } from "@shared/types";
+import { storage } from "@/types";
 import CommandPal from "./cmdpal";
 
 export default function (params: { options: storage }): void {

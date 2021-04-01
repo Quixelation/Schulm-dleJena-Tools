@@ -1,4 +1,4 @@
-import { storage } from "@shared/types";
+import { storage } from "src/types";
 
 import * as Sortable from "sortablejs";
 
