@@ -1,4 +1,4 @@
-export default function () {
+export default function (): void {
   // const sectionElem = document.createElement("section");
   // sectionElem.id = "AsideSectionElem_TodosManager";
   // sectionElem.classList.add("block_navigation", "block", "card", "mb-3");

@@ -1,7 +1,7 @@
 /**
  * @deprecated
  */
-export default function () {
+export default function (): void {
   const dashbaordBreadCrumb = document.createElement("li");
   dashbaordBreadCrumb.innerHTML =
     "<a href='" + location.origin + "/my/' ><b>Dashboard</b></a>";

@@ -1,4 +1,3 @@
-import { storage } from "@shared/types";
 function toggleNoEmptyTopics(force?: true) {
   if (force) {
     document.body.classList.add("no-empty-topics");
@@ -25,13 +24,13 @@ function toggleNoEmptyTopics(force?: true) {
       .classList.add("fa-eye-slash");
   }
 }
-export default function (params: { options: storage }) {
-  const { options } = params;
+export default function (/*params: { options: storage }*/): void {
+  //const { options } = params;
   if (document.querySelector(".course-content ul.topics") !== null) {
     chrome.storage.sync.get(["reversed_courses", "no-empty-topics"], (val) => {
-      var reversed_courses: number[] = val["reversed_courses"];
+      const reversed_courses: number[] = val["reversed_courses"];
       console.log("reversed_courses", reversed_courses);
-      var href = location.href;
+      const href = location.href;
       const id = parseInt(href.slice(href.indexOf("id=") + 3));
       if (reversed_courses?.includes(id)) {
         document.getElementById("ThemenReihenfolgeUmkehren").style.background =
@@ -40,7 +39,7 @@ export default function (params: { options: storage }) {
           .querySelector(".course-content ul.topics")
           .classList.add("reversed");
       }
-      var noEmptyTopics: number[] = val["no-empty-topics"];
+      const noEmptyTopics: number[] = val["no-empty-topics"];
       console.log("noEmptyTopics", noEmptyTopics);
       console.log("id", id);
       console.log("contains", noEmptyTopics?.includes(id));
@@ -65,14 +64,14 @@ export default function (params: { options: storage }) {
     }[] = [
       {
         id: "ThemenReihenfolgeUmkehren",
-        onClick: (e) => {
+        onClick: () => {
           const isReversed = document
             .querySelector(".course-content ul.topics")
             .classList.contains("reversed");
-          var href = location.href;
+          const href = location.href;
           const id = parseInt(href.slice(href.indexOf("id=") + 3));
           chrome.storage.sync.get(["reversed_courses"], (val) => {
-            var reversed_courses: number[] = val["reversed_courses"];
+            let reversed_courses: number[] = val["reversed_courses"];
             console.log("reversed_courses", reversed_courses);
             if (reversed_courses == null) {
               reversed_courses = [];
@@ -107,15 +106,15 @@ export default function (params: { options: storage }) {
         id: "LeereThemenAnzeigenBtn",
         text:
           "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
-        onClick: (e) => {
+        onClick: () => {
           toggleNoEmptyTopics();
           //#region saveSettings
 
           const isChosen = document.body.classList.contains("no-empty-topics");
-          var href = location.href;
+          const href = location.href;
           const id = parseInt(href.slice(href.indexOf("id=") + 3));
           chrome.storage.sync.get(["no-empty-topics"], (val) => {
-            var reversed_courses: number[] = val["no-empty-topics"];
+            let reversed_courses: number[] = val["no-empty-topics"];
             console.log("no-empty-topics", reversed_courses);
             if (reversed_courses == null) {
               reversed_courses = [];
@@ -125,13 +124,12 @@ export default function (params: { options: storage }) {
               return item != id;
             });
             console.log("no-empty-topics", reversed_courses);
-            //@ts-ignore
+
             document.getElementById("LeereThemenAnzeigenBtn").style.background =
               "";
             if (isChosen) {
               console.log("pushId");
               reversed_courses.push(id);
-              //@ts-ignore
               document.getElementById(
                 "LeereThemenAnzeigenBtn"
               ).style.background = "green";
@@ -161,7 +159,7 @@ export default function (params: { options: storage }) {
     document.getElementById("region-main-box").prepend(buttonsContainer);
 
     if (document.querySelectorAll("div.content > ul.section") !== null) {
-      var allSections = document.querySelectorAll<HTMLLIElement>(
+      const allSections = document.querySelectorAll<HTMLLIElement>(
         "li.section.main"
       );
       allSections.forEach((section) => {

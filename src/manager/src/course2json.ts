@@ -22,20 +22,20 @@ export default function (
   } else if (topics.length > 0) {
     try {
       topics.forEach((item) => {
-        var name = item.querySelector(".sectionname").textContent.trim();
-        var activities: Activity[] = [];
+        const name = item.querySelector(".sectionname").textContent.trim();
+        const activities: Activity[] = [];
         item.querySelectorAll("ul.section > li").forEach((activity) => {
           //ScreenReader Text entfernen
 
           activity.querySelector(".instancename .accesshide")?.remove();
-          var name = activity
+          const name = activity
             .querySelector(".instancename")
             ?.textContent?.trim();
-          var type = activity.className.split(" ")[1];
-          var details = activity
+          const type = activity.className.split(" ")[1];
+          const details = activity
             .querySelector(".contentafterlink")
             ?.textContent?.trim();
-          var id = parseInt(activity.id.replace("module-", ""));
+          const id = parseInt(activity.id.replace("module-", ""));
           activities.push({
             details,
             id,

@@ -2,7 +2,8 @@ interface htmlBuilderArgs<optionsGen> {
   class?: string[] | string;
   style?: string;
   options?: optionsGen;
-  onclick?: Function;
+  // Im just guessing here
+  onclick?: (e: EventInit) => void;
   id?: string;
 }
 interface htmlSingleContainerBuilderArgs<T> extends htmlBuilderArgs<T> {
@@ -16,7 +17,12 @@ interface htmlTextBuilderArgs<Tl> extends htmlBuilderArgs<Tl> {
   text: string;
 }
 
-function applyOptions(args: htmlSingleContainerBuilderArgs<any>) {
+function applyOptions(
+  args: htmlSingleContainerBuilderArgs<{
+    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+    [key: string]: any;
+  }>
+) {
   if (args.style != null) {
     args.child.setAttribute(
       "style",
@@ -35,7 +41,6 @@ function applyOptions(args: htmlSingleContainerBuilderArgs<any>) {
     }
   }
   if (args.onclick != null) {
-    //@ts-ignore
     args.child.addEventListener("click", args.onclick);
   }
   if (args.id) {
@@ -43,8 +48,9 @@ function applyOptions(args: htmlSingleContainerBuilderArgs<any>) {
   }
   return args.child;
 }
-
-function horizFlex(args: htmlMultiContainerBuilderArgs<undefined>) {
+function horizFlex(
+  args: htmlMultiContainerBuilderArgs<undefined>
+): HTMLElement {
   const horizFlexItem = document.createElement("div");
   horizFlexItem.style.display = "flex";
   horizFlexItem.style.flexDirection = "row";
@@ -57,7 +63,7 @@ function horizFlex(args: htmlMultiContainerBuilderArgs<undefined>) {
     child: horizFlexItem,
   });
 }
-function vertFlex(args: htmlMultiContainerBuilderArgs<undefined>) {
+function vertFlex(args: htmlMultiContainerBuilderArgs<undefined>): HTMLElement {
   const horizFlexItem = document.createElement("div");
   horizFlexItem.style.display = "flex";
   horizFlexItem.style.flexDirection = "column";
@@ -71,7 +77,9 @@ function vertFlex(args: htmlMultiContainerBuilderArgs<undefined>) {
   });
 }
 
-function container(args: htmlMultiContainerBuilderArgs<undefined>) {
+function container(
+  args: htmlMultiContainerBuilderArgs<undefined>
+): HTMLElement {
   const horizFlexItem = document.createElement("div");
 
   args.children.forEach((item) => {
@@ -83,7 +91,7 @@ function container(args: htmlMultiContainerBuilderArgs<undefined>) {
   });
 }
 
-function icon(args: htmlBuilderArgs<{ icon: string }>) {
+function icon(args: htmlBuilderArgs<{ icon: string }>): HTMLElement {
   const elem = document.createElement("i");
 
   elem.classList.add("icon", "fa", `fa-${args.options.icon}`, "fw");
@@ -93,7 +101,9 @@ function icon(args: htmlBuilderArgs<{ icon: string }>) {
   });
 }
 
-function link(args: htmlMultiContainerBuilderArgs<{ href: string }>) {
+function link(
+  args: htmlMultiContainerBuilderArgs<{ href: string }>
+): HTMLElement {
   const elem = document.createElement("a");
   elem.href = args.options.href;
   args.children.forEach((item) => {
@@ -104,7 +114,7 @@ function link(args: htmlMultiContainerBuilderArgs<{ href: string }>) {
     child: elem,
   });
 }
-function span(args: htmlTextBuilderArgs<null>) {
+function span(args: htmlTextBuilderArgs<null>): HTMLElement {
   const elem = document.createElement("span");
 
   elem.innerHTML = args.text;
@@ -121,7 +131,7 @@ function span(args: htmlTextBuilderArgs<null>) {
  * @param args
  * @returns
  */
-function h5(args: htmlTextBuilderArgs<null>) {
+function h5(args: htmlTextBuilderArgs<null>): HTMLElement {
   const elem = document.createElement("h5");
 
   elem.innerHTML = args.text;
@@ -132,7 +142,7 @@ function h5(args: htmlTextBuilderArgs<null>) {
   });
 }
 
-function bold(args: htmlTextBuilderArgs<null>) {
+function bold(args: htmlTextBuilderArgs<null>): HTMLElement {
   const elem = document.createElement("b");
 
   elem.innerHTML = args.text;
@@ -145,13 +155,13 @@ function bold(args: htmlTextBuilderArgs<null>) {
 
 function Heading(
   args: htmlTextBuilderArgs<{ type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" }>
-) {
+): HTMLElement {
   if (args.options?.type == null) {
     if (args.options == null) {
-      //@ts-ignore: Property 'type' is missing in type '{}' but required in type '{ type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"; }'.ts(2741)
-      args.options = {};
+      args.options = { type: "h1" };
+    } else {
+      args.options.type = "h1";
     }
-    args.options.type = "h1";
   }
 
   const elem = document.createElement(args.options.type);
@@ -170,7 +180,7 @@ function cardButton(
     text: string;
     icon: string;
   }>
-) {
+): HTMLElement {
   return applyOptions({
     ...args,
     child: link({
@@ -197,7 +207,7 @@ function button(
     onclick: (MouseEvent: MouseEvent) => void;
     type?: "primary" | "secondary";
   }>
-) {
+): HTMLElement {
   args.options.type = args.options.type ?? "primary";
   const button = document.createElement("button");
   button.classList.add("btn", `btn-${args.options.type}`);
@@ -209,7 +219,7 @@ function button(
   });
 }
 
-function card(args: htmlSingleContainerBuilderArgs<null>) {
+function card(args: htmlSingleContainerBuilderArgs<null>): HTMLElement {
   const sectionElem = document.createElement("section");
   sectionElem.classList.add("block", "card", "mb-3");
   const body = document.createElement("div");
@@ -223,7 +233,9 @@ function card(args: htmlSingleContainerBuilderArgs<null>) {
   });
 }
 
-function freeVerticalSpace(args: htmlBuilderArgs<{ height: string }>) {
+function freeVerticalSpace(
+  args: htmlBuilderArgs<{ height: string }>
+): HTMLElement {
   return applyOptions({
     ...args,
     child: container({

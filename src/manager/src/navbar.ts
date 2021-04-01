@@ -1,4 +1,4 @@
-export default function prependNavBarButtons() {
+export default function prependNavBarButtons(): void {
   document.querySelector(".site-name").innerHTML += `
   <span style="font-size: 0.75rem; display: block;margin-top: -4px; color: grey;">Tools aktiv!</span>
 `;

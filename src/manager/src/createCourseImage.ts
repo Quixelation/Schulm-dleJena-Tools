@@ -1,5 +1,5 @@
 import { increase_brightness } from "./../../utils";
-function createEmojiImage(emoji: string, size: number, color?: string) {
+function createEmojiImage(emoji: string, size: number, color?: string): string {
   console.log("color", emoji, color);
   return `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='170px' height='50px'> 
     <rect x='0' y='0' width='170' height='50'
@@ -16,7 +16,7 @@ function createEmojiImage(emoji: string, size: number, color?: string) {
   </svg>`;
 }
 type hexString = string;
-function createWavesImage(color: hexString) {
+function createWavesImage(color: hexString): string {
   return `<svg height='100%' width='100%' id='bg-svg' viewBox='0 0 1440 700'
 	xmlns='http://www.w3.org/2000/svg' class='transition duration-300 ease-in-out delay-150'>
 	<defs>

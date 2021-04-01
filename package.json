@@ -55,7 +55,8 @@
     "license": "npm-license-generator --out-path=./page/licenses.html",
     "check-licenses": "npx license-compatibility-checker",
     "show-licenses": "npx license-checker --summary",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix"
   },
   "license": "GPL-3.0"
 }

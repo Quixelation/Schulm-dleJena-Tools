@@ -4,9 +4,10 @@ import { card, cardButton, container, Heading, vertFlex } from "./htmlBuilder";
 
 //TODO: Show number of uncheckable Courses
 
-var cachedChanges: contentCheckerOutput[] = null;
+let cachedChanges: contentCheckerOutput[] = null;
 
-export default function (params: { options: storage }) {
+export default function (params: { options: storage }): void {
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const { options } = params;
 
   const changesManagerCardButton = cardButton({
@@ -91,7 +92,7 @@ interface contentCheckerOutput extends changesNr {
 }
 function checkAll(): Promise<changesNr> {
   console.log("checkAll");
-  return new Promise((resolveMain, rejectMain) => {
+  return new Promise((resolveMain) => {
     const allIds: string[] = [];
     document
       .querySelectorAll(
@@ -107,13 +108,13 @@ function checkAll(): Promise<changesNr> {
         })()
       )
       .forEach((item) => {
-        var href = item.querySelector("a").href;
-        var id = href.slice(href.indexOf("id=") + 3);
+        const href = item.querySelector("a").href;
+        const id = href.slice(href.indexOf("id=") + 3);
         allIds.push(id);
       });
     console.log("ids", allIds);
     function contentChecker(id: string): Promise<contentCheckerOutput> {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         fetch("https://moodle.jsp.jena.de/course/view.php?id=" + id)
           .then((e) => e.text())
           .then(course2json)
@@ -181,7 +182,7 @@ function checkAll(): Promise<changesNr> {
  * @param jsonCourse Der neue Inhalt, mit dem verglichen werden soll
  */
 function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     chrome.storage.local.get("courseInfo", (storage: storage) => {
       const { courseInfo } = storage;
       const oldIds = getIdArrayFromActivities(
@@ -250,14 +251,14 @@ function getIdArrayFromActivities(activities: Activity[]) {
  * @stackoverflow https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
  */
 function getIdDiff(a1, a2) {
-  var a = [],
+  const a = [],
     diff = [];
 
-  for (var i = 0; i < a1.length; i++) {
+  for (let i = 0; i < a1.length; i++) {
     a[a1[i]] = true;
   }
 
-  for (var i = 0; i < a2.length; i++) {
+  for (let i = 0; i < a2.length; i++) {
     if (a[a2[i]]) {
       delete a[a2[i]];
     } else {
@@ -265,7 +266,7 @@ function getIdDiff(a1, a2) {
     }
   }
 
-  for (var k in a) {
+  for (const k in a) {
     diff.push(k);
   }
 
@@ -277,7 +278,9 @@ function getIdDiff(a1, a2) {
  * @param content Das ausgegebene Objekt des ContentCheckers
  * @returns HTML Card Header
  */
-function generateDashboardCardHeader(content: contentCheckerOutput) {
+function generateDashboardCardHeader(
+  content: contentCheckerOutput
+): HTMLDivElement {
   const elem = document.createElement("div");
   if (content.status !== "success") {
     elem.style.backgroundColor = "#FF851B";
@@ -368,7 +371,7 @@ function generateTitleText(content: contentCheckerOutput) {
 /**
  *  Generate Descriptors again from cachedChanges. Can be used after ViewType changes.
  */
-function renewChangeDescriptors() {
+function renewChangeDescriptors(): void {
   console.log("TEST: renews");
   //TODO: Check if ViewType has actually changed; maybe with var that saved last ViewType
   if (cachedChanges !== null) {

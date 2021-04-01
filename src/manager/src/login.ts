@@ -1,6 +1,6 @@
 import { storage } from "@shared/types";
 
-export default function (params: { options: storage }) {
+export default function (params: { options: storage }): void {
   const { options } = params;
 
   /**
@@ -21,12 +21,11 @@ export default function (params: { options: storage }) {
   /**
    * Der Login Knopf auf der Startseite, oben rechts
    */
-  var loginContA = document.querySelector(".usermenu .login a");
+  const loginContA = document.querySelector(".usermenu .login a");
   console.log(loginContA);
 
   // Startseite. Von Hier entweder zum Login oder zum Dashboard
   if (location.href === "https://moodle.jsp.jena.de/") {
-    var loginContA = document.querySelector(".usermenu .login a");
     console.log({ loginContA });
     console.log(options["autologinredirect"]);
     if (loginContA && options["autologinredirect"] === true) {
@@ -51,8 +50,8 @@ export default function (params: { options: storage }) {
         '<span style="color: grey;">Benutzt du einen<br><b>Passwort-Manager</b>?<br />Dann kanst du<br><b>"AutoFill-AutoLogin"</b> in den <b>Schulm**dleJena Tools Einstelungen</b> einschalten, um dich noch schneller Anzumelden!</span>'
       );
     } else {
-      var userIn = false;
-      var passIn = false;
+      let userIn = false;
+      let passIn = false;
 
       const input_username = document.getElementById("username");
       const input_password = document.getElementById("password");

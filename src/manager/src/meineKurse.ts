@@ -1,25 +1,19 @@
-import {
-  fächer,
-  storage,
-  CourseTopics,
-  Activity,
-  localStorage,
-} from "@shared/types";
+import { fächer, storage } from "@shared/types";
 import { getIdFromLink } from "./utils";
 
-export default function (params: { options: storage }) {
+export default function (params: { options: storage }): void {
   const { options } = params;
 
   try {
     const Fächer: fächer = options["fächer"];
 
-    var courseListLi = document.querySelectorAll<HTMLLinkElement>(
+    const courseListLi = document.querySelectorAll<HTMLLinkElement>(
       "section[data-block='course_list'] ul.unlist > li > div > a"
     );
     console.log(Object.keys(Fächer));
     courseListLi.forEach((item) => {
       const id = getIdFromLink(item.href);
-      var name = item.textContent.trim();
+      // const name = item.textContent.trim();
 
       if (
         Fächer[id]?.emoji?.trim() != "" &&

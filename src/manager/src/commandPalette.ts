@@ -1,7 +1,7 @@
 import { storage } from "@shared/types";
 import CommandPal from "./cmdpal";
 
-export default function (params: { options: storage }) {
+export default function (params: { options: storage }): void {
   const { options } = params;
   const FächerCmds = [];
   Object.keys(options.fächer).forEach((fachId) => {
@@ -15,7 +15,7 @@ export default function (params: { options: storage }) {
       handler: () => (location.href = `/course/view.php?id=${fachId}`),
     });
   });
-  var commandPal = new CommandPal({
+  const commandPal = new CommandPal({
     hotkey: "ctrl+space",
     commands: [
       {
