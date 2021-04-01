@@ -1,8 +1,8 @@
-import { fächer, storage } from "@shared/types";
+import { fächer, storage } from "./../types";
 import { createEmojiImage, createWavesImage } from "./createCourseImage";
 import { getIdFromLink, replaceSpecialChars } from "./utils";
-import { FächerList } from "./../../utils";
-import * as chroma from "chroma-js";
+import { FächerList } from "./..//utils";
+import { scale as chromaScale } from "chroma-js";
 import {
   card,
   vertFlex,

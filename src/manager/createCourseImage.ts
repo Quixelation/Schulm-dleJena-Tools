@@ -1,4 +1,4 @@
-import { increase_brightness } from "./../../utils";
+import { increase_brightness } from "./../utils";
 function createEmojiImage(emoji: string, size: number, color?: string): string {
   console.log("color", emoji, color);
   return `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='170px' height='50px'> 

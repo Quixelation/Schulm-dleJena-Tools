@@ -1,4 +1,4 @@
-import { syncStorage, localStorage, storage } from "./../../types";
+import { syncStorage, localStorage, storage } from "@/types";
 import prependNavBarButtons from "./navbar";
 import DashboardCourses from "./DashboardCourses";
 import navigationBlock from "./navigationBlock";
