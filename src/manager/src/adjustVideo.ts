@@ -10,13 +10,15 @@ export default function (params: { options: storage }): void {
         console.log(item);
         item.parentElement.style.paddingTop = `min(${
           (item.parentElement as HTMLElement)
-
+            /* eslint-disable-next-line */
+            //@ts-ignore
             .computedStyleMap()
             .get("padding-top").value
         }%, calc(100vh - 50px))`;
         item.parentElement.style.paddingTop = `min(${
           (item.parentElement as HTMLElement)
-
+            /* eslint-disable-next-line */
+            //@ts-ignore
             .computedStyleMap()
             .get("padding-top").value
         }%, -webkit-calc(100vh - 50px))`;
@@ -28,11 +30,15 @@ export default function (params: { options: storage }): void {
       console.log(item);
       item.parentElement.style.paddingTop = `min(${
         (item.parentElement as HTMLDivElement)
+          /* eslint-disable-next-line */
+          //@ts-ignore
           .computedStyleMap()
           .get("padding-top").value
       }%, calc(100vh - 50px))`;
       item.parentElement.style.paddingTop = `min(${
         (item.parentElement as HTMLDivElement)
+          /* eslint-disable-next-line */
+          //@ts-ignore
           .computedStyleMap()
           .get("padding-top").value
       }%, -webkit-calc(100vh - 50px))`;
