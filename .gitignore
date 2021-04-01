@@ -10,3 +10,4 @@ versions/*
 .vercel
 dist/web-ext-artifacts
 code.zip
+.vscode/*
