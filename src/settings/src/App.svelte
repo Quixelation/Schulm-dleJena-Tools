@@ -6,11 +6,13 @@
   import Page_Functions_Login from "./pages/functions/login.svelte";
   import Page_404 from "./pages/404.svelte";
   import Page_Über from "./pages/info/über.svelte";
+  import Page_Lizensen from "./pages/info/licenses.svelte";
   const routes = {
     "/": Page_Home,
     "/functions/allgemein": Page_Functions_Allgemein,
     "/functions/login": Page_Functions_Login,
     "/info/ueber": Page_Über,
+    "/info/lizensen": Page_Lizensen,
     "*": Page_404,
   };
   import Sidebar from "./components/sidebar.svelte";
