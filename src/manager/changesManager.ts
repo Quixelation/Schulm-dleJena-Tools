@@ -1,6 +1,15 @@
 import { Activity, CourseTopics, storage } from "@shared/types";
 import course2json from "./course2json";
-import { card, cardButton, container, Heading, vertFlex } from "./htmlBuilder";
+import {
+  card,
+  cardButton,
+  container,
+  Heading,
+  vertFlex,
+  button as htmlBuilderButton,
+  span,
+} from "./htmlBuilder";
+import { saveCourse } from "./syncTopics";
 
 //TODO: Show number of uncheckable Courses
 
@@ -34,10 +43,13 @@ export default function (params: { options: storage }): void {
             child: vertFlex({
               children: [
                 Heading({
-                  text: `<b style="color: #0074D9">${value.changes}</b> Änderungen gefunden`,
+                  text: `<b style="color: #0074D9">${
+                    value.changes
+                  }</b> Änderung${value.changes === 1 ? "" : "en"} gefunden`,
                   options: {
                     type: "h3",
                   },
+                  id: "ÄnderungHeading",
                 }),
                 Heading({
                   text: `<b style="color: #2ECC40; font-weight: bold;">${
@@ -46,13 +58,50 @@ export default function (params: { options: storage }): void {
                     value.added === 1 ? "" : "e"
                   }`,
                   options: { type: "h5" },
+                  id: "AddedHeading",
                 }),
                 Heading({
                   text: `<b style="color: #FF4136; font-weight: bold;">${
                     value.removed
                   }</b> Inhalt${value.removed === 1 ? "" : "e"} entfernt`,
                   options: { type: "h5" },
+                  id: "RemovedHeading",
                 }),
+                value.changes > 0
+                  ? htmlBuilderButton({
+                      style: "margin-top: 10px",
+                      onclick: () => {
+                        document.getElementById(
+                          "SpanHtmlBuilderButtonSaveAllCourseTopics"
+                        ).innerText = "Speichert & Entfernt";
+                        (document.getElementById(
+                          "htmlBuilderButtonSaveAllCourseTopics"
+                        ) as HTMLButtonElement).disabled = true;
+                        saveAllCourseTopics().then(() => {
+                          document
+                            .getElementById(
+                              "htmlBuilderButtonSaveAllCourseTopics"
+                            )
+                            .remove();
+                          document.getElementById(
+                            "ÄnderungHeading"
+                          ).innerHTML = `<b style="color: #0074D9">0</b> Änderungen gefunden`;
+                          document.getElementById(
+                            "AddedHeading"
+                          ).innerHTML = `<b style="color: #2ECC40; font-weight: bold;">0</b> neue Inhalte`;
+                          document.getElementById(
+                            "RemovedHeading"
+                          ).innerHTML = `<b style="color: #FF4136; font-weight: bold;">0</b> Inhalte entfernt`;
+                        });
+                      },
+                      id: "htmlBuilderButtonSaveAllCourseTopics",
+                      options: { type: "primary" },
+                      child: span({
+                        text: "Alle Änderungen speichern",
+                        id: "SpanHtmlBuilderButtonSaveAllCourseTopics",
+                      }),
+                    })
+                  : null,
               ],
             }),
           }),
@@ -220,6 +269,13 @@ function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
       resolve(result);
     });
   });
+}
+
+async function saveAllCourseTopics() {
+  for (const changesItem of cachedChanges) {
+    await saveCourse(changesItem.id, changesItem.content);
+    console.log("Saved", changesItem.id);
+  }
 }
 
 /**

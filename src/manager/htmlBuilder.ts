@@ -69,7 +69,7 @@ function vertFlex(args: htmlMultiContainerBuilderArgs<undefined>): HTMLElement {
   horizFlexItem.style.flexDirection = "column";
 
   args.children.forEach((item) => {
-    horizFlexItem.append(item);
+    if (item !== null) horizFlexItem.append(item);
   });
   return applyOptions({
     ...args,
@@ -204,7 +204,10 @@ function cardButton(
 }
 function button(
   args: htmlSingleContainerBuilderArgs<{
-    onclick: (MouseEvent: MouseEvent) => void;
+    /**
+     * @deprecated
+     */
+    onclick?: (MouseEvent: MouseEvent) => void;
     type?: "primary" | "secondary";
   }>
 ): HTMLElement {
