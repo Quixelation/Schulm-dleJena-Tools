@@ -12,7 +12,25 @@
     </h3>
   </div>
   <span class="sidebar_item section_title "> Funktionen </span>
-  {#each [{ name: "Allgemein", href: "/functions/allgemein" }, { name: "Downloader", href: "/functions/downloader", name: "Kurse", href: "/functions/kurse" }, { name: "Dashboard", href: "/functions/dashboard" }, { name: "Login", href: "/functions/login" }] as FunktionenItem}
+  {#each [{ name: "Allgemein", href: "/functions/allgemein" }, { name: "Downloader", href: "/functions/downloader" }, { name: "Kurse", href: "/functions/kurse" }, { name: "Dashboard", href: "/functions/dashboard" }, { name: "Login", href: "/functions/login" }] as FunktionenItem}
+    <div
+      on:click={() => push(FunktionenItem.href)}
+      class:active={$location === FunktionenItem.href}
+      class="sidebar_item section_item"
+    >
+      {FunktionenItem.name}
+    </div>
+  {/each}
+  <span class="sidebar_item section_title "> Kurse </span>
+  <div
+    on:click={() => push("/courses/courses")}
+    class:active={$location === "/courses/courses"}
+    class="sidebar_item section_item"
+  >
+    Kurse bearbeiten
+  </div>
+  <span class="sidebar_item section_title "> Info </span>
+  {#each [{ name: "Über", href: "/info/ueber" }, { name: "Lizensen", href: "/info/lizensen" }] as FunktionenItem}
     <div
       on:click={() => push(FunktionenItem.href)}
       class:active={$location === FunktionenItem.href}
@@ -54,6 +72,7 @@
   .section_title {
     text-transform: uppercase;
     margin-left: 15px;
+    margin-top: 25px;
     font-weight: 600;
     color: grey;
   }
