@@ -24,6 +24,7 @@
 </script>
 
 <div
+  class={done ? "hoverBlackActivator" : ""}
   style="display: flex; align-items: center;width: 100%; justify-content: space-between"
 >
   <div
@@ -33,7 +34,7 @@
     style="display: flex; align-items: center; cursor: pointer; width: 100%"
   >
     <i
-      class="fa fa-{typeIcons[todoItem.type].icon} colorTransition"
+      class="fa fa-{typeIcons[todoItem.type].icon} colorTransition hoverBlack"
       style="{done
         ? 'color: #80808080'
         : `color: ${
@@ -44,7 +45,7 @@
     <div style="display: flex; flex-direction: column">
       {#if !isFirefox}
         <span
-          class="colorTransition"
+          class="colorTransition hoverBlack"
           style="font-size: 11px; margin-bottom: -3px; {done
             ? 'color: #80808080;'
             : 'color: #000000;'} display: flex; align-items: center; "
@@ -62,7 +63,7 @@
        {done
           ? 'color: #80808080;'
           : 'color: #000000'}"
-        class="colorTransition">{todoItem.title}</span
+        class="colorTransition hoverBlack">{todoItem.title}</span
       >
     </div>
   </div>
@@ -88,5 +89,8 @@
     &:hover {
       background-color: #0f6fc540;
     }
+  }
+  .hoverBlackActivator:hover .hoverBlack {
+    color: black !important;
   }
 </style>
