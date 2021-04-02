@@ -18,7 +18,7 @@
 
   .toggle {
     box-shadow: 0 1px 3px rgb(0, 0, 0, 0.12) inset,
-      0 1px 2px rgb(0, 0, 0, 0.24) inset;
+      0 1px 2px rgb(0, 0, 0, 0.24) inset !important;
     height: 32px;
     width: 52px;
     border-radius: 16px;
