@@ -1,8 +1,5 @@
 <script>
   import Header from "./../../components/header.svelte";
-  let versionName =
-    chrome?.runtime?.getManifest?.()?.version_name ?? "{{VersionName}}";
-  let version = chrome?.runtime?.getManifest?.()?.version ?? "{{Version}}";
 </script>
 
 <div class="page">
