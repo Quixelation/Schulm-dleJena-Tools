@@ -204,6 +204,8 @@ function changeAllListItems(params: { options: storage }) {
             }</span>
           </span>
           `;
+      console.log(`syncCourse(${id}, ${nameElement.innerText.trim()});`);
+      syncCourse(id, nameElement.innerText.trim());
       //#endregion
 
       //Die Trennung zwischen den Listen-Elementen sichtbarer machen
