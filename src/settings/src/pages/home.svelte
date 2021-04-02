@@ -10,6 +10,9 @@
     try {
       var sitetopic = document.querySelector(".sitetopic");
       var sitetopicClone = sitetopic.cloneNode(true);
+      sitetopicClone.querySelector(
+        "img[src='https://moodle.jsp.jena.de/pluginfile.php/99/mod_label/intro/moodleHilft_Aeneas.jpg']"
+      ).style.margin = "0";
       console.log(sitetopicCard);
       sitetopicCard.append(sitetopicClone);
 
