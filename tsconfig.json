@@ -1,21 +1,28 @@
 {
   "compileOnSave": true,
+
   "compilerOptions": {
+    "baseUrl": ".",
     "jsx": "react",
     "lib": ["DOM", "ESNext"],
     "watch": false,
     "target": "ES6",
     "outDir": "dist/generated",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"],
+      //For legacy
+      "@shared/*": ["./src/*"],
+      "src": ["./src/*"]
+    }
   },
   "exclude": [
     "src/popup/*",
     "src/todoManager/*",
     "src/shared/*",
-    "src/manager",
-    "src/background",
     "src/changesManager",
     "archive"
   ],
-  "include": ["src/**/*"]
+  "include": ["./src/**/*"]
 }

@@ -42,14 +42,6 @@ export default {
   },
 
   plugins: [
-    //!Mit TS Config updated
-    typescript({
-      sourceMap: !production,
-      include: ["./../utils.ts"],
-      paths: {
-        "@shared/*": ["../*"],
-      },
-    }),
     svelte({
       preprocess: sveltePreprocess({
         sourceMap: !production,
@@ -71,6 +63,14 @@ export default {
     resolve({
       browser: true,
       dedupe: ["svelte"],
+    }),
+    //!Mit TS Config updated
+    typescript({
+      sourceMap: !production,
+      include: ["./../utils.ts"],
+      paths: {
+        "@shared/*": ["../*"],
+      },
     }),
     commonjs(),
 

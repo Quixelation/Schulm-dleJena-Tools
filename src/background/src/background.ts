@@ -1,12 +1,26 @@
-import { localStorage, storage, syncStorage } from "../../types";
+import { localStorage, storage } from "../../types";
 chrome.runtime.onInstalled.addListener(function (object) {
   if ("install" === object.reason)
     chrome.tabs.create(
       { url: "https://smjt.robertstuendl.com/first-install" },
-      function (tab) {
+      function () {
         console.log("New tab launched");
       }
     );
+});
+chrome.commands.onCommand.addListener(function (command) {
+  if (command === "panik-key") {
+    chrome.tabs.query({ url: "*://moodle.jsp.jena.de/*" }, function (value) {
+      if (value.length > 0) {
+        chrome.tabs.update(value[0].id, { highlighted: true });
+      } else {
+        chrome.tabs.create({
+          url: "https://moodle.jsp.jena.de/my",
+          active: true,
+        });
+      }
+    });
+  }
 });
 chrome.storage.sync.get(null, function (options) {
   const defaultOptions: storage = {
@@ -28,6 +42,7 @@ chrome.storage.sync.get(null, function (options) {
     courseInfo: {},
     allowMultipleDownloads: false,
     dashboardEmojiFontSize: 100,
+    sortedCourses: [],
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";
@@ -48,7 +63,7 @@ chrome.storage.local.get(null, function (options) {
 chrome.runtime.onConnect.addListener(function (externalPort) {
   console.log("runtimeConnect");
   externalPort.onDisconnect.addListener(function () {
-    var ignoreError = chrome.runtime.lastError;
+    // const ignoreError = chrome.runtime.lastError;
     console.log("runtimeDicConnect");
     chrome.tabs.query({ active: true }, (tab) => {
       console.log(tab[0]);
