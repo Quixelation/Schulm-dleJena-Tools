@@ -15,7 +15,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle
 ## Funktionen
 
 - ### Änderungen ansehen
-  Anzahl der Änderungen (auf dem Dashboard) auf Knopfdruck sehen: ![Änderungen ansehen Bild](/assets/changes.png)
+  Anzahl der Änderungen (auf dem Dashboard) auf Knopfdruck sehen
 - ### Dashboard-Design
 
   - **Kürzere Kursnamen**<br>
