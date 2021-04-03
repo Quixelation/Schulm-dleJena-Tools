@@ -132,8 +132,6 @@ export default function (params: { options: storage }): void {
     });
   });
   observer.observe(document.querySelector("#block-region-content"), config);
-
-  //TODO: Add observer to observe the "data-display" Attribute of "div[data-region='courses-view']", that contains the info about Card/List. This should be fired for changesManager or sortableCourses
 }
 
 //TODO: make detection if mainCourses are shown public to all function (by making it an event(?))

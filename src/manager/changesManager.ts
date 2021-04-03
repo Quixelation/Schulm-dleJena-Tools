@@ -11,7 +11,7 @@ import {
 } from "./htmlBuilder";
 import { saveCourse } from "./syncTopics";
 
-//TODO: Show number of uncheckable Courses
+//TODO: #19 Show number of uncheckable Courses
 
 let cachedChanges: contentCheckerOutput[] = null;
 
@@ -423,13 +423,12 @@ function generateTitleText(content: contentCheckerOutput) {
   }`;
 }
 
-//TODO: Docs
 /**
  *  Generate Descriptors again from cachedChanges. Can be used after ViewType changes.
  */
 function renewChangeDescriptors(): void {
   console.log("TEST: renews");
-  //TODO: Check if ViewType has actually changed; maybe with var that saved last ViewType
+
   if (cachedChanges !== null) {
     console.log("RENEWING");
     generateDashboardChangeDescriptors(cachedChanges);

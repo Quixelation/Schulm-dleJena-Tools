@@ -67,8 +67,6 @@ function saveAndDeactivate() {
   deactivateSortable();
 }
 
-//TODO: Spellchecking
-
 const disabledDisplayTippyContent =
   "<b style='color: white; text-decoration: underline;text-decoration-color: #FF4136;text-decoration-thickness: 3px;'>Beende zuerst die Sortierung</b>";
 
@@ -90,13 +88,10 @@ const disabledDisplayTippyContent =
 
 async function sortCourses(): Promise<void> {
   console.log("Sorting Courses");
-  //TODO: Possibly Add Check for undefined
   chrome.storage.sync.get("sortedCourses", (value: storage) => {
     const viewType = getViewType();
     if (viewType === "summary") return;
 
-    //TODO: ListView
-    //CardViewType
     const coursesContainer = document.querySelector(
       getCoursesQuerySelector(false)
     );
@@ -111,19 +106,20 @@ async function sortCourses(): Promise<void> {
     const saveOrder: string[] = value["sortedCourses"];
     if (saveOrder?.length > 0) {
       console.log("saveOrder", saveOrder);
+      const unusedIds = { ...coursesList };
       coursesContainer.innerHTML = "";
       saveOrder.forEach((id) => {
         console.log({ id, idC: coursesList[id] });
         coursesContainer.append(coursesList[id]);
+        delete unusedIds[id];
       });
-      //TODO: Handle new / not in the system courses
+      console.log("unusedId", unusedIds);
+
+      Object.keys(unusedIds).forEach((id) => {
+        coursesContainer.append(unusedIds[id]);
+      });
     }
 
-    //TODO: Remove
-    // //Activate and Deactivate for sorting
-    // initializeSortable();
-    // if (value[getSaveKey()]) sortable.sort(value[getSaveKey()]);
-    // deactivateSortable();
     return;
   });
 }
@@ -132,7 +128,6 @@ let status = false;
 async function activate(): Promise<void> {
   await sortCourses();
 
-  //TODO: animation not working; probably missing css
   tippy("#sortingdropdown", {
     content:
       "Es gibt bekannte Inkompatibilitäten mit der Drag&Drop-Sortierung!",
