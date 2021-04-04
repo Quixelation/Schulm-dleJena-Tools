@@ -1,4 +1,8 @@
-import { syncStorage, localStorage, storage } from "@/types";
+import {
+  syncStorage as syncStorageType,
+  localStorage as localStorageType,
+  storage,
+} from "@/types";
 import prependNavBarButtons from "./navbar";
 import DashboardCourses from "./DashboardCourses";
 import navigationBlock from "./navigationBlock";
@@ -62,10 +66,10 @@ if (!location.pathname.includes("/mod/quiz/")) {
   //   target.dispatchEvent(evt);
   //   console.log("THERE EVENT", { name, target, options });
   // }
-  const syncStorage: Promise<syncStorage> = new Promise((resolve) => {
+  const syncStorage: Promise<syncStorageType> = new Promise((resolve) => {
     chrome.storage.sync.get(null, resolve);
   });
-  const localStorage: Promise<localStorage> = new Promise((resolve) => {
+  const localStorage: Promise<localStorageType> = new Promise((resolve) => {
     chrome.storage.local.get(null, resolve);
   });
 
