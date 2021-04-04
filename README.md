@@ -25,54 +25,58 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle
 
 - ### Dashboard-Design
 
-- **Kürzere Kursnamen**<br>
-  Kann Kursnamen wie `Chemie Klasse 7/F Mustermann Angergymnasium` in `Chemie` umwandeln, sodass diese einfacher zu finden sind. Der kürzere Name wird vorher durch den Benutzer bestimmt.
+  - **Kürzere Kursnamen**<br>
+    Kann Kursnamen wie `Chemie Klasse 7/F Mustermann Angergymnasium` in `Chemie` umwandeln, sodass diese einfacher zu finden sind. Der kürzere Name wird vorher durch den Benutzer bestimmt.
 
-- **Veränderte Kursbilder**<br>
-  Kann das Vorschaubild, welches auf dem Dashboard zu sehen ist, verändern. Der Benutzer kann dies entweder durch ein Emoji oder durch ein Muster mit benutzerdefinierter Farbe ersetzen.
+  - **Veränderte Kursbilder**<br>
+    Kann das Vorschaubild, welches auf dem Dashboard zu sehen ist, verändern. Der Benutzer kann dies entweder durch ein Emoji oder durch ein Muster mit benutzerdefinierter Farbe ersetzen.
 
-- **Farbiger Fortschritt**<br>
-  Der Kursname auf dem Dashboard verändert auf einer Skala von Rot (0%) bis Grün (100%), je nach Fortschritt in dem Kurs, die Farbe.
+  - **Farbiger Fortschritt**<br>
+    Der Kursname auf dem Dashboard verändert auf einer Skala von Rot (0%) bis Grün (100%), je nach Fortschritt in dem Kurs, die Farbe.
 
 - ### Todomanager
 
-> Der Todomanager bietet eine Todo-Liste, welche immer am linken Bildschirmrand verfügbar ist.
+  > Der Todomanager bietet eine Todo-Liste, welche immer am linken Bildschirmrand verfügbar ist.
 
-- **Erstellung neuer Todos**<br>
-  Der Benutzer kann Todos erstellen. Diese werden außerhalb von Moodle™, in dem Speicher der Erweiterung gespeichert.
+  - **Erstellung neuer Todos**<br>
+    Der Benutzer kann Todos erstellen. Diese werden außerhalb von Moodle™, in dem Speicher der Erweiterung gespeichert.
 
-- **Todo-Kategorien**<br>
-  Der Benutzer muss jeder Todo eine der folgenden Kategorien zuordnen:
-- Hausaufgabe
-- Test
-- Videokonferenz
+  - **Todo-Kategorien**<br>
+    Der Benutzer muss jeder Todo eine der folgenden Kategorien zuordnen:
+
+    - Hausaufgabe
+
+    - Test
+
+    - Videokonferenz
 
 - ### Kursthemen-Manager
 
-- **Reihenfolge der Themen umkehren**<br>
-  Der Benutzer kann die Reihenfolge der Themen in Kursen, welche in dem "Listen-Format" sind, umkehren.
+  - **Reihenfolge der Themen umkehren**<br>
+    Der Benutzer kann die Reihenfolge der Themen in Kursen, welche in dem "Listen-Format" sind, umkehren.
 
-- **Leere Themen ausblenden**<br>
-  Der Benutzer kann leere Themen ausblenden. Hierbei wird darauf geachtet, dass der Titel dem Schema `Thema <ZAHL>` folgt und dass dieses Thema keinen Inhalt hat.
+  - **Leere Themen ausblenden**<br>
+    Der Benutzer kann leere Themen ausblenden. Hierbei wird darauf geachtet, dass der Titel dem Schema `Thema <ZAHL>` folgt und dass dieses Thema keinen Inhalt hat.
 
-- **Nicht verfügbare Themen verbergen**<br>
-  Moodle™ zeigt Themen, welche "Nicht Verfügbar" sind, trotzdem an. Der Benutzer kann diese nun ausblenden. Diese Funktion blendet alle Themen, welche von Moodle™ die `hidden`-klasse zugeordnet bekommen haben, aus.
+  - **Nicht verfügbare Themen verbergen**<br>
+    Moodle™ zeigt Themen, welche "Nicht Verfügbar" sind, trotzdem an. Der Benutzer kann diese nun ausblenden. Diese Funktion blendet alle Themen, welche von Moodle™ die `hidden`-klasse zugeordnet bekommen haben, aus.
 
 - ### Downloads
   **PDF-Dateien** werden nun **automatisch heruntergeladen**, sobald der Benutzer diese auf Moodle™ öffnet.
 - ### Go-To-Dashboard
 
-Es gibt nun mehr Buttons/Links, welche zum Dashboard führen:
+  Es gibt nun mehr Buttons/Links, welche zum Dashboard führen:
 
-- Ein großer Button/Link in der Navigationsleiste, oben.
-- Ein großer Button/Link im Navigationsbereich, links.
+  - Ein großer Button/Link in der Navigationsleiste, oben.
+
+  - Ein großer Button/Link im Navigationsbereich, links.
 
 - ### Impressum(-spflicht)
   Die SchulmoodleJena Website erfüllt nun die Impressumspflicht, indem ein Link zum Impressum in dem Footer-Bereich hinzugefügt wird.
 
 ## Entwickler
 
-### Getestet mit:
+### Getestet mit\:
 
 - **Node** 15.11.0
 - **npm** 7.6.1

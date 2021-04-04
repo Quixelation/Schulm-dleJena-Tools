@@ -1,13 +1,15 @@
 import { localStorage, storage } from "../../types";
-chrome.runtime.onInstalled.addListener(function (object) {
-  if ("install" === object.reason)
-    chrome.tabs.create(
-      { url: "https://smjt.robertstuendl.com/first-install" },
-      function () {
-        console.log("New tab launched");
-      },
-    );
-});
+chrome.runtime.onInstalled.addListener(
+  (object: chrome.runtime.InstalledDetails): void => {
+    if ("install" === object.reason)
+      chrome.tabs.create(
+        { url: "https://smjt.robertstuendl.com/first-install" },
+        function () {
+          console.log("New tab launched");
+        },
+      );
+  },
+);
 chrome.commands.onCommand.addListener((command): void => {
   if (command === "panik-key") {
     chrome.tabs.query({ url: "*://moodle.jsp.jena.de/*" }, function (value) {
@@ -49,7 +51,7 @@ chrome.storage.sync.get(null, (options): void => {
   });
   chrome.storage.sync.set(options);
 });
-chrome.storage.local.get(null, function (options) {
+chrome.storage.local.get(null, (options): void => {
   const defaultOptions: localStorage = {
     courseInfo: {},
     downloaded: [],

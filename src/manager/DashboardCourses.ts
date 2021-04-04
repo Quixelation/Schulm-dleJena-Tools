@@ -136,7 +136,7 @@ export default function (params: { options: storage }): void {
 
 //TODO: make detection if mainCourses are shown public to all function (by making it an event(?))
 let fired = false;
-function changeAllListItems(params: { options: storage }) {
+function changeAllListItems(params: { options: storage }): void {
   const { options } = params;
   const Fächer: fächer = options["fächer"];
   if (!fired) {
@@ -243,7 +243,7 @@ function changeAllListItems(params: { options: storage }) {
     });
 }
 
-function changeAllCards(params: { options: storage }) {
+function changeAllCards(params: { options: storage }): void {
   if (!fired) {
     if (
       document.querySelectorAll(
@@ -259,7 +259,8 @@ function changeAllCards(params: { options: storage }) {
   document
     .querySelectorAll(".card-deck .card[data-region='course-content']")
     .forEach((item) => {
-      if (item.getAttribute("data-moodlehelperenhanced") == "true") {
+      const smjtEnhanced = item.getAttribute("data-moodlehelperenhanced");
+      if (smjtEnhanced == "true") {
         return;
       } else {
         item.setAttribute("data-moodlehelperenhanced", "true");
