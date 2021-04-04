@@ -141,7 +141,7 @@ async function activate(): Promise<void> {
     hideOnClick: false,
     allowHTML: true,
   })?.[0];
-  displaydropdownTippy.disable();
+  displaydropdownTippy?.disable();
 
   const sortButton = document.createElement("button");
   sortButton.className = "btn btn-outline-primary mb-1 mr-1";
@@ -155,7 +155,7 @@ async function activate(): Promise<void> {
         .getElementById("SortCoursesButtonIconId")
         .classList[!state ? "add" : "remove"]("fa-hand-paper-o");
 
-      displaydropdownTippy[state ? "enable" : "disable"]();
+      displaydropdownTippy[state ? "enable" : "disable"]?.();
       document
         .getElementById("displaydropdown")
         .classList[state ? "add" : "remove"]("disabled");

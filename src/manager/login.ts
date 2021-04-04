@@ -69,7 +69,7 @@ export default function (params: { options: storage }): void {
       }
 
       // Benutzername Observen
-      input_username.addEventListener("input", (e) => {
+      input_username?.addEventListener("input", (e) => {
         if ((e.target as HTMLInputElement | null)?.value?.length > 0) {
           userIn = true;
           checkAndLogin({ passIn, userIn });
@@ -77,7 +77,7 @@ export default function (params: { options: storage }): void {
       });
 
       // Passwort observen
-      input_password.addEventListener("input", (e) => {
+      input_password?.addEventListener("input", (e) => {
         if ((e.target as HTMLInputElement | null)?.value?.length > 0) {
           passIn = true;
           checkAndLogin({ passIn, userIn });

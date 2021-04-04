@@ -1,4 +1,4 @@
-import { fächer, fach } from "./../../../types";
+import { fächer as fächerType, fach } from "./../../../types";
 const fächer = {
   Kunst: "🎨",
   Astronomie: "🌌",
@@ -68,8 +68,8 @@ function getAutoAssets(courseName: string): string {
   return fächer[courseName];
 }
 
-function getRegisteredCourses(): Promise<fächer> {
-  return new Promise<fächer>((resolve) => {
+function getRegisteredCourses(): Promise<fächerType> {
+  return new Promise<fächerType>((resolve) => {
     chrome.storage.sync.get("fächer", (val) => {
       console.log(val);
       resolve(val.fächer);
