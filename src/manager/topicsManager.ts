@@ -1,4 +1,4 @@
-function toggleNoEmptyTopics(force?: true) {
+function toggleNoEmptyTopics(force?: true): void {
   if (force) {
     document.body.classList.add("no-empty-topics");
   } else {
@@ -104,8 +104,6 @@ export default function (/*params: { options: storage }*/): void {
       },
       {
         id: "LeereThemenAnzeigenBtn",
-        text:
-          "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
         onClick: () => {
           toggleNoEmptyTopics();
           //#region saveSettings
@@ -142,6 +140,8 @@ export default function (/*params: { options: storage }*/): void {
 
           //#endregion
         },
+        text:
+          "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
       },
     ];
     optionsArray.forEach((option) => {

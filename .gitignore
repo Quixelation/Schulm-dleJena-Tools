@@ -11,3 +11,4 @@ versions/*
 dist/web-ext-artifacts
 code.zip
 .vscode/*
+.eslintcache

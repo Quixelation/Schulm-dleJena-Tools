@@ -1,11 +1,8 @@
 function padding(
-  text: string | number,
+  text: string,
   desiredLength: number,
   paddingChar: string,
 ): string {
-  if (typeof text === "number") {
-    text = String(text);
-  }
   const currentLength = text.length;
   const needToAdapt = desiredLength - currentLength;
   if (needToAdapt > 0) {
@@ -20,16 +17,16 @@ function padding(
 
 function increase_brightness(hex: string, percent: number): string {
   // strip the leading # if it's there
-  hex = hex.replace(/^\s*#|\s*$/g, "");
+  let realhex = hex.replace(/^\s*#|\s*$/g, "");
 
   // convert 3 char codes --> 6, e.g. `E0F` --> `EE00FF`
-  if (hex.length == 3) {
-    hex = hex.replace(/(.)/g, "$1$1");
+  if (realhex.length == 3) {
+    realhex = hex.replace(/(.)/g, "$1$1");
   }
 
-  const r = parseInt(hex.substr(0, 2), 16),
-    g = parseInt(hex.substr(2, 2), 16),
-    b = parseInt(hex.substr(4, 2), 16);
+  const r = parseInt(realhex.substr(0, 2), 16),
+    g = parseInt(realhex.substr(2, 2), 16),
+    b = parseInt(realhex.substr(4, 2), 16);
 
   return (
     "#" +
@@ -39,22 +36,22 @@ function increase_brightness(hex: string, percent: number): string {
   );
 }
 const FächerList = {
-  Deutsch: "📖",
-  Sozialkunde: "",
-  Mathe: "📊",
-  Latein: "",
-  Französisch: "🥖",
-  Kunst: "🎨",
-  Sport: "🏃‍♂️",
-  Physik: "⚛",
-  Chemie: "🧪",
   Astronomie: "🌌",
   Biologie: "🌸",
-  Musik: "🎶",
-  Geographie: "🌎",
-  Ethik: "",
-  Informatik: "👨‍💻",
+  Chemie: "🧪",
+  Deutsch: "📖",
   Englisch: "💂‍♂️",
+  Ethik: "",
+  Französisch: "🥖",
+  Geographie: "🌎",
   Geschichte: "📜",
+  Informatik: "👨‍💻",
+  Kunst: "🎨",
+  Latein: "",
+  Mathe: "📊",
+  Musik: "🎶",
+  Physik: "⚛",
+  Sozialkunde: "",
+  Sport: "🏃‍♂️",
 };
 export { padding, increase_brightness, FächerList };

@@ -24,25 +24,25 @@ chrome.commands.onCommand.addListener(function (command) {
 });
 chrome.storage.sync.get(null, function (options) {
   const defaultOptions: storage = {
-    usecoloredprogress: true,
-    showemojicourses: true,
-    autologinredirect: true,
-    forcedownload: true,
+    allowMultipleDownloads: false,
     autodashboardredirect: true,
     autologin_untrusted: false,
-    shortcoursenames: true,
-    "no-hidden-topics": false,
-    reversed_courses: [],
-    "no-empty-topics": [],
-    todos: {},
-    removeNavigationBlock: true,
-    fächer: {},
+    autologinredirect: true,
     biggerVideo: true,
-    downloaded: [],
     courseInfo: {},
-    allowMultipleDownloads: false,
     dashboardEmojiFontSize: 100,
+    downloaded: [],
+    fächer: {},
+    forcedownload: true,
+    "no-empty-topics": [],
+    "no-hidden-topics": false,
+    removeNavigationBlock: true,
+    reversed_courses: [],
+    shortcoursenames: true,
+    showemojicourses: true,
     sortedCourses: [],
+    todos: {},
+    usecoloredprogress: true,
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";
@@ -51,8 +51,8 @@ chrome.storage.sync.get(null, function (options) {
 });
 chrome.storage.local.get(null, function (options) {
   const defaultOptions: localStorage = {
-    downloaded: [],
     courseInfo: {},
+    downloaded: [],
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

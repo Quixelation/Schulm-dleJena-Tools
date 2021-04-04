@@ -19,16 +19,16 @@ export default function (params: { options: storage }): void {
     hotkey: "ctrl+space",
     commands: [
       {
-        name: "Kurs öffnen",
         children: FächerCmds,
+        name: "Kurs öffnen",
       },
       {
-        name: "Dashboard öffnen",
         handler: () => (location.href = "/my"),
+        name: "Dashboard öffnen",
       },
       {
-        name: "Startseite öffnen",
         handler: () => (location.href = "/"),
+        name: "Startseite öffnen",
       },
       {
         name: "Lern-Modus",

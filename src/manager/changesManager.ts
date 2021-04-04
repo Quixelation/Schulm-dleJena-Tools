@@ -20,11 +20,6 @@ export default function (params: { options: storage }): void {
   const { options } = params;
 
   const changesManagerCardButton = cardButton({
-    options: {
-      text: "Änderungen ansehen",
-      icon: "rocket",
-      link: "javascript:void(0);",
-    },
     onclick: () => {
       const loadingText = card({
         child: Heading({
@@ -109,6 +104,11 @@ export default function (params: { options: storage }): void {
         );
       });
     },
+    options: {
+      icon: "rocket",
+      link: "javascript:void(0);",
+      text: "Änderungen ansehen",
+    },
   });
 
   const changesManagerArea = container({
@@ -170,26 +170,26 @@ function checkAll(): Promise<changesNr> {
           .then((e) => {
             if (e.status === "error") {
               resolve({
-                id,
-                changes: 0,
                 added: 0,
-                removed: 0,
-                edited: 0,
-                content: {},
-                status: e.status,
-                errorDesc: e.desc,
                 allNew: false,
+                changes: 0,
+                content: {},
+                edited: 0,
+                errorDesc: e.desc,
+                id,
+                removed: 0,
+                status: e.status,
               });
             } else if (e.status === "not-supported") {
               resolve({
-                id,
-                changes: 0,
                 added: 0,
-                removed: 0,
-                edited: 0,
-                content: {},
-                status: e.status,
                 allNew: false,
+                changes: 0,
+                content: {},
+                edited: 0,
+                id,
+                removed: 0,
+                status: e.status,
               });
             } else {
               compare(id, e.list).then((c) =>
@@ -306,7 +306,7 @@ function getIdArrayFromActivities(activities: Activity[]) {
  * @param a2 Neue IDs
  * @stackoverflow https://stackoverflow.com/questions/1187518/how-to-get-the-difference-between-two-arrays-in-javascript
  */
-function getIdDiff(a1, a2) {
+function getIdDiff(a1: string[], a2: string[]): string[] {
   const a = [],
     diff = [];
 
@@ -322,9 +322,9 @@ function getIdDiff(a1, a2) {
     }
   }
 
-  for (const k in a) {
+  a.forEach((k) => {
     diff.push(k);
-  }
+  });
 
   return diff;
 }
@@ -372,7 +372,7 @@ function generateDashboardListTag(content: contentCheckerOutput) {
   return tag;
 }
 
-function getViewType() {
+function getViewType(): "card" | "list" | "summary" {
   return document
     .querySelector("div[data-region='courses-view']")
     .getAttribute("data-display") as "card" | "list" | "summary";

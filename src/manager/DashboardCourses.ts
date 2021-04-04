@@ -92,7 +92,7 @@ export default function (params: { options: storage }): void {
     .querySelector("div[data-region='courses-view']")
     .getAttribute("data-display");
   const observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function () {
+    mutations.forEach(() => {
       changeAllCards({ options });
       changeAllListItems({ options });
 
@@ -446,12 +446,11 @@ function changeAllCards(params: { options: storage }) {
 }
 
 let addedInfoToPage = false;
-function addInfo() {
+function addInfo(): void {
   if (!addedInfoToPage) {
     document.querySelector("header#page-header").insertAdjacentElement(
       "beforeend",
       card({
-        style: "width: 100%; margin: 16px; border: 2.5px solid #FF851B",
         child: vertFlex({
           children: [
             h5({
@@ -472,6 +471,7 @@ function addInfo() {
             }),
           ],
         }),
+        style: "width: 100%; margin: 16px; border: 2.5px solid #FF851B",
       }),
     );
     addedInfoToPage = true;
@@ -479,7 +479,7 @@ function addInfo() {
 }
 const syncCourseCue: { id: string; longName: string }[] = [];
 let syncCourseWorking = false;
-function syncCourse(id: string, longName: string) {
+function syncCourse(id: string, longName: string): void {
   if (!syncCourseWorking) {
     syncCourseWorking = true;
     chrome.storage.sync.get("fächer", (args: { fächer: fächer }) => {
@@ -496,10 +496,10 @@ function syncCourse(id: string, longName: string) {
           );
         })?.[0];
         fächer[id] = {
-          long: longName,
+          color: "#ffffff",
           emoji: Fach ? FächerList[Fach] : "",
           imageType: FächerList[Fach] ? "emoji" : "original",
-          color: "#ffffff",
+          long: longName,
           short: Fach,
         };
       }
