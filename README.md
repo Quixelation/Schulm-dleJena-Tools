@@ -1,6 +1,8 @@
 ![Picture](/banner.png)
 
 # Schulm**dleJena-Tools ![GitHub manifest version (path)](https://img.shields.io/github/manifest-json/v/Quixelation/SchulmoodleJena-Tools?filename=dist%2Fmanifest.json&style=for-the-badge)
+[![DeepScan grade](https://deepscan.io/api/teams/13557/projects/16525/branches/357528/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13557&pid=16525&bid=357528)   [![CodeFactor](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools/badge)](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools)
+---
 
 Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle™ System der Jenaer Schulen bietet.
 
