@@ -256,11 +256,14 @@ function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
         result.allNew = true;
       }
       diffs.forEach((diff) => {
-        diff = diff.toString();
-        console.log(oldIds.includes(diff), newIds.includes(diff));
-        if (oldIds.includes(diff) && !newIds.includes(diff)) {
+        const stringDiff = diff.toString();
+        console.log(oldIds.includes(stringDiff), newIds.includes(stringDiff));
+        if (oldIds.includes(stringDiff) && !newIds.includes(stringDiff)) {
           result.removed++;
-        } else if (!oldIds.includes(diff) && newIds.includes(diff)) {
+        } else if (
+          !oldIds.includes(stringDiff) &&
+          newIds.includes(stringDiff)
+        ) {
           result.added++;
           console.log("added");
         }
@@ -271,7 +274,7 @@ function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
   });
 }
 
-async function saveAllCourseTopics() {
+async function saveAllCourseTopics(): Promise<void> {
   for (const changesItem of cachedChanges) {
     await saveCourse(changesItem.id, changesItem.content);
     console.log("Saved", changesItem.id);
@@ -282,7 +285,7 @@ async function saveAllCourseTopics() {
  * Wandelt die Themen basierte Struktur um, sodass es ein Array mit den Inhalten ist.
  * @param data Die Themen basierte Struktur des Kurses
  */
-function topics2activities(data: CourseTopics) {
+function topics2activities(data: CourseTopics): Activity[] {
   const activities: Activity[] = [];
   Object.keys(data).forEach((sectionId) => {
     data[sectionId].activities.forEach((activity) => {
@@ -352,7 +355,9 @@ function generateDashboardCardHeader(
   return elem;
 }
 
-function generateDashboardListTag(content: contentCheckerOutput) {
+function generateDashboardListTag(
+  content: contentCheckerOutput,
+): HTMLDivElement {
   console.log("Generating Tag");
   const tag = document.createElement("div");
   if (content.status !== "success") {

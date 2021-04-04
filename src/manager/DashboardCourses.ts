@@ -91,7 +91,7 @@ export default function (params: { options: storage }): void {
   let lastViewType = document
     .querySelector("div[data-region='courses-view']")
     .getAttribute("data-display");
-  const observer = new MutationObserver(function (mutations) {
+  const observer = new MutationObserver((mutations: MutationRecord[]): void => {
     mutations.forEach(() => {
       changeAllCards({ options });
       changeAllListItems({ options });

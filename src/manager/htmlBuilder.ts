@@ -22,7 +22,7 @@ function applyOptions(
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     [key: string]: any;
   }>,
-) {
+): HTMLElement {
   if (args.style != null) {
     args.child.setAttribute(
       "style",

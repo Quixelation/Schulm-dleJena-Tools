@@ -36,25 +36,31 @@ if (!location.pathname.includes("/mod/quiz/")) {
   );
 
   document.head.appendChild(newStyle);
-  chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-    console.log("Message", { msg, sender });
-    // If the received message has the expected format...
-    if (msg.text === "report_back") {
-      // Call the specified callback, passing
-      // the web-page's DOM content as argument
+  chrome.runtime.onMessage.addListener(
+    (
+      msg: any,
+      sender: chrome.runtime.MessageSender,
+      sendResponse: (arg: any) => void,
+    ): void => {
+      console.log("Message", { msg, sender });
+      // If the received message has the expected format...
+      if (msg.text === "report_back") {
+        // Call the specified callback, passing
+        // the web-page's DOM content as argument
 
-      sendResponse(document.body.innerHTML);
-    }
-    if (msg.text === "goto") {
-      // Call the specified callback, passing
-      // the web-page's DOM content as argument
+        sendResponse(document.body.innerHTML);
+      }
+      if (msg.text === "goto") {
+        // Call the specified callback, passing
+        // the web-page's DOM content as argument
 
-      window.location.href = msg.url;
-    }
-    if (msg.text === "reload") {
-      location.reload();
-    }
-  });
+        window.location.href = msg.url;
+      }
+      if (msg.text === "reload") {
+        location.reload();
+      }
+    },
+  );
   // function fireEvent(name, target, options: { [key: string]: any }) {
   //   //Ready: create a generic event
   //   var evt = document.createEvent("Events");

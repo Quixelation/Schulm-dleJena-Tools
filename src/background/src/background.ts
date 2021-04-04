@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener(
     if ("install" === object.reason)
       chrome.tabs.create(
         { url: "https://smjt.robertstuendl.com/first-install" },
-        function () {
+        (): void => {
           console.log("New tab launched");
         },
       );
@@ -12,7 +12,7 @@ chrome.runtime.onInstalled.addListener(
 );
 chrome.commands.onCommand.addListener((command): void => {
   if (command === "panik-key") {
-    chrome.tabs.query({ url: "*://moodle.jsp.jena.de/*" }, function (value) {
+    chrome.tabs.query({ url: "*://moodle.jsp.jena.de/*" }, (value): void => {
       if (value.length > 0) {
         chrome.tabs.update(value[0].id, { highlighted: true });
       } else {
@@ -65,7 +65,7 @@ chrome.storage.local.get(null, (options): void => {
 chrome.runtime.onConnect.addListener(
   (externalPort: chrome.runtime.Port): void => {
     console.log("runtimeConnect");
-    externalPort.onDisconnect.addListener(function () {
+    externalPort.onDisconnect.addListener((): void => {
       // const ignoreError = chrome.runtime.lastError;
       console.log("runtimeDicConnect");
       chrome.tabs.query({ active: true }, (tab) => {
