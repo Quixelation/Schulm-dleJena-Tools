@@ -17,5 +17,6 @@
     },
     "peacock.color": "#ff3e00",
     "restructuredtext.languageServer.disabled": true,
-    "cSpell.enabled": false
+    "cSpell.enabled": false,
+    "deepscan.enable": true
 }
