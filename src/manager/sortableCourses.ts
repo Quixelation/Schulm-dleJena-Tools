@@ -25,10 +25,10 @@ function initializeSortable() {
   //Sortable.mount(new AutoScroll());
   sortable = Sortable.create(
     document.querySelector(
-      "div[data-region='paged-content-page'] > ul.list-group"
+      "div[data-region='paged-content-page'] > ul.list-group",
     )
       ? document.querySelector(
-          "div[data-region='paged-content-page'] > ul.list-group"
+          "div[data-region='paged-content-page'] > ul.list-group",
         )
       : document.querySelector("div.card-deck.dashboard-card-deck"),
     {
@@ -41,7 +41,7 @@ function initializeSortable() {
       scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
       scrollSpeed: 10, // px, speed of the scrolling
       bubbleScroll: true, // apply autoscroll to all parent elements, allowing for easier movement
-    }
+    },
   );
 }
 
@@ -93,7 +93,7 @@ async function sortCourses(): Promise<void> {
     if (viewType === "summary") return;
 
     const coursesContainer = document.querySelector(
-      getCoursesQuerySelector(false)
+      getCoursesQuerySelector(false),
     );
 
     const coursesList: { [id: string]: Element } = {};

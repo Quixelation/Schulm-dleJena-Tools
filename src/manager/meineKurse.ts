@@ -8,7 +8,7 @@ export default function (params: { options: storage }): void {
     const Fächer: fächer = options["fächer"];
 
     const courseListLi = document.querySelectorAll<HTMLLinkElement>(
-      "section[data-block='course_list'] ul.unlist > li > div > a"
+      "section[data-block='course_list'] ul.unlist > li > div > a",
     );
     console.log(Object.keys(Fächer));
     courseListLi.forEach((item) => {
@@ -23,7 +23,7 @@ export default function (params: { options: storage }): void {
       } else if (Fächer[id]?.short && Fächer[id]?.short?.trim()?.length > 0) {
         item.innerHTML = item.innerHTML.replace(
           item.textContent.trim(),
-          Fächer[id].short
+          Fächer[id].short,
         );
       }
     });

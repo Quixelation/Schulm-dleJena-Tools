@@ -9,8 +9,8 @@ export default function (params: { options: storage }): void {
       url.pathname.slice(
         "/pluginfile.php/".length,
         "/pluginfile.php/".length +
-          url.pathname.slice("/pluginfile.php/".length).indexOf("/")
-      )
+          url.pathname.slice("/pluginfile.php/".length).indexOf("/"),
+      ),
     );
   } else {
     id = true;

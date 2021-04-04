@@ -6,7 +6,7 @@ function toggleNoEmptyTopics(force?: true) {
   }
   if (document.body.classList.contains("no-empty-topics")) {
     document.getElementById(
-      "leereThemenAnzeigenTextVersteckenAnzeigen"
+      "leereThemenAnzeigenTextVersteckenAnzeigen",
     ).innerText = "anzeigen";
     document
       .getElementById("leereThemenAnzeigenIcon")
@@ -14,7 +14,7 @@ function toggleNoEmptyTopics(force?: true) {
     document.getElementById("leereThemenAnzeigenIcon").classList.add("fa-eye");
   } else {
     document.getElementById(
-      "leereThemenAnzeigenTextVersteckenAnzeigen"
+      "leereThemenAnzeigenTextVersteckenAnzeigen",
     ).innerText = "verstecken";
     document
       .getElementById("leereThemenAnzeigenIcon")
@@ -82,13 +82,13 @@ export default function (/*params: { options: storage }*/): void {
             });
             console.log("reversed_courses", reversed_courses);
             document.getElementById(
-              "ThemenReihenfolgeUmkehren"
+              "ThemenReihenfolgeUmkehren",
             ).style.background = "";
             if (!isReversed) {
               console.log("pushId");
               reversed_courses.push(id);
               document.getElementById(
-                "ThemenReihenfolgeUmkehren"
+                "ThemenReihenfolgeUmkehren",
               ).style.background = "green";
             }
             console.log("reversed_courses", reversed_courses);
@@ -131,7 +131,7 @@ export default function (/*params: { options: storage }*/): void {
               console.log("pushId");
               reversed_courses.push(id);
               document.getElementById(
-                "LeereThemenAnzeigenBtn"
+                "LeereThemenAnzeigenBtn",
               ).style.background = "green";
             }
             console.log("no-empty-topics", reversed_courses);
@@ -160,11 +160,11 @@ export default function (/*params: { options: storage }*/): void {
 
     if (document.querySelectorAll("div.content > ul.section") !== null) {
       const allSections = document.querySelectorAll<HTMLLIElement>(
-        "li.section.main"
+        "li.section.main",
       );
       allSections.forEach((section) => {
         const courseTitle = /Thema [0-9]+$/g.test(
-          section.querySelector(".sectionname").textContent.trim()
+          section.querySelector(".sectionname").textContent.trim(),
         );
         const hasContent = section.querySelector("div.content > ul.section")
           ? section.querySelector("div.content > ul.section").innerHTML !== ""

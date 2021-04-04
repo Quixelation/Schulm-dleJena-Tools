@@ -21,14 +21,14 @@ function applyOptions(
   args: htmlSingleContainerBuilderArgs<{
     /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     [key: string]: any;
-  }>
+  }>,
 ) {
   if (args.style != null) {
     args.child.setAttribute(
       "style",
       (args.child.getAttribute("style") != null
         ? args.child.getAttribute("style") + " "
-        : "") + args.style
+        : "") + args.style,
     );
   }
   if (args.class != null) {
@@ -49,7 +49,7 @@ function applyOptions(
   return args.child;
 }
 function horizFlex(
-  args: htmlMultiContainerBuilderArgs<undefined>
+  args: htmlMultiContainerBuilderArgs<undefined>,
 ): HTMLElement {
   const horizFlexItem = document.createElement("div");
   horizFlexItem.style.display = "flex";
@@ -78,7 +78,7 @@ function vertFlex(args: htmlMultiContainerBuilderArgs<undefined>): HTMLElement {
 }
 
 function container(
-  args: htmlMultiContainerBuilderArgs<undefined>
+  args: htmlMultiContainerBuilderArgs<undefined>,
 ): HTMLElement {
   const horizFlexItem = document.createElement("div");
 
@@ -102,7 +102,7 @@ function icon(args: htmlBuilderArgs<{ icon: string }>): HTMLElement {
 }
 
 function link(
-  args: htmlMultiContainerBuilderArgs<{ href: string }>
+  args: htmlMultiContainerBuilderArgs<{ href: string }>,
 ): HTMLElement {
   const elem = document.createElement("a");
   elem.href = args.options.href;
@@ -154,7 +154,7 @@ function bold(args: htmlTextBuilderArgs<null>): HTMLElement {
 }
 
 function Heading(
-  args: htmlTextBuilderArgs<{ type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" }>
+  args: htmlTextBuilderArgs<{ type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" }>,
 ): HTMLElement {
   if (args.options?.type == null) {
     if (args.options == null) {
@@ -179,7 +179,7 @@ function cardButton(
     link: string;
     text: string;
     icon: string;
-  }>
+  }>,
 ): HTMLElement {
   return applyOptions({
     ...args,
@@ -209,7 +209,7 @@ function button(
      */
     onclick?: (MouseEvent: MouseEvent) => void;
     type?: "primary" | "secondary";
-  }>
+  }>,
 ): HTMLElement {
   args.options.type = args.options.type ?? "primary";
   const button = document.createElement("button");
@@ -237,7 +237,7 @@ function card(args: htmlSingleContainerBuilderArgs<null>): HTMLElement {
 }
 
 function freeVerticalSpace(
-  args: htmlBuilderArgs<{ height: string }>
+  args: htmlBuilderArgs<{ height: string }>,
 ): HTMLElement {
   return applyOptions({
     ...args,

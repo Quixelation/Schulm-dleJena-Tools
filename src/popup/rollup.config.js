@@ -24,7 +24,7 @@ function serve() {
         {
           stdio: ["ignore", "inherit", "inherit"],
           shell: true,
-        }
+        },
       );
 
       process.on("SIGTERM", toExit);

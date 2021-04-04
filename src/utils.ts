@@ -1,7 +1,7 @@
 function padding(
   text: string | number,
   desiredLength: number,
-  paddingChar: string
+  paddingChar: string,
 ): string {
   if (typeof text === "number") {
     text = String(text);

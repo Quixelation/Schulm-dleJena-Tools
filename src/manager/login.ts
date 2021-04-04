@@ -47,7 +47,7 @@ export default function (params: { options: storage }): void {
       login_button.style.marginBottom = "15px";
       login_form.insertAdjacentHTML(
         "afterend",
-        '<span style="color: grey;">Benutzt du einen <b style="white-space: nowrap">Passwort-Manager</b>? Dann kanst du <b style="white-space: nowrap">"AutoFill-AutoLogin"</b> in den <b>Schulm**dleJena Tools Einstelungen</b> einschalten, um dich noch schneller Anzumelden!</span>'
+        '<span style="color: grey;">Benutzt du einen <b style="white-space: nowrap">Passwort-Manager</b>? Dann kanst du <b style="white-space: nowrap">"AutoFill-AutoLogin"</b> in den <b>Schulm**dleJena Tools Einstelungen</b> einschalten, um dich noch schneller Anzumelden!</span>',
       );
     } else {
       let userIn = false;

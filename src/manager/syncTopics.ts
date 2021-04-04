@@ -16,7 +16,7 @@ export default function (): void {
 
 function saveCourse(
   id: string,
-  jsonCourseContent: CourseTopics
+  jsonCourseContent: CourseTopics,
 ): Promise<void> {
   return new Promise((resolve) => {
     chrome.storage.local.get("courseInfo", (items: localStorage) => {

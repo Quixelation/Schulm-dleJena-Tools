@@ -40,13 +40,13 @@ export default function (params: { options: storage }): void {
         name: "Feedback",
         handler: () =>
           (location.href = `mailto:robert.st.stuendl@gmail.com?subject=${encodeURIComponent(
-            "fb-smjt: <BETREFF>"
+            "fb-smjt: <BETREFF>",
           )}&body=${encodeURIComponent(
             `(Es sind keine Formalitäten notwendig)\n\n\n\nWichtige Infos: (Bitte nicht entfernen)\nVersion: ${
               chrome.runtime.getManifest().version
             }\nVersionName: ${
               chrome.runtime.getManifest().version_name
-            }\nuser-agent: ${navigator.userAgent}\n\n`
+            }\nuser-agent: ${navigator.userAgent}\n\n`,
           )}`),
       },
       {

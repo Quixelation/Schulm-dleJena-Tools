@@ -31,15 +31,15 @@ function findCourses(givenInnerHTML: string): { name: string; id: number }[] {
     .forEach((item) => {
       if (
         item.children[1].children[0].children[0].children[1].children[2].getAttribute(
-          "data-moodlehelperfilteredname"
+          "data-moodlehelperfilteredname",
         ) != "true" &&
         item.children[1].children[0].children[0].children[1].children[2].classList.contains(
-          "multiline"
+          "multiline",
         )
       ) {
         const name = item.children[1].children[0].children[0].children[1].children[2].textContent.trim();
         console.log(
-          item.children[1].children[0].children[0].children[1].children[2]
+          item.children[1].children[0].children[0].children[1].children[2],
         );
         const href = (item.children[0] as HTMLLinkElement).href;
         const id = parseInt(href.slice(href.indexOf("id=") + 3));
@@ -54,7 +54,7 @@ function findCourses(givenInnerHTML: string): { name: string; id: number }[] {
 
 function getAutoCourseName(longName: string): string | null {
   const filtered = Object.keys(fächer).filter((item) =>
-    longName.includes(item)
+    longName.includes(item),
   );
 
   if (filtered.length === 1) {
@@ -80,7 +80,7 @@ function getRegisteredCourses(): Promise<fächerType> {
 function addCourse(params: fach, id: string): Promise<null> {
   if (id == null) {
     alert(
-      "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren."
+      "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren.",
     );
   }
   return new Promise<null>((resolve, reject) => {
@@ -112,12 +112,12 @@ function deleteCourse(id: string, callback?: () => null): Promise<null> {
 function editCourse(
   params: fach,
   id: string,
-  callback?: () => null
+  callback?: () => null,
 ): Promise<null> {
   return new Promise((resolve) => {
     if (id == null) {
       alert(
-        "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren."
+        "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren.",
       );
     }
     chrome.storage.sync.get("fächer", ({ fächer: fächer }) => {

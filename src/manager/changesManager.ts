@@ -72,25 +72,25 @@ export default function (params: { options: storage }): void {
                       style: "margin-top: 10px",
                       onclick: () => {
                         document.getElementById(
-                          "SpanHtmlBuilderButtonSaveAllCourseTopics"
+                          "SpanHtmlBuilderButtonSaveAllCourseTopics",
                         ).innerText = "Speichert & Entfernt";
                         (document.getElementById(
-                          "htmlBuilderButtonSaveAllCourseTopics"
+                          "htmlBuilderButtonSaveAllCourseTopics",
                         ) as HTMLButtonElement).disabled = true;
                         saveAllCourseTopics().then(() => {
                           document
                             .getElementById(
-                              "htmlBuilderButtonSaveAllCourseTopics"
+                              "htmlBuilderButtonSaveAllCourseTopics",
                             )
                             .remove();
                           document.getElementById(
-                            "ÄnderungHeading"
+                            "ÄnderungHeading",
                           ).innerHTML = `<b style="color: #0074D9">0</b> Änderungen gefunden`;
                           document.getElementById(
-                            "AddedHeading"
+                            "AddedHeading",
                           ).innerHTML = `<b style="color: #2ECC40; font-weight: bold;">0</b> neue Inhalte`;
                           document.getElementById(
-                            "RemovedHeading"
+                            "RemovedHeading",
                           ).innerHTML = `<b style="color: #FF4136; font-weight: bold;">0</b> Inhalte entfernt`;
                         });
                       },
@@ -105,7 +105,7 @@ export default function (params: { options: storage }): void {
               ],
             }),
           }),
-          loadingText
+          loadingText,
         );
       });
     },
@@ -154,7 +154,7 @@ function checkAll(): Promise<changesNr> {
             default:
               return null;
           }
-        })()
+        })(),
       )
       .forEach((item) => {
         const href = item.querySelector("a").href;
@@ -193,7 +193,7 @@ function checkAll(): Promise<changesNr> {
               });
             } else {
               compare(id, e.list).then((c) =>
-                resolve({ ...c, id, content: e.list, status: e.status })
+                resolve({ ...c, id, content: e.list, status: e.status }),
               );
             }
           });
@@ -235,10 +235,10 @@ function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
     chrome.storage.local.get("courseInfo", (storage: storage) => {
       const { courseInfo } = storage;
       const oldIds = getIdArrayFromActivities(
-        topics2activities(courseInfo[id] ?? {})
+        topics2activities(courseInfo[id] ?? {}),
       ).map(String);
       const newIds = getIdArrayFromActivities(
-        topics2activities(jsonCourse)
+        topics2activities(jsonCourse),
       ).map(String);
       const result = {
         changes: 0,
@@ -335,7 +335,7 @@ function getIdDiff(a1, a2) {
  * @returns HTML Card Header
  */
 function generateDashboardCardHeader(
-  content: contentCheckerOutput
+  content: contentCheckerOutput,
 ): HTMLDivElement {
   const elem = document.createElement("div");
   if (content.status !== "success") {
@@ -389,14 +389,14 @@ function generateDashboardChangeDescriptors(values: contentCheckerOutput[]) {
   values.forEach((item) => {
     if (type === "card") {
       const dashboardCard = document.querySelector(
-        `div[data-course-id='${item.id}']`
+        `div[data-course-id='${item.id}']`,
       );
       dashboardCard.prepend(generateDashboardCardHeader(item));
     } else if (type === "list") {
       document
         .querySelector(`li[data-course-id='${item.id}']`)
         .children[0].children[0].children[0].children[0].children[0].append(
-          generateDashboardListTag(item)
+          generateDashboardListTag(item),
         );
     }
   });

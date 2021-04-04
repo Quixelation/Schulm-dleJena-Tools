@@ -6,7 +6,7 @@ export default function prependNavBarButtons(): void {
     text: string,
     link: string,
     margin?: true,
-    blank?: true
+    blank?: true,
   ) {
     const buttonContainer = document.createElement("li");
     buttonContainer.classList.add("nav-item");
@@ -24,17 +24,17 @@ export default function prependNavBarButtons(): void {
   NavBar.prepend(
     createNavBarButton(
       `<img style="height: 20px;" src="${chrome.runtime.getURL(
-        "icons/icon.png"
+        "icons/icon.png",
       )}" /> Wiki`,
       "https://smjt.robertstuendl.com/wiki",
       true,
-      true
-    )
+      true,
+    ),
   );
   NavBar.prepend(
     createNavBarButton(
       '<i class="icon fa fa-tachometer fa-fw"></i>Dashboard',
-      location.origin + "/my/"
-    )
+      location.origin + "/my/",
+    ),
   );
 }

@@ -31,8 +31,8 @@ if (!location.pathname.includes("/mod/quiz/")) {
         chrome.runtime.getURL("fonts/SansForgetica-Regular.otf") +
         "') format('opentype');\
 }\
-"
-    )
+",
+    ),
   );
 
   document.head.appendChild(newStyle);

@@ -329,7 +329,7 @@ var Y = {
                         if ("string" == typeof t) return t;
                         let e = t + "";
                         return "0" == e && 1 / t == -1 / 0 ? "-0" : e;
-                      })(t))(l)
+                      })(t))(l),
               );
         } else n.push(t);
       };
@@ -344,7 +344,7 @@ function Q(
     currentLocation: n = 0,
     expectedLocation: s = 0,
     distance: i = Y.distance,
-  } = {}
+  } = {},
 ) {
   const o = e / t.length,
     r = Math.abs(s - n);
@@ -361,7 +361,7 @@ function Z(
     findAllMatches: r = Y.findAllMatches,
     minMatchCharLength: c = Y.minMatchCharLength,
     includeMatches: l = Y.includeMatches,
-  } = {}
+  } = {},
 ) {
   if (e.length > 32) throw new Error("Pattern length exceeds max of 32.");
   const a = e.length,
@@ -473,7 +473,7 @@ class et {
       findAllMatches: o = Y.findAllMatches,
       minMatchCharLength: r = Y.minMatchCharLength,
       isCaseSensitive: c = Y.isCaseSensitive,
-    } = {}
+    } = {},
   ) {
     (this.options = {
       location: e,
@@ -580,7 +580,7 @@ class ot extends nt {
       findAllMatches: o = Y.findAllMatches,
       minMatchCharLength: r = Y.minMatchCharLength,
       isCaseSensitive: c = Y.isCaseSensitive,
-    } = {}
+    } = {},
   ) {
     super(t),
       (this._bitapSearch = new et(t, {
@@ -794,7 +794,7 @@ class dt {
         const o = s.weight;
         if (o <= 0 || o >= 1)
           throw new Error(
-            '"weight" property in key must be in the range of (0, 1)'
+            '"weight" property in key must be in the range of (0, 1)',
           );
         (this._keys[i] = { weight: o }), (e += o);
       }
@@ -979,7 +979,7 @@ class mt {
         location: o = Y.location,
         threshold: r = Y.threshold,
         distance: c = Y.distance,
-      } = {}
+      } = {},
     ) {
       (this.query = null),
         (this.options = {
@@ -1056,7 +1056,7 @@ class mt {
       }
       return { isMatch: !1, score: 1 };
     }
-  }
+  },
 ),
   (mt.version = "5.2.3"),
   (mt.createIndex = ut),

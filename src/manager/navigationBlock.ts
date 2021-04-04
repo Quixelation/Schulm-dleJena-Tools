@@ -6,14 +6,14 @@ export default function (params: { options: storage }): void {
 
   if (options["removeNavigationBlock"] === true) {
     const navBlock = document.querySelector(
-      "section.block_navigation.block[data-block='navigation']"
+      "section.block_navigation.block[data-block='navigation']",
     );
     if (location.pathname === "/my/") {
       navBlock.insertAdjacentElement(
         "beforebegin",
         cardButton({
           options: { link: location.origin, icon: "home", text: "Startseite" },
-        })
+        }),
       );
     } else if (location.pathname === "/") {
       // Muss über der Kurs-Liste stehen
@@ -27,7 +27,7 @@ export default function (params: { options: storage }): void {
               icon: "tachometer",
               text: "Dashboard",
             },
-          })
+          }),
         );
     } else {
       navBlock.insertAdjacentElement(
@@ -38,7 +38,7 @@ export default function (params: { options: storage }): void {
             icon: "tachometer",
             text: "Dashboard",
           },
-        })
+        }),
       );
     }
   }
