@@ -17,7 +17,7 @@ import { renewChangeDescriptors } from "./changesManager";
 function getViewType(): "list" | "card" | "summary" {
   console.log(
     document.querySelector(getCoursesQuerySelector(false, "card")),
-    getCoursesQuerySelector(false, "card")
+    getCoursesQuerySelector(false, "card"),
   );
   if (document.querySelector(getCoursesQuerySelector(false, "card")) !== null) {
     console.log(document.querySelector(getCoursesQuerySelector(false, "card")));
@@ -31,7 +31,7 @@ function getViewType(): "list" | "card" | "summary" {
     document.querySelector(getCoursesQuerySelector(false, "summary")) !== null
   ) {
     console.log(
-      document.querySelector(getCoursesQuerySelector(false, "summary"))
+      document.querySelector(getCoursesQuerySelector(false, "summary")),
     );
     return "summary";
   } else {
@@ -45,7 +45,7 @@ function getViewType(): "list" | "card" | "summary" {
  */
 function getCoursesQuerySelector(
   children: boolean,
-  type?: "card" | "list" | "summary"
+  type?: "card" | "list" | "summary",
 ): string {
   const viewType = type ?? getViewType();
   type ? null : console.log("getCoursesQuerySelector__viewType", viewType);
@@ -103,14 +103,14 @@ export default function (params: { options: storage }): void {
       if (
         type === "card" &&
         document.querySelectorAll(
-          "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']"
+          "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']",
         ).length > 0
       ) {
         newTypeSeen = true;
       } else if (
         type === "list" &&
         document.querySelectorAll(
-          "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem"
+          "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem",
         ).length > 0
       ) {
         newTypeSeen = true;
@@ -142,7 +142,7 @@ function changeAllListItems(params: { options: storage }) {
   if (!fired) {
     if (
       document.querySelectorAll(
-        "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem"
+        "div[data-region='paged-content-page'] > ul.list-group > li.course-listitem",
       ).length > 0
     ) {
       activateSortable();
@@ -211,13 +211,13 @@ function changeAllListItems(params: { options: storage }) {
 
       if (options["usecoloredprogress"] === true) {
         const progressbar = item.querySelector(
-          ".progress-bar.bar"
+          ".progress-bar.bar",
         ) as HTMLDivElement;
         if (progressbar != null) {
           const value = Number(
             item
               .querySelector(".progress-bar.bar")
-              .getAttribute("aria-valuenow")
+              .getAttribute("aria-valuenow"),
           );
           const hsl = chromaScale(["#ff0000", "#00ff1e"])
             .domain([0, 75, 95, 100])
@@ -247,7 +247,7 @@ function changeAllCards(params: { options: storage }) {
   if (!fired) {
     if (
       document.querySelectorAll(
-        "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']"
+        "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']",
       ).length > 0
     ) {
       activateSortable();
@@ -291,7 +291,7 @@ function changeAllCards(params: { options: storage }) {
               Fächer[id].short;
             item.children[1].children[0].children[0].children[1].children[2].setAttribute(
               "data-moodlehelperfilteredname",
-              "true"
+              "true",
             );
             (item.children[1].children[0].children[0].children[1]
               .children[2] as HTMLSpanElement).style.fontSize = "20px";
@@ -310,8 +310,8 @@ function changeAllCards(params: { options: storage }) {
               createEmojiImage(
                 Fächer[id].emoji,
                 options.dashboardEmojiFontSize,
-                Fächer[id].imageType == "emoji_bg" ? Fächer[id].color : null
-              )
+                Fächer[id].imageType == "emoji_bg" ? Fächer[id].color : null,
+              ),
             )}")`;
           }
 
@@ -319,7 +319,7 @@ function changeAllCards(params: { options: storage }) {
           else if (Fächer[id].imageType == "muster") {
             const waves = createWavesImage(Fächer[id].color);
             cardImgDiv.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
-              waves
+              waves,
             )}")`;
             cardImgDiv.style.transform = "rotateZ(180deg)";
           }
@@ -328,7 +328,7 @@ function changeAllCards(params: { options: storage }) {
             // Transform original Card to Waves
             const waves = createWavesImage(Fächer[id].color);
             cardImgDiv.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
-              waves
+              waves,
             )}")`;
             cardImgDiv.style.transform = "rotateZ(180deg)";
 
@@ -336,7 +336,10 @@ function changeAllCards(params: { options: storage }) {
             const emojiCard = document.createElement("div");
             emojiCard.className = "card-img dashboard-card-img";
             emojiCard.style.backgroundImage = `url("data:image/svg+xml,${encodeURIComponent(
-              createEmojiImage(Fächer[id].emoji, options.dashboardEmojiFontSize)
+              createEmojiImage(
+                Fächer[id].emoji,
+                options.dashboardEmojiFontSize,
+              ),
             )}")`;
 
             // Brining it all together
@@ -345,7 +348,7 @@ function changeAllCards(params: { options: storage }) {
             emojiCard.style.zIndex = "9";
             cardImgDiv.parentElement.insertAdjacentElement(
               "afterbegin",
-              emojiCard
+              emojiCard,
             );
           }
           //* BG
@@ -372,7 +375,7 @@ function changeAllCards(params: { options: storage }) {
         (item as HTMLDivElement).style.backgroundColor = "#1E293B";
 
         const smallFooterCard = item.querySelector(
-          ".card-footer .small"
+          ".card-footer .small",
         ) as HTMLSpanElement;
         if (smallFooterCard) smallFooterCard.style.color = "#cbd5e1";
 
@@ -380,7 +383,7 @@ function changeAllCards(params: { options: storage }) {
           (item.children[1].children[0].children[0].children[1]
             .children[2] as HTMLSpanElement).style.color = `#39CCCC`;
           const theProgressBar = item.querySelector(
-            ".progress-bar.bar"
+            ".progress-bar.bar",
           ) as HTMLDivElement;
           if (theProgressBar) {
             theProgressBar.style.backgroundColor = `#39CCCC`;
@@ -422,8 +425,8 @@ function changeAllCards(params: { options: storage }) {
                 Number(
                   item
                     .querySelector(".progress-bar.bar")
-                    .getAttribute("aria-valuenow")
-                )
+                    .getAttribute("aria-valuenow"),
+                ),
               )
               .css();
 
@@ -431,7 +434,7 @@ function changeAllCards(params: { options: storage }) {
               .children[2] as HTMLSpanElement).style.color = hsl;
 
             (item.querySelector(
-              ".progress-bar.bar"
+              ".progress-bar.bar",
             ) as HTMLDivElement).style.backgroundColor = hsl;
           }
         }
@@ -469,7 +472,7 @@ function addInfo() {
             }),
           ],
         }),
-      })
+      }),
     );
     addedInfoToPage = true;
   }
@@ -489,7 +492,7 @@ function syncCourse(id: string, longName: string) {
             longName.replace(/[^a-z\d\s]+/gi, "").toLowerCase() +
             " "
           ).includes(
-            " " + item.replace(/[^a-z\d\s]+/gi, "").toLowerCase() + " "
+            " " + item.replace(/[^a-z\d\s]+/gi, "").toLowerCase() + " ",
           );
         })?.[0];
         fächer[id] = {

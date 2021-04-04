@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(function (object) {
       { url: "https://smjt.robertstuendl.com/first-install" },
       function () {
         console.log("New tab launched");
-      }
+      },
     );
 });
 chrome.commands.onCommand.addListener(function (command) {
