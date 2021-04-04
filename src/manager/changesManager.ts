@@ -292,7 +292,7 @@ function topics2activities(data: CourseTopics) {
   return activities;
 }
 
-function getIdArrayFromActivities(activities: Activity[]) {
+function getIdArrayFromActivities(activities: Activity[]): number[] {
   const ids: number[] = [];
   activities.forEach((activity) => {
     ids.push(activity.id);
@@ -382,7 +382,9 @@ function getViewType(): "card" | "list" | "summary" {
  * Schaut, ob ListView oder CardView und ruft basierend darauf entweder `generateDashboardListTag` oder `generateDashboardCardHeader`
  * @param values Array der Values
  */
-function generateDashboardChangeDescriptors(values: contentCheckerOutput[]) {
+function generateDashboardChangeDescriptors(
+  values: contentCheckerOutput[],
+): void {
   console.log("Generating Dashboard Descriptors");
   const type = getViewType();
   console.log("the type is", type);
@@ -407,7 +409,7 @@ function generateDashboardChangeDescriptors(values: contentCheckerOutput[]) {
  * @param content
  * @returns Der Generierte Text
  */
-function generateTitleText(content: contentCheckerOutput) {
+function generateTitleText(content: contentCheckerOutput): string {
   return `${
     content.allNew
       ? "<abbr title='Das Tool hatte vorher noch keine Daten von diesem Kurs. Öffne diesen Kurs, damit das Tool diesen analysieren kann.'>Alles Neu</abbr>"

@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(function (object) {
       },
     );
 });
-chrome.commands.onCommand.addListener(function (command) {
+chrome.commands.onCommand.addListener((command): void => {
   if (command === "panik-key") {
     chrome.tabs.query({ url: "*://moodle.jsp.jena.de/*" }, function (value) {
       if (value.length > 0) {
@@ -22,7 +22,7 @@ chrome.commands.onCommand.addListener(function (command) {
     });
   }
 });
-chrome.storage.sync.get(null, function (options) {
+chrome.storage.sync.get(null, (options): void => {
   const defaultOptions: storage = {
     allowMultipleDownloads: false,
     autodashboardredirect: true,
@@ -44,7 +44,7 @@ chrome.storage.sync.get(null, function (options) {
     todos: {},
     usecoloredprogress: true,
   };
-  Object.keys(defaultOptions).forEach((item) => {
+  Object.keys(defaultOptions).forEach((item: string): void => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";
   });
   chrome.storage.sync.set(options);
@@ -60,16 +60,18 @@ chrome.storage.local.get(null, function (options) {
   chrome.storage.local.set(options);
 });
 
-chrome.runtime.onConnect.addListener(function (externalPort) {
-  console.log("runtimeConnect");
-  externalPort.onDisconnect.addListener(function () {
-    // const ignoreError = chrome.runtime.lastError;
-    console.log("runtimeDicConnect");
-    chrome.tabs.query({ active: true }, (tab) => {
-      console.log(tab[0]);
-      if (tab[0].url.includes("moodle.jsp.jena.de")) {
-        chrome.tabs.sendMessage(tab[0].id, { text: "reload" });
-      }
+chrome.runtime.onConnect.addListener(
+  (externalPort: chrome.runtime.Port): void => {
+    console.log("runtimeConnect");
+    externalPort.onDisconnect.addListener(function () {
+      // const ignoreError = chrome.runtime.lastError;
+      console.log("runtimeDicConnect");
+      chrome.tabs.query({ active: true }, (tab) => {
+        console.log(tab[0]);
+        if (tab[0].url.includes("moodle.jsp.jena.de")) {
+          chrome.tabs.sendMessage(tab[0].id, { text: "reload" });
+        }
+      });
     });
-  });
-});
+  },
+);

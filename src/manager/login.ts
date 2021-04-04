@@ -7,7 +7,7 @@ export default function (params: { options: storage }): void {
    * Checkt beim Call, ob Benutzername und Passwort eingegeben wurden und loggt den Benutzer, wenn beides gemacht wurde, ein.
    * @param data Die Booleans, ob Benutzername & Passwort eingegeben wurden
    */
-  function checkAndLogin(data: { passIn: boolean; userIn: boolean }) {
+  function checkAndLogin(data: { passIn: boolean; userIn: boolean }): void {
     console.log({
       passIn: data.passIn,
       userIn: data.userIn,

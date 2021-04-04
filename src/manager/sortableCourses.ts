@@ -12,7 +12,7 @@ let sortable: Sortable;
 /**
  * Erstellt eine neue Sortable Instanz
  */
-function initializeSortable() {
+function initializeSortable(): void {
   console.log("Initialized Sortable");
   // document.querySelector("section.block_myoverview").insertAdjacentElement(
   //   "beforebegin",
@@ -37,20 +37,20 @@ function initializeSortable() {
       swapThreshold: 1,
 
       //Autoscroll see https://github.com/SortableJS/Sortable/tree/master/plugins/AutoScroll
-      scroll: true, // Enable the plugin. Can be HTMLElement.
-      scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
-      scrollSpeed: 10, // px, speed of the scrolling
-      bubbleScroll: true, // apply autoscroll to all parent elements, allowing for easier movement
+      scroll: true,
+      scrollSensitivity: 30,
+      scrollSpeed: 10,
+      bubbleScroll: true,
     },
   );
 }
 
-function deactivateSortable() {
+function deactivateSortable(): void {
   console.log("Destroying Sortable");
   sortable.destroy();
 }
 
-function saveAndDeactivate() {
+function saveAndDeactivate(): void {
   const sortedCoursesArray: string[] = [];
   const cardContainer = document.querySelector(getCoursesQuerySelector(false));
 

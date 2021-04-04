@@ -7,7 +7,7 @@ export default function prependNavBarButtons(): void {
     link: string,
     margin?: true,
     blank?: true,
-  ) {
+  ): HTMLLIElement {
     const buttonContainer = document.createElement("li");
     buttonContainer.classList.add("nav-item");
 

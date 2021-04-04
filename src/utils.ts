@@ -5,14 +5,15 @@ function padding(
 ): string {
   const currentLength = text.length;
   const needToAdapt = desiredLength - currentLength;
+  let newText = "";
   if (needToAdapt > 0) {
     let padding = "";
     for (let x = 0; x < needToAdapt; x++) {
       padding += paddingChar;
     }
-    text = padding + text;
+    newText = padding + text;
   }
-  return text;
+  return newText;
 }
 
 function increase_brightness(hex: string, percent: number): string {
