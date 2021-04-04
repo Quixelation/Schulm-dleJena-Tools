@@ -78,7 +78,7 @@ function getRegisteredCourses(): Promise<fächerType> {
 }
 
 function addCourse(params: fach, id: string): Promise<null> {
-  if (id == undefined || id == null) {
+  if (id == null) {
     alert(
       "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren."
     );
@@ -115,7 +115,7 @@ function editCourse(
   callback?: () => null
 ): Promise<null> {
   return new Promise((resolve) => {
-    if (id == undefined || id == null) {
+    if (id == null) {
       alert(
         "Fehler: Keine ID gefunden. Dies ist ein Fehler im Code. Wir bitten um Ihr Verständnis und bitten Sie, den Entwickler zu informieren."
       );
