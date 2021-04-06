@@ -1,0 +1,11 @@
+{
+  "name": "page",
+  "version": "1.0.0",
+  "description": "",
+ 
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}

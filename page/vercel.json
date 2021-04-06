@@ -37,7 +37,7 @@
     },
     {
       "source": "/first-install",
-      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Danke",
+      "destination": "/api/install",
       "permanent": false
     },
     {
