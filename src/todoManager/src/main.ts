@@ -16,7 +16,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
 }
 export default app;
 
-function deleteTodoItem(key: string): Promise<void> {
+function deleteTodoItem(key) {
   return new Promise((resolve) => {
     chrome.storage.sync.get(["todos"], (val) => {
       const { todos } = val;
@@ -28,7 +28,7 @@ function deleteTodoItem(key: string): Promise<void> {
   });
 }
 
-function changeDoneState(key: string, state: boolean): Promise<void> {
+function changeDoneState(key, state) {
   return new Promise((resolve) => {
     chrome.storage.sync.get(["todos"], (val) => {
       const { todos } = val;

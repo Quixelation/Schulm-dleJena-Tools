@@ -3,7 +3,9 @@ import { VercelRequest, VercelResponse } from "@vercel/node";
 
 export default (request: VercelRequest, response: VercelResponse): void => {
   if (
-    /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent)
+    /bot|googlebot|crawler|spider|robot|crawling/i.test(
+      request.headers["user-agent"],
+    )
   ) {
     response.redirect(
       "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Danke",
