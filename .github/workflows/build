@@ -1,0 +1,38 @@
+name: "Build"
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [master]
+
+jobs:
+  build-firefox:
+    name: "Build Firefox"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+      - name: "Install"
+        run: "npm run install"
+      - name: "Build Ext"
+        run: "npm run build"
+
+      # Build
+      - name: "web-ext build"
+        id: web-ext-build
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: build
+          source: dist
+
+      - name: Upload
+        uses: actions/upload-artifact@v1
+        with:
+          name: SchulmoodleJena-Tools
+          path: ${{ steps.web-ext-build.outputs.target }}

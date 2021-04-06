@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "build": "browserify src/background.ts -p [ tsify -p tsconfig.json ] > ../../dist/generated/background.js"
+  }
+}

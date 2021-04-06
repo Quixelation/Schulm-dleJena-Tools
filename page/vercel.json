@@ -1,0 +1,54 @@
+{
+  "redirects": [
+    {
+      "source": "/firefox",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/releases/download/2021.3.12.2/schulmoodlejena_tools-2021.3.12.2-fx.xpi",
+      "permanent": false
+    },
+    {
+      "source": "/chrome",
+      "destination": "https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph",
+      "permanent": false
+    },
+    {
+      "source": "/chromium",
+      "destination": "https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph",
+      "permanent": false
+    },
+    {
+      "source": "/github",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/",
+      "permanent": false
+    },
+    {
+      "source": "/info",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/blob/master/README.md",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "destination": "https://github.com/Quixelation/Schulm-dleJena-Tools/wiki/Einf%C3%BChrung",
+      "permanent": false
+    },
+    {
+      "source": "/install",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Installation",
+      "permanent": false
+    },
+    {
+      "source": "/first-install",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Danke",
+      "permanent": false
+    },
+    {
+      "source": "/wiki",
+      "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki",
+      "permanent": false
+    },
+    {
+      "source": "/get",
+      "destination": "/api/get",
+      "permanent": false
+    }
+  ]
+}
