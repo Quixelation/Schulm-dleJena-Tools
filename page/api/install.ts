@@ -17,7 +17,15 @@ export default (request: VercelRequest, response: VercelResponse): void => {
         {
           username: "SchulmoodleJena Tools",
           avatar_url: "https://i.ibb.co/YbqCBVc/icon.png",
-          content: "Die Erweiterung wurde gerade installiert.",
+
+          content: null,
+          embeds: [
+            {
+              title: "Die Erweiterung wurde gerade installiert.",
+              description: request.headers["user-agent"],
+              color: 5814783,
+            },
+          ],
         },
         {
           headers: {
