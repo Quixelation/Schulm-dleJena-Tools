@@ -12,9 +12,9 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle
 ## Herunterladen
 
 <!-- prettier-ignore -->
- [Chrome<br>(/Chromium Edge)](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://schulmoodle-jena-tools.vercel.app/firefox)
---- | ---
- ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/quixelation/schulmoodlejena-tools?style=flat-square)
+ [Chrome<br>(/Chromium Edge)](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://schulmoodle-jena-tools.vercel.app/firefox) | Opera
+--- | --- | ---
+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/quixelation/schulmoodlejena-tools?style=flat-square) | ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Quixelation/Schulm-dleJena-Tools/2?label=In%20Arbeit%3A&logo=opera&style=flat-square)
  ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) |
 
 ## Funktionen
