@@ -3,7 +3,7 @@
 # Schulm\*\*dleJena-Tools ![GitHub manifest version (path)](https://img.shields.io/github/manifest-json/v/Quixelation/SchulmoodleJena-Tools?filename=dist%2Fmanifest.json&style=for-the-badge)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f99d729c78684fa9b13c342dced4a444)](https://app.codacy.com/gh/Quixelation/Schulm-dleJena-Tools?utm_source=github.com&utm_medium=referral&utm_content=Quixelation/Schulm-dleJena-Tools&utm_campaign=Badge_Grade_Settings)
-[![DeepScan grade](https://deepscan.io/api/teams/13557/projects/16525/branches/357528/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13557&pid=16525&bid=357528) [![CodeFactor](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools/badge)](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools)
+[![DeepScan grade](https://deepscan.io/api/teams/13557/projects/16525/branches/357528/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13557&pid=16525&bid=357528) [![CodeFactor](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools/badge)](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools) ![GitHub issues by-label](https://img.shields.io/github/issues-raw/Quixelation/Schulm-dleJena-Tools/bug)
 
 ---
 
