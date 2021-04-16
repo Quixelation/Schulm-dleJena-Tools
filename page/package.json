@@ -2,10 +2,10 @@
   "name": "page",
   "version": "1.0.0",
   "description": "",
- 
   "keywords": [],
   "author": "",
   "dependencies": {
+    "@octokit/core": "^3.4.0",
     "axios": "^0.21.1"
   }
 }
