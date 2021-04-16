@@ -2,6 +2,14 @@
   "name": "schulm-dlejena-tools",
   "displayName": "Schulm**dleJena Tools",
   "homepage": "https://smjt.vercel.app",
+  "repository": {
+    "url": "https://github.com/Quixelation/Schulm-dleJena-Tools.git",
+    "type": "git"
+  },
+  "bugs": {
+    "email": "robert.st.stuendl@gmail.com",
+    "url": "https://github.com/Quixelation/Schulm-dleJena-Tools/issues"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-image": "^2.0.6",
