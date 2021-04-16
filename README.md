@@ -3,7 +3,7 @@
 # Schulm\*\*dleJena-Tools ![GitHub manifest version (path)](https://img.shields.io/github/manifest-json/v/Quixelation/SchulmoodleJena-Tools?filename=dist%2Fmanifest.json&style=for-the-badge)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f99d729c78684fa9b13c342dced4a444)](https://app.codacy.com/gh/Quixelation/Schulm-dleJena-Tools?utm_source=github.com&utm_medium=referral&utm_content=Quixelation/Schulm-dleJena-Tools&utm_campaign=Badge_Grade_Settings)
-[![DeepScan grade](https://deepscan.io/api/teams/13557/projects/16525/branches/357528/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13557&pid=16525&bid=357528) [![CodeFactor](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools/badge)](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools)
+[![DeepScan grade](https://deepscan.io/api/teams/13557/projects/16525/branches/357528/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13557&pid=16525&bid=357528) [![CodeFactor](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools/badge)](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools) ![GitHub issues by-label](https://img.shields.io/github/issues-raw/Quixelation/Schulm-dleJena-Tools/bug)
 
 ---
 
@@ -12,10 +12,10 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle
 ## Herunterladen
 
 <!-- prettier-ignore -->
- [Chrome<br>(/Chromium Edge)](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://schulmoodle-jena-tools.vercel.app/firefox)
---- | ---
- ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/quixelation/schulmoodlejena-tools?style=flat-square)
- ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) |
+ [Chrome<br>(/Chromium Edge)](https://chrome.google.com/webstore/detail/schulmoodlejena-tools/dcpgpghgflflpljbkcjhmidkclbpoiph) | [Mozilla](https://smjt.vercel.app/firefox) | Opera
+--- | --- | ---
+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/v/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Version&style=flat-square) | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/quixelation/schulmoodlejena-tools?style=flat-square) | ![GitHub milestone](https://img.shields.io/github/milestones/progress-percent/Quixelation/Schulm-dleJena-Tools/2?label=In%20Arbeit%3A&logo=opera&style=flat-square)
+ ![Chrome Web Store](https://img.shields.io/chrome-web-store/users/dcpgpghgflflpljbkcjhmidkclbpoiph?label=Nutzer&color=blue&style=flat-square) | ![GitHub release (latest by date)](https://img.shields.io/github/downloads/Quixelation/Schulm-dleJena-Tools/latest/total?color=blue&label=Downloads&style=flat-square)
 
 ## Funktionen
 
