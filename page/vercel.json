@@ -54,6 +54,11 @@
       "source": "/get",
       "destination": "/api/get",
       "permanent": false
+    },
+    {
+      "source":"/gitpod",
+      "destination":"https://gitpod.io/#https://github.com/Quixelation/Schulm-dleJena-Tools.git",
+      "permanent": false
     }
   ]
 }
