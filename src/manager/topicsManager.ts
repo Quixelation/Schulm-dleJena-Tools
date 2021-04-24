@@ -1,3 +1,5 @@
+import { storage } from "@/types";
+
 function toggleNoEmptyTopics(force?: true): void {
   if (force) {
     document.body.classList.add("no-empty-topics");
@@ -24,8 +26,30 @@ function toggleNoEmptyTopics(force?: true): void {
       .classList.add("fa-eye-slash");
   }
 }
-export default function (/*params: { options: storage }*/): void {
-  //const { options } = params;
+export default function (params: { options: storage }): void {
+  if (location.pathname === "/course/view.php") {
+    const { options } = params;
+    if (options["no-hidden-topics"] === true) {
+      document.body.classList.add("no-hidden-topics");
+    }
+    // document.querySelectorAll(".activity .actions").forEach((item) => {
+    //   const addTodoBtn = document.createElement("div");
+    //   addTodoBtn.classList.add("btn", "btn-secondary");
+    //   addTodoBtn.innerHTML = "<i class='fa fa-plus'></i> Todo";
+    //   addTodoBtn.style.marginRight = "5px";
+    //   addTodoBtn.addEventListener("click", (e) => {
+    //     fireEvent("addTodo", window, {
+    //       course: document.querySelector("div.page-header-headings h1")
+    //         .textContent,
+    //       title: (e.target as HTMLDivElement).parentElement.parentElement
+    //         .children[0].textContent,
+    //     });
+    //     window.scrollTo({ behavior: "smooth", top: 0, left: 0 });
+    //   });
+    //   item.prepend(addTodoBtn);
+    // });
+  }
+
   if (document.querySelector(".course-content ul.topics") !== null) {
     chrome.storage.sync.get(["reversed_courses", "no-empty-topics"], (val) => {
       const reversed_courses: number[] = val["reversed_courses"];
