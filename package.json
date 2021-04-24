@@ -48,7 +48,7 @@
     "manager-build": "cd src/manager && npm run build && node -e 'console.log(new Date())'",
     "background-build": "cd src/background && npm run build",
     "settings:dev": "cd src/settings && npm run dev",
-    "build:settings": "cd src/settings && npm run build && cd ../..  && xcopy 'src\\settings\\public\\' 'dist\\generated\\settings\\' /s /e /y",
+    "build:settings": "cd src/settings && npm run build && cd ../..  && xcopy src\\settings\\public\\ dist\\generated\\settings\\ /s /e /y",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
     "license": "npm-license-generator --out-path=./page/licenses.html"
   },
