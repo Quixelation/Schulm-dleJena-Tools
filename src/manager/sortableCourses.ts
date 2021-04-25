@@ -26,11 +26,7 @@ function initializeSortable(): void {
   sortable = Sortable.create(
     document.querySelector(
       "div[data-region='paged-content-page'] > ul.list-group",
-    )
-      ? document.querySelector(
-          "div[data-region='paged-content-page'] > ul.list-group",
-        )
-      : document.querySelector("div.card-deck.dashboard-card-deck"),
+    ) ?? document.querySelector("div.card-deck.dashboard-card-deck"),
     {
       animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
       easing: "cubic-bezier(1, 0, 0, 1)", // Easing for animation. Defaults to null. See https://easings.net/ for examples.
@@ -69,22 +65,6 @@ function saveAndDeactivate(): void {
 
 const disabledDisplayTippyContent =
   "<b style='color: white; text-decoration: underline;text-decoration-color: #FF4136;text-decoration-thickness: 3px;'>Beende zuerst die Sortierung</b>";
-
-// /**
-//  * Gibt den Key aus, unter welchem die Daten für die SOrtierung der zurzeitigen Ansicht gespeichert sind.
-//  * DOM-Content der Fächer muss dafür geladen sein.
-//  * @returns Key, unter welchem die Sortierungsdaten für die zurzeitige Ansicht gespeichert sind.
-//  */
-// function getSaveKey(): string | false {
-//   const viewType = getViewType();
-//   if (viewType === "card") {
-//     return "sortedCourses_cards";
-//   } else if (viewType === "list") {
-//     return "sortedCourses_list";
-//   } else {
-//     return false;
-//   }
-// }
 
 async function sortCourses(): Promise<void> {
   console.log("Sorting Courses");
@@ -154,7 +134,7 @@ async function activate(): Promise<void> {
       document
         .getElementById("SortCoursesButtonIconId")
         .classList[!state ? "add" : "remove"]("fa-hand-paper-o");
-
+      //TODO: Disable Sort-Dropdown while manual sorting is active
       displaydropdownTippy[state ? "enable" : "disable"]?.();
       document
         .getElementById("displaydropdown")
