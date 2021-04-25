@@ -81,6 +81,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
       match: location.pathname.startsWith("/course/view.php"),
       script: syncCourses,
     },
+    { match: "/my/", script: courseSorting },
   ]);
 
   document.querySelector("html").style.scrollBehavior = "smooth";
