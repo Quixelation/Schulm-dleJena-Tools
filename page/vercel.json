@@ -30,11 +30,7 @@
       "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/blob/master/README.md",
       "permanent": false
     },
-    {
-      "source": "/",
-      "destination": "https://github.com/Quixelation/Schulm-dleJena-Tools/wiki/Einf%C3%BChrung",
-      "permanent": false
-    },
+
     {
       "source": "/install",
       "destination": "https://github.com/Quixelation/SchulmoodleJena-Tools/wiki/Installation",
@@ -56,8 +52,8 @@
       "permanent": false
     },
     {
-      "source":"/gitpod",
-      "destination":"https://gitpod.io/#https://github.com/Quixelation/Schulm-dleJena-Tools.git",
+      "source": "/gitpod",
+      "destination": "https://gitpod.io/#https://github.com/Quixelation/Schulm-dleJena-Tools.git",
       "permanent": false
     }
   ]

@@ -12,3 +12,5 @@ dist/web-ext-artifacts
 code.zip
 .vscode/*
 .eslintcache
+
+page/css/style.css
