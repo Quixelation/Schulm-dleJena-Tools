@@ -12,8 +12,10 @@ import topicsManager from "./topicsManager";
 import commandPalette from "./commandPalette";
 
 import changesManager from "./changesManager";
-import courseSorting from "./courseSorting";
+//TODO: Remove commenting when script exists.
+//import courseSorting from "./courseSorting";
 import scriptManager from "./scriptManager";
+import noAssignForceDownload from "./noAssignForceDownload";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   const newStyle = document.createElement("style");
@@ -80,6 +82,10 @@ if (!location.pathname.includes("/mod/quiz/")) {
     {
       match: location.pathname.startsWith("/course/view.php"),
       script: syncCourses,
+    },
+    {
+      match: location.pathname.startsWith("/mod/assign/view.php"),
+      script: noAssignForceDownload,
     },
   ]);
 
