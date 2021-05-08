@@ -1,8 +1,6 @@
 import { storage } from "@shared/types";
 
 export default function (params: { options: storage }): void {
-  const { options } = params;
-  //TODO: Add & Check for Feature Flag
   // Example POST method implementation:
   const sessionKey = new URL(
     (document.querySelector(
@@ -19,10 +17,27 @@ export default function (params: { options: storage }): void {
   );
   (document.querySelector("ul.tiles") as HTMLUListElement).style.display =
     "none";
-  document
-    .querySelectorAll("ul.tiles > li")
-    .forEach((sectionTile: HTMLLIElement) => {
-      const section = sectionTile.getAttribute("data-section");
+  interface tileFetchResult {
+    result:
+      | [
+          {
+            data: {
+              html: string;
+            };
+            error: false;
+          },
+        ]
+      | {
+          error: string;
+          errorcode: string;
+          stacktrace: unknown;
+          debuginfo: unknown;
+          reproductionlink: unknown;
+        };
+    section: string;
+  }
+  function generateTileFetch(section: string): Promise<tileFetchResult> {
+    return new Promise((resolve, reject) => {
       fetch(
         `https://moodle.jsp.jena.de/lib/ajax/service.php?sesskey=${sessionKey}&info=format_tiles_get_single_section_page_html`,
         {
@@ -47,15 +62,41 @@ export default function (params: { options: storage }): void {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
-          const tempDivContainer = document.createElement("div");
-          tempDivContainer.innerHTML = data[0].data.html;
-          tempDivContainer.querySelector("#sectionbuttons").remove();
-          tempDivContainer.querySelector(".tileiconcontainer").remove();
-          tempDivContainer.querySelector(".completionhelp").remove();
-          document
-            .getElementById("smjt-listformat")
-            .insertAdjacentHTML("beforeend", tempDivContainer.innerHTML);
+          resolve({
+            result: data,
+            section,
+          });
         });
     });
+  }
+  const promises: Promise<tileFetchResult>[] = [];
+  document
+    .querySelectorAll(
+      "ul.tiles > li:not([aria-hidden='true']):not(.moveablesection)",
+    )
+    .forEach((sectionTile: HTMLLIElement) => {
+      const section = sectionTile.getAttribute("data-section");
+      promises.push(generateTileFetch(section));
+    });
+  Promise.all(promises).then((data) => {
+    data = data.sort((a, b) => {
+      return parseInt(a.section) - parseInt(b.section);
+    });
+
+    console.log(data);
+    data.forEach((tileData) => {
+      /* eslint-disable-next-line */
+      //@ts-ignore
+      if (tileData.result.length != undefined) {
+        const tempDivContainer = document.createElement("div");
+        tempDivContainer.innerHTML = tileData.result[0].data.html;
+        tempDivContainer.querySelector("#sectionbuttons")?.remove();
+        tempDivContainer.querySelector(".tileiconcontainer")?.remove();
+        tempDivContainer.querySelector(".completionhelp")?.remove();
+        document
+          .getElementById("smjt-listformat")
+          .insertAdjacentHTML("beforeend", tempDivContainer.innerHTML);
+      }
+    });
+  });
 }

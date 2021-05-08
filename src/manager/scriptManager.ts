@@ -6,7 +6,7 @@ import {
 
 export default function (
   scripts: {
-    match?: string | boolean;
+    match?: string | boolean | ((options: storage) => boolean);
     script: (params: { options: storage }) => void;
   }[],
 ): void {
@@ -21,11 +21,22 @@ export default function (
     const options: storage = { ...values[0], ...values[1] };
 
     scripts.forEach((script) => {
+      /*eslint-disable-next-line*/
+
       if (
         script.match === null ||
-        (typeof script.match === "string"
-          ? location.pathname.includes(script.match)
-          : script.match)
+        (() => {
+          switch (typeof script.match) {
+            case "boolean":
+              return script.match;
+            case "string":
+              return location.pathname.includes(script.match);
+            case "function":
+              return script.match(options);
+            default:
+              return false;
+          }
+        })()
       ) {
         Promise.resolve()
           .then(() => {

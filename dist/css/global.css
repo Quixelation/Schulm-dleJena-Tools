@@ -79,6 +79,13 @@
 .course-content .topics.reversed {
   flex-direction: column-reverse;
 }
+ul#smjt-listformat {
+  display: flex;
+  flex-direction: column;
+}
+#region-main.reversed ul#smjt-listformat {
+  flex-direction: column-reverse !important;
+}
 
 body.no-hidden-topics ul.topics li.hidden {
   display: none;

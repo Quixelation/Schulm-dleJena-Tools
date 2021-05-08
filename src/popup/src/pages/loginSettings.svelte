@@ -12,14 +12,14 @@
   optionCode="autologinredirect"
   on:changed={connect}
 />
-<br />
+<hr />
 <FunctionToggle
   title="Dashboard nach Login"
   desc="Nach dem Login wird der Benutzer automatisch zum Dashboard geleitet."
   optionCode="autodashboardredirect"
   on:changed={connect}
 />
-<br />
+<hr />
 <FunctionToggle
   title="AutoFill-AutoLogin"
   desc="Automatisches Einloggen nach Autofill durch Passwort-Manager"
@@ -30,5 +30,10 @@
 <style>
   .pageHeader {
     margin-top: 0px;
+  }
+  hr {
+    width: 100%;
+    margin-top: 12.5px;
+    margin-bottom: 12.5px;
   }
 </style>

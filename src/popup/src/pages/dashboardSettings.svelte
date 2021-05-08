@@ -12,7 +12,8 @@
   desc="Kursname wird je nach Fortschritt gefärbt. (von rot zu grün)"
   optionCode="usecoloredprogress"
   on:changed={connect}
-/><br />
+/>
+<hr />
 <FunctionInput
   title="Emoji-Größe"
   desc="Steuert die Größe des Emojis auf der Dashboard-Kurs-Link. (Angabe in %; Werte über 100 erlaubt)"
@@ -24,5 +25,10 @@
 <style>
   .pageHeader {
     margin-top: 0px;
+  }
+  hr {
+    width: 100%;
+    margin-top: 12.5px;
+    margin-bottom: 12.5px;
   }
 </style>

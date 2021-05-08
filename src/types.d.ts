@@ -34,6 +34,7 @@ interface syncStorage {
   allowMultipleDownloads: boolean;
   dashboardEmojiFontSize: number;
   sortedCourses: string[];
+  tilesToList: boolean;
 }
 
 interface localStorage {
