@@ -18,6 +18,7 @@ import scriptManager from "./scriptManager";
 import noAssignForceDownload from "./noAssignForceDownload";
 import tileCourseManager from "./tileCourseManager";
 import { storage } from "@/types";
+import adjustVideo from "./adjustVideo";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   const newStyle = document.createElement("style");
@@ -73,6 +74,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
     { match: null, script: meineKurse },
     { match: null, script: staticSidebarBlock },
     { match: null, script: login },
+    { match: null, script: adjustVideo },
     {
       match: location.pathname.slice(-4).toLocaleLowerCase() === ".pdf",
       script: downloader,
