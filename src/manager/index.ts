@@ -16,6 +16,7 @@ import changesManager from "./changesManager";
 //import courseSorting from "./courseSorting";
 import scriptManager from "./scriptManager";
 import noAssignForceDownload from "./noAssignForceDownload";
+import cardCourseManager from "./cardCourseManager";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   const newStyle = document.createElement("style");
@@ -86,6 +87,10 @@ if (!location.pathname.includes("/mod/quiz/")) {
     {
       match: location.pathname.startsWith("/mod/assign/view.php"),
       script: noAssignForceDownload,
+    },
+    {
+      match: location.pathname.startsWith("/course/view.php"),
+      script: cardCourseManager,
     },
   ]);
 
