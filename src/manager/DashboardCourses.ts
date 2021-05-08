@@ -14,7 +14,14 @@ import {
 import { activate as activateSortable, sortCourses } from "./sortableCourses";
 import { renewChangeDescriptors } from "./changesManager";
 
-function getViewType(): "list" | "card" | "summary" {
+function getViewType(html?: string): "list" | "card" | "summary" {
+  if (html) {
+    const container = document.createElement("body");
+    container.innerHTML = html;
+    /* eslint-disable-next-line */
+    //@ts-ignore
+    document = container;
+  }
   console.log(
     document.querySelector(getCoursesQuerySelector(false, "card")),
     getCoursesQuerySelector(false, "card"),
@@ -208,7 +215,7 @@ function changeAllListItems(params: { options: storage }): void {
 
       //Die Trennung zwischen den Listen-Elementen sichtbarer machen
       item.parentElement.style.borderColor = "rgb(255,255,255,0.13)";
-
+      //TODO: Make compatible with new courseProgress-System
       if (options["usecoloredprogress"] === true) {
         const progressbar = item.querySelector(
           ".progress-bar.bar",
@@ -422,14 +429,16 @@ function changeAllCards(params: { options: storage }): void {
           item.querySelector(".progress-bar.bar").id = generateProgressbarId(
             id,
           );
-          manageProgressbar(
-            id,
-            parseInt(
-              item
-                .querySelector(".progress-bar.bar")
-                .getAttribute("aria-valuenow"),
-            ),
-          );
+          if (options.courseProgress[id] !== false) {
+            manageProgressbar(
+              id,
+              parseInt(
+                item
+                  .querySelector(".progress-bar.bar")
+                  .getAttribute("aria-valuenow"),
+              ),
+            );
+          }
         }
       } catch (err) {
         console.warn(err);

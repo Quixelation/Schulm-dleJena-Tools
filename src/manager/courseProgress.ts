@@ -3,7 +3,7 @@ import {
   localStorage,
   storage,
 } from "@shared/types";
-import { manageProgressbar } from "./DashboardCourses";
+import { getViewType, manageProgressbar } from "./DashboardCourses";
 
 export default function (params: { options: storage }): void {
   const { options } = params;
@@ -16,24 +16,30 @@ export default function (params: { options: storage }): void {
 function checkProgress(
   html: string,
   courseId: string,
-): Promise<courseProgressType> {
+): Promise<courseProgressType | false> {
   return new Promise((resolve, reject) => {
     const docContainer = document.createElement("body");
     docContainer.innerHTML = html;
-    //TODO: Manage TIles-View
-    const completionCheckboxes = docContainer.querySelectorAll(
-      ".togglecompletion  input[name='completionstate']",
-    );
-    let completedAssignments = 0;
-    completionCheckboxes.forEach((item: HTMLInputElement) => {
-      if (item.value === "0") {
-        completedAssignments++;
-      }
-    });
-    const result: courseProgressType = {
-      all: completionCheckboxes.length,
-      completed: completedAssignments,
-    };
+    //TODO: Manage TIles-View (better)
+    let result: courseProgressType | false;
+    if (getViewType(html) === "card") {
+      const completionCheckboxes = docContainer.querySelectorAll(
+        ".togglecompletion  input[name='completionstate']",
+      );
+      let completedAssignments = 0;
+      completionCheckboxes.forEach((item: HTMLInputElement) => {
+        if (item.value === "0") {
+          completedAssignments++;
+        }
+      });
+      result = {
+        all: completionCheckboxes.length,
+        completed: completedAssignments,
+      };
+    } else {
+      result = false;
+    }
+
     console.log(result);
 
     chrome.storage.local.get(["courseProgress"], (values: localStorage) => {
@@ -62,7 +68,9 @@ function homepageCourseProgessChecker(html: string, courseId: string): void {
   checkProgress(html, courseId).then((progressData) => {
     console.log("progressData", progressData);
     //TODO: Listen-Ansicht unterstützen
-    manageProgressbar(courseId, calculateProgressPercentage(progressData));
+    if (progressData !== false) {
+      manageProgressbar(courseId, calculateProgressPercentage(progressData));
+    }
   });
 }
 

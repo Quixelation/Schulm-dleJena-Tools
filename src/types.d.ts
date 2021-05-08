@@ -39,7 +39,7 @@ interface syncStorage {
 interface localStorage {
   courseInfo: { [courseId: string]: CourseTopics };
   downloaded: number[];
-  courseProgress: { [courseId: string]: courseProgress };
+  courseProgress: { [courseId: string]: courseProgress | false };
 }
 
 interface courseProgress {
