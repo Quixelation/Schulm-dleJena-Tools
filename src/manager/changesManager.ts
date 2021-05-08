@@ -1,5 +1,6 @@
 import { Activity, CourseTopics, storage } from "@shared/types";
 import course2json from "./course2json";
+import { homepageCourseProgessChecker } from "./courseProgress";
 import {
   card,
   cardButton,
@@ -166,7 +167,13 @@ function checkAll(): Promise<changesNr> {
       return new Promise((resolve) => {
         fetch("https://moodle.jsp.jena.de/course/view.php?id=" + id)
           .then((e) => e.text())
-          .then(course2json)
+          .then((data) => {
+            // Hier können schnell die Progress-Daten mit verarbeitet werden.
+            homepageCourseProgessChecker(data, id);
+
+            // Und dann mit dem normalen ABlauf weitergemacht werden.
+            return course2json(data);
+          })
           .then((e) => {
             if (e.status === "error") {
               resolve({

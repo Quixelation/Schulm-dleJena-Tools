@@ -418,32 +418,77 @@ function changeAllCards(params: { options: storage }): void {
         //   e;
         // }
 
-        if (options["usecoloredprogress"] === true) {
-          if (item.querySelector(".progress-bar.bar") != null) {
-            const hsl = chromaScale(["#ff0000", "#00ff1e"])
-              .domain([0, 75, 95, 100])
-              .mode("hsl")(
-                Number(
-                  item
-                    .querySelector(".progress-bar.bar")
-                    .getAttribute("aria-valuenow"),
-                ),
-              )
-              .css();
-
-            (item.children[1].children[0].children[0].children[1]
-              .children[2] as HTMLSpanElement).style.color = hsl;
-
-            (item.querySelector(
-              ".progress-bar.bar",
-            ) as HTMLDivElement).style.backgroundColor = hsl;
-          }
+        if (item.querySelector(".progress-bar.bar") != null) {
+          item.querySelector(".progress-bar.bar").id = generateProgressbarId(
+            id,
+          );
+          manageProgressbar(
+            id,
+            parseInt(
+              item
+                .querySelector(".progress-bar.bar")
+                .getAttribute("aria-valuenow"),
+            ),
+          );
         }
       } catch (err) {
         console.warn(err);
       }
       //item.insertAdjacentElement("afterbegin", generateDashboardCardHeader(1));
     });
+}
+
+function generateProgressbarId(courseId: string) {
+  return `smjt-course-progressbar-${courseId}`;
+}
+
+function manageProgressbar(courseId: string, percentage: number): void {
+  console.log("percentage", percentage);
+  // Um mich vor meiner eigenen DUmmheit zu schützen
+  const id = courseId.includes("smjt-course-progressbar")
+    ? courseId.replace("smjt-course-progressbar-", "")
+    : courseId;
+
+  //TODO: Check for coloredprogress feature-flag
+  //TODO: Listen-Ansicht unterstützen
+  if (document.getElementById(generateProgressbarId(id)) != null) {
+    const hsl = chromaScale(["#ff0000", "#00ff1e"])
+      .domain([0, 75, 95, 100])
+      .mode("hsl")(Number(percentage))
+      .css();
+
+    (document
+      .getElementById(generateProgressbarId(id))
+      .parentElement.parentElement.parentElement.querySelector(".coursename ")
+      .children[2] as HTMLSpanElement).style.color = hsl;
+
+    document.getElementById(
+      generateProgressbarId(id),
+    ).style.backgroundColor = hsl;
+    document.getElementById(
+      generateProgressbarId(id),
+    ).style.width = `${percentage.toFixed()}%`;
+
+    (document
+      .getElementById(generateProgressbarId(id))
+      //Ist zwar eigentlich ein <strong> aber das gab es nicht zur Auswahl.
+      .parentElement.parentElement.querySelector(
+        ".small strong",
+      ) as HTMLSpanElement).innerText = String(percentage.toFixed());
+    (document
+      .getElementById(generateProgressbarId(id))
+      //Ist zwar eigentlich ein <strong> aber das gab es nicht zur Auswahl.
+      .parentElement.parentElement.querySelector(
+        ".small strong",
+      ) as HTMLSpanElement).setAttribute(
+      "aria-valuenow",
+      String(percentage.toFixed()),
+    );
+
+    console.log("ManageProgressBar");
+  } else {
+    console.log("No Progressbar to manage");
+  }
 }
 
 let addedInfoToPage = false;
@@ -519,4 +564,4 @@ function syncCourse(id: string, longName: string): void {
   }
 }
 
-export { getViewType, getCoursesQuerySelector };
+export { getViewType, getCoursesQuerySelector, manageProgressbar };

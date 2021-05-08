@@ -1,4 +1,4 @@
-import { localStorage, storage } from "../../types";
+import { localStorage, storage, syncStorage } from "../../types";
 chrome.runtime.onInstalled.addListener(
   (object: chrome.runtime.InstalledDetails): void => {
     if ("install" === object.reason)
@@ -25,15 +25,13 @@ chrome.commands.onCommand.addListener((command): void => {
   }
 });
 chrome.storage.sync.get(null, (options): void => {
-  const defaultOptions: storage = {
+  const defaultOptions: syncStorage = {
     allowMultipleDownloads: false,
     autodashboardredirect: true,
     autologin_untrusted: false,
     autologinredirect: true,
     biggerVideo: true,
-    courseInfo: {},
     dashboardEmojiFontSize: 100,
-    downloaded: [],
     fächer: {},
     forcedownload: true,
     "no-empty-topics": [],
@@ -55,6 +53,7 @@ chrome.storage.local.get(null, (options): void => {
   const defaultOptions: localStorage = {
     courseInfo: {},
     downloaded: [],
+    courseProgress: {},
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

@@ -39,6 +39,12 @@ interface syncStorage {
 interface localStorage {
   courseInfo: { [courseId: string]: CourseTopics };
   downloaded: number[];
+  courseProgress: { [courseId: string]: courseProgress };
+}
+
+interface courseProgress {
+  all: number;
+  completed: number;
 }
 
 interface storage extends localStorage, syncStorage {}
@@ -78,4 +84,5 @@ export {
   fachImageTypes,
   CourseTopics,
   Activity,
+  courseProgress,
 };
