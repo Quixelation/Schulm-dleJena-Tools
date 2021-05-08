@@ -1,4 +1,4 @@
-import { fächer, storage } from "./../types";
+import { courseProgress, fächer, storage } from "./../types";
 import { createEmojiImage, createWavesImage } from "./createCourseImage";
 import { getIdFromLink, replaceSpecialChars } from "./utils";
 import { FächerList } from "./..//utils";
@@ -13,15 +13,9 @@ import {
 } from "./htmlBuilder";
 import { activate as activateSortable, sortCourses } from "./sortableCourses";
 import { renewChangeDescriptors } from "./changesManager";
+import { calculateProgressPercentage } from "./courseProgress";
 
 function getViewType(html?: string): "list" | "card" | "summary" {
-  if (html) {
-    const container = document.createElement("body");
-    container.innerHTML = html;
-    /* eslint-disable-next-line */
-    //@ts-ignore
-    document = container;
-  }
   console.log(
     document.querySelector(getCoursesQuerySelector(false, "card")),
     getCoursesQuerySelector(false, "card"),
@@ -429,16 +423,20 @@ function changeAllCards(params: { options: storage }): void {
           item.querySelector(".progress-bar.bar").id = generateProgressbarId(
             id,
           );
-          if (options.courseProgress[id] !== false) {
-            manageProgressbar(
-              id,
-              parseInt(
-                item
-                  .querySelector(".progress-bar.bar")
-                  .getAttribute("aria-valuenow"),
-              ),
-            );
-          }
+
+          manageProgressbar(
+            id,
+            options.courseProgress[id] != undefined &&
+              options.courseProgress[id] !== false
+              ? calculateProgressPercentage(
+                  options.courseProgress[id] as courseProgress,
+                )
+              : parseInt(
+                  item
+                    .querySelector(".progress-bar.bar")
+                    .getAttribute("aria-valuenow"),
+                ),
+          );
         }
       } catch (err) {
         console.warn(err);

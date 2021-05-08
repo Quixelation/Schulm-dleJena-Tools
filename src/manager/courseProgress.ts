@@ -3,7 +3,7 @@ import {
   localStorage,
   storage,
 } from "@shared/types";
-import { getViewType, manageProgressbar } from "./DashboardCourses";
+import { manageProgressbar } from "./DashboardCourses";
 
 export default function (params: { options: storage }): void {
   const { options } = params;
@@ -22,7 +22,7 @@ function checkProgress(
     docContainer.innerHTML = html;
     //TODO: Manage TIles-View (better)
     let result: courseProgressType | false;
-    if (getViewType(html) === "card") {
+    if (docContainer.querySelector(".course-content ul.topics") !== null) {
       const completionCheckboxes = docContainer.querySelectorAll(
         ".togglecompletion  input[name='completionstate']",
       );
