@@ -16,7 +16,7 @@ import changesManager from "./changesManager";
 //import courseSorting from "./courseSorting";
 import scriptManager from "./scriptManager";
 import noAssignForceDownload from "./noAssignForceDownload";
-import cardCourseManager from "./cardCourseManager";
+import cardCourseManager from "./tileCourseManager";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   const newStyle = document.createElement("style");
