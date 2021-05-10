@@ -16,7 +16,11 @@ import changesManager from "./changesManager";
 //import courseSorting from "./courseSorting";
 import scriptManager from "./scriptManager";
 import noAssignForceDownload from "./noAssignForceDownload";
+
 import courseProgress from "./courseProgress";
+import tileCourseManager from "./tileCourseManager";
+import { storage } from "@/types";
+import adjustVideo from "./adjustVideo";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   const newStyle = document.createElement("style");
@@ -72,6 +76,7 @@ if (!location.pathname.includes("/mod/quiz/")) {
     { match: null, script: meineKurse },
     { match: null, script: staticSidebarBlock },
     { match: null, script: login },
+    { match: null, script: adjustVideo },
     {
       match: location.pathname.slice(-4).toLocaleLowerCase() === ".pdf",
       script: downloader,
@@ -91,6 +96,12 @@ if (!location.pathname.includes("/mod/quiz/")) {
     {
       match: location.pathname.startsWith("/course/view.php"),
       script: courseProgress,
+    },
+    {
+      match: (options: storage) =>
+        location.pathname.startsWith("/course/view.php") &&
+        options["tilesToList"],
+      script: tileCourseManager,
     },
   ]);
 

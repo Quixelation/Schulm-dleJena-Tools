@@ -43,6 +43,7 @@ chrome.storage.sync.get(null, (options): void => {
     sortedCourses: [],
     todos: {},
     usecoloredprogress: true,
+    tilesToList: false,
   };
   Object.keys(defaultOptions).forEach((item: string): void => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

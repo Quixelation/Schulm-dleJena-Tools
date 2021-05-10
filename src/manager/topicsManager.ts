@@ -27,30 +27,33 @@ function toggleNoEmptyTopics(force?: true): void {
   }
 }
 export default function (params: { options: storage }): void {
-  if (location.pathname === "/course/view.php") {
-    const { options } = params;
-    if (options["no-hidden-topics"] === true) {
-      document.body.classList.add("no-hidden-topics");
-    }
-    // document.querySelectorAll(".activity .actions").forEach((item) => {
-    //   const addTodoBtn = document.createElement("div");
-    //   addTodoBtn.classList.add("btn", "btn-secondary");
-    //   addTodoBtn.innerHTML = "<i class='fa fa-plus'></i> Todo";
-    //   addTodoBtn.style.marginRight = "5px";
-    //   addTodoBtn.addEventListener("click", (e) => {
-    //     fireEvent("addTodo", window, {
-    //       course: document.querySelector("div.page-header-headings h1")
-    //         .textContent,
-    //       title: (e.target as HTMLDivElement).parentElement.parentElement
-    //         .children[0].textContent,
-    //     });
-    //     window.scrollTo({ behavior: "smooth", top: 0, left: 0 });
-    //   });
-    //   item.prepend(addTodoBtn);
-    // });
+  const { options } = params;
+  if (options["no-hidden-topics"] === true) {
+    document.body.classList.add("no-hidden-topics");
   }
-
-  if (document.querySelector(".course-content ul.topics") !== null) {
+  // document.querySelectorAll(".activity .actions").forEach((item) => {
+  //   const addTodoBtn = document.createElement("div");
+  //   addTodoBtn.classList.add("btn", "btn-secondary");
+  //   addTodoBtn.innerHTML = "<i class='fa fa-plus'></i> Todo";
+  //   addTodoBtn.style.marginRight = "5px";
+  //   addTodoBtn.addEventListener("click", (e) => {
+  //     fireEvent("addTodo", window, {
+  //       course: document.querySelector("div.page-header-headings h1")
+  //         .textContent,
+  //       title: (e.target as HTMLDivElement).parentElement.parentElement
+  //         .children[0].textContent,
+  //     });
+  //     window.scrollTo({ behavior: "smooth", top: 0, left: 0 });
+  //   });
+  //   item.prepend(addTodoBtn);
+  // });
+  //TODO: Check featureflag for tileCourseManager
+  if (
+    document.querySelector(".course-content ul.topics") !== null ||
+    (options["tilesToList"] === true
+      ? document.querySelector("ul.tiles") !== null
+      : false)
+  ) {
     chrome.storage.sync.get(["reversed_courses", "no-empty-topics"], (val) => {
       const reversed_courses: number[] = val["reversed_courses"];
       console.log("reversed_courses", reversed_courses);
@@ -59,9 +62,11 @@ export default function (params: { options: storage }): void {
       if (reversed_courses?.includes(id)) {
         document.getElementById("ThemenReihenfolgeUmkehren").style.background =
           "green";
-        document
-          .querySelector(".course-content ul.topics")
-          .classList.add("reversed");
+        document.querySelector(".course-content ul.topics")
+          ? document
+              .querySelector(".course-content ul.topics")
+              .classList.add("reversed")
+          : document.querySelector("#region-main").classList.add("reversed");
       }
       const noEmptyTopics: number[] = val["no-empty-topics"];
       console.log("noEmptyTopics", noEmptyTopics);
@@ -89,9 +94,13 @@ export default function (params: { options: storage }): void {
       {
         id: "ThemenReihenfolgeUmkehren",
         onClick: () => {
-          const isReversed = document
-            .querySelector(".course-content ul.topics")
-            .classList.contains("reversed");
+          const isReversed = document.querySelector(".course-content ul.topics")
+            ? document
+                .querySelector(".course-content ul.topics")
+                .classList.contains("reversed")
+            : document
+                .querySelector("#region-main")
+                .classList.contains("reversed");
           const href = location.href;
           const id = parseInt(href.slice(href.indexOf("id=") + 3));
           chrome.storage.sync.get(["reversed_courses"], (val) => {
@@ -120,13 +129,19 @@ export default function (params: { options: storage }): void {
               reversed_courses,
             });
           });
-          document
-            .querySelector(".course-content ul.topics")
-            .classList.toggle("reversed");
+          document.querySelector(".course-content ul.topics")
+            ? document
+                .querySelector(".course-content ul.topics")
+                .classList.toggle("reversed")
+            : document
+                .querySelector("#region-main")
+                .classList.toggle("reversed");
         },
         text: "Reihenfolge der Themen umkehren <i class='fa fa-arrows-v' ></i>",
       },
-      {
+    ];
+    if (document.querySelector(".course-content ul.topics") !== null) {
+      optionsArray.push({
         id: "LeereThemenAnzeigenBtn",
         onClick: () => {
           toggleNoEmptyTopics();
@@ -164,10 +179,9 @@ export default function (params: { options: storage }): void {
 
           //#endregion
         },
-        text:
-          "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
-      },
-    ];
+        text: "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
+      });
+    }
     optionsArray.forEach((option) => {
       const btn = document.createElement("div");
       btn.classList.add("btn", "btn-primary", "topicsManagerBtn");
@@ -183,9 +197,8 @@ export default function (params: { options: storage }): void {
     document.getElementById("region-main-box").prepend(buttonsContainer);
 
     if (document.querySelectorAll("div.content > ul.section") !== null) {
-      const allSections = document.querySelectorAll<HTMLLIElement>(
-        "li.section.main",
-      );
+      const allSections =
+        document.querySelectorAll<HTMLLIElement>("li.section.main");
       allSections.forEach((section) => {
         const courseTitle = /Thema [0-9]+$/g.test(
           section.querySelector(".sectionname").textContent.trim(),

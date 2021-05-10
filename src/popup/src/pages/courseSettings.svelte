@@ -18,10 +18,22 @@
     optionCode="biggerVideo"
     on:changed={connect}
   />
+  <hr />
+  <FunctionToggle
+    title="'Fließen-Design' in 'Listen-Design' umwandeln"
+    desc="Wandelt das 'Fließen-Design' (das mit den Rechtecken/Boxen), in ein 'Listen-Design' um. [Netzaufwend!]"
+    optionCode="tilesToList"
+    on:changed={connect}
+  />
 </div>
 
 <style>
   .pageHeader {
     margin-top: 0px;
+  }
+  hr {
+    width: 100%;
+    margin-top: 12.5px;
+    margin-bottom: 12.5px;
   }
 </style>
