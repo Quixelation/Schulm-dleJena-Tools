@@ -5,7 +5,7 @@
   function todoClick(item: string) {
     dispatch("todoClick");
   }
-  export let todoItem;
+  export let todoItem: todoItem;
 
   export let key;
   let typeIcons = {
@@ -24,51 +24,12 @@
 </script>
 
 <div
-  class={done ? "hoverBlackActivator" : ""}
-  style="display: flex; align-items: center;width: 100%; justify-content: space-between"
+  class="{done ? 'hoverBlackActivator' : 'card'} todoItem p-1"
+  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; border-left: 5px solid {todoItem.color}; background-color: white;"
 >
-  <div
-    on:click={() => {
-      todoClick(key);
-    }}
-    style="display: flex; align-items: center; cursor: pointer; width: 100%"
-  >
-    <i
-      class="fa fa-{typeIcons[todoItem.type].icon} colorTransition hoverBlack"
-      style="{done
-        ? 'color: #80808080'
-        : `color: ${
-            typeIcons[todoItem.type].color
-          }`}; margin-right: 8px; margin-left: 4px; width: 15px; text-align: center; "
-    />
-
-    <div style="display: flex; flex-direction: column">
-      {#if !isFirefox}
-        <span
-          class="colorTransition hoverBlack"
-          style="font-size: 11px; margin-bottom: -3px; {done
-            ? 'color: #80808080;'
-            : 'color: #000000;'} display: flex; align-items: center; "
-          ><span
-            >{new Date(todoItem.time).getHours()}:{new Date(todoItem.time)
-              .getMinutes()
-              .toString().length === 1
-              ? "0" + new Date(todoItem.time).getMinutes()
-              : new Date(todoItem.time).getMinutes()}
-          </span>
-        </span>
-      {/if}
-      <span
-        style="font-size: {isFirefox ? '15px' : '13px'}; 
-       {done
-          ? 'color: #80808080;'
-          : 'color: #000000'}"
-        class="colorTransition hoverBlack">{todoItem.title}</span
-      >
-    </div>
-  </div>
   <input
     type="checkbox"
+    style="margin-right: 10px; margin-left: 5px;"
     checked={todoItem.done}
     on:input={(e) => {
       //@ts-ignore
@@ -79,6 +40,37 @@
       changeDoneState(key, e.target.checked);
     }}
   />
+  <div
+    style="display: flex; flex-direction: column"
+    on:click={() => {
+      todoClick(key);
+    }}
+  >
+    {#if !isFirefox}
+      <span
+        class="colorTransition hoverBlack"
+        style="font-size: 11px; margin-bottom: -3px; {done
+          ? 'color: #80808080;'
+          : 'color: #000000;'} display: flex; align-items: center; "
+        ><span
+          ><b
+            >{new Date(todoItem.time).getHours()}:{new Date(todoItem.time)
+              .getMinutes()
+              .toString().length === 1
+              ? "0" + new Date(todoItem.time).getMinutes()
+              : new Date(todoItem.time).getMinutes()} - Biologie</b
+          >
+        </span>
+      </span>
+    {/if}
+    <span
+      style="font-size: {isFirefox ? '15px' : '13px'}; 
+       {done
+        ? 'color: #80808080;'
+        : 'color: #000000'}"
+      class="colorTransition hoverBlack">{todoItem.title}</span
+    >
+  </div>
 </div>
 
 <style lang="scss">
@@ -92,5 +84,6 @@
   }
   .hoverBlackActivator:hover .hoverBlack {
     color: black !important;
+    box-shadow: none !important;
   }
 </style>

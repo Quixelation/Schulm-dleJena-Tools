@@ -8,7 +8,7 @@
       //@ts-ignore: "args.options"
       router.to("addTodo", args.options);
     },
-    false
+    false,
   );
 
   let router = {
@@ -20,13 +20,6 @@
     },
   };
 
-  interface todoItem {
-    time: string;
-    type: "ha" | "exam" | "video";
-    course: string;
-    title: string;
-    done: boolean;
-  }
   function getDateAt0(date: number) {
     let newDate = new Date(date);
 
@@ -54,7 +47,7 @@
       sortedObject[item] = sortedObject[item].sort(
         (a: todoItem, b: todoItem) => {
           return new Date(a.time).valueOf() - new Date(b.time).valueOf();
-        }
+        },
       );
     });
     //#region Sort By Date
@@ -71,6 +64,21 @@
     return finalSorted;
   }
   let getTodos = () => {
+    getEvents().then((Todos) => {
+      Object.keys(Todos).forEach((todoKey) => {
+        if (
+          getDateAt0(new Date(Todos[todoKey]?.time).valueOf()) <
+            getDateAt0(Date.now()) &&
+          Todos[todoKey].done
+        ) {
+          deleteTodoItem(todoKey);
+          // Remove from Object,so the user doesn't see it
+          delete Todos[todoKey];
+        }
+      });
+      sorted = sortTodos(Todos);
+    });
+    return;
     chrome.storage.sync.get(["todos"], (val) => {
       const Todos: { [key: number]: todoItem } = val.todos;
       /**
@@ -100,7 +108,7 @@
       new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate() - 1
+        new Date().getDate() - 1,
       ).valueOf()
     ) {
       return "Gestern";
@@ -109,7 +117,7 @@
       new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate() + 1
+        new Date().getDate() + 1,
       ).valueOf()
     ) {
       return "Morgen";
@@ -138,6 +146,7 @@
   }
 
   import TodoListItem from "./todoListItem.svelte";
+  import { getCalData, getEvents } from "./ts/moodleCal";
 </script>
 
 <div class="card-body p-3">
@@ -161,10 +170,10 @@
         {#each Object.keys(sorted) as date}
           <div
             class="MoodleHelperTodoDateHeader"
-            style="font-weight: bold; margin-top: 10px"
+            style="font-weight: bold; margin-top: 15px; margin-bottom: 5px; font-size:1.15em; "
           >
             {headerText(parseInt(date))}, {getHeaderWeekday(parseInt(date))}. {new Date(
-              parseInt(date)
+              parseInt(date),
             ).getDate()}.{new Date(parseInt(date)).getMonth() + 1}
           </div>
           {#each sorted[date] as todo, index}
@@ -175,7 +184,7 @@
             />
 
             {#if index !== sorted[date].length - 1}
-              <hr style="margin: 5px 0px 5px 0px" />
+              <hr style="margin: 2.5px 0px; width: 0" />
             {/if}
           {/each}
         {:else}
