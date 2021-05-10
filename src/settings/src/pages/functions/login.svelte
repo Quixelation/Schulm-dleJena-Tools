@@ -9,6 +9,7 @@
     <FunctionCard
       title="Auto Login-Redirect"
       description="Automatisch zur Login-Seite gehen."
+      optionCode="autologinredirect"
     >
       <div slot="bottomSlot">
         Erfahre mehr über <a>Auto Login-Redirect →</a>
@@ -17,6 +18,7 @@
     <FunctionCard
       title="Dashboard nach Login"
       description="Nach dem Login wird der Benutzer automatisch zum Dashboard geleitet."
+      optionCode="autodashboardredirect"
     >
       <div slot="bottomSlot">
         Erfahre mehr über <a>Dashboard nach Login →</a>
@@ -25,6 +27,7 @@
     <FunctionCard
       title="AutoFill-AutoLogin"
       description="Automatisches Einloggen nach Autofill durch Passwort-Manager"
+      optionCode="autologin_untrusted"
     >
       <div slot="bottomSlot">Erfahre mehr über <a>AutoFill-AutoLogin →</a></div>
     </FunctionCard>

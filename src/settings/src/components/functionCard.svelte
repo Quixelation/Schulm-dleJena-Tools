@@ -1,18 +1,56 @@
 <script lang="ts">
   export let title: string;
   export let description: string;
+  export let optionCode: string;
+  export let inputType: "boolean" | "number" = "boolean";
   import Card from "./../components/card.svelte";
   import ToggleInput from "./../components/toggleInput.svelte";
-  let active: boolean = false;
+  let value;
+  switch (inputType) {
+    case "boolean":
+      value = false;
+      break;
+    case "number":
+      value = 0;
+      break;
+  }
+  chrome.storage.sync.get([optionCode], (values) => {
+    value = values[optionCode];
+  });
+  function change(e) {
+    var value;
+    if (inputType === "number") {
+      value = e.target.value;
+    } else {
+      value = e.details;
+    }
+    chrome.storage.sync.set({ [optionCode]: value });
+  }
 </script>
 
-<Card shadow={active ? "smallest" : null}>
-  <div style="display: flex; justify-content: space-between">
+<Card
+  shadow={value === true || (typeof value !== "boolean" && value)
+    ? "smallest"
+    : null}
+>
+  <div
+    style="display: flex; justify-content: space-between; align-items: center;"
+  >
     <h2 style="margin: 0px; margin-bottom: 5px; font-weight: 500">
       {title}
     </h2>
     <div>
-      <ToggleInput bind:value={active} />
+      {#if inputType === "boolean"}
+        <ToggleInput bind:value on:change={change} />
+      {:else if inputType === "number"}
+        <input
+          type="number"
+          class="numberInput"
+          style="text-align: right"
+          {value}
+          on:input={change}
+        />
+      {/if}
     </div>
   </div>
   <div style="color: #737373">{description}</div>

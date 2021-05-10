@@ -1,7 +1,14 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
+
+  function click() {
+    dispatch("click");
+  }
 </script>
 
-<button>
+<button on:click={click}>
   <slot />
 </button>
 
@@ -16,6 +23,7 @@
     font-size: 14px;
     transition: background-color 0.1s ease, transform 0.1s ease;
     cursor: pointer;
+    height: fit-content;
   }
   button:active {
     background-color: #d83702;

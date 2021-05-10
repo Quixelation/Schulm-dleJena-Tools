@@ -9,8 +9,15 @@
     <FunctionCard
       title="Farbiger Fortschritt"
       description="Füge 2 neue Knöpfe zur Moodle Seite hinzu, um schneller zum Dashboard zu gelangen."
+      optionCode="usecoloredprogress"
     >
       <div slot="bottomSlot">Erfahre mehr über <a>Dashboard Knopf →</a></div>
     </FunctionCard>
+    <FunctionCard
+      title="Emoji-Größe"
+      description="Steuert die Größe des Emojis auf der Dashboard-Kurs-Link. (Angabe in %; Werte über 100 erlaubt)"
+      optionCode="dashboardEmojiFontSize"
+      inputType="number"
+    />
   </div>
 </div>

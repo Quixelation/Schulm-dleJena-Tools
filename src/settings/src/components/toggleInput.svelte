@@ -1,8 +1,15 @@
 <script lang="ts">
   export let value: boolean = false;
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
+
+  function change(e) {
+    dispatch("change", e.target.checked);
+  }
 </script>
 
-<input bind:checked={value} type="checkbox" class="toggle" />
+<input bind:checked={value} on:change={change} type="checkbox" class="toggle" />
 
 <style>
   input[type="checkbox"] {

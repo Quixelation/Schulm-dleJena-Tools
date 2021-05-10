@@ -39,7 +39,7 @@
     "typescript": "^4.2.3"
   },
   "scripts": {
-    "build": "tsc && npm run popup-build && npm run todo-build && npm run manager-build && npm run background-build && npm run changes-build",
+    "build": "tsc && npm run popup-build && npm run build:settings && npm run todo-build && npm run manager-build && npm run background-build && npm run changes-build",
     "pack": "npm run build && cd dist && web-ext build --overwrite-dest",
     "code": "node build.js",
     "popup-build": "cd src/popup && rollup -c",
