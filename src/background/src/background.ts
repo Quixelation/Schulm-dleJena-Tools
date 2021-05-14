@@ -1,3 +1,4 @@
+import axios from "axios";
 import { localStorage, storage, syncStorage } from "../../types";
 chrome.runtime.onInstalled.addListener(
   (object: chrome.runtime.InstalledDetails): void => {
@@ -105,3 +106,34 @@ chrome.webRequest.onBeforeRequest.addListener(
   },
   ["blocking"],
 );
+
+chrome.alarms.create("todoist-sync", {
+  periodInMinutes: 5,
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === "todoist-sync") {
+    //TODO: Add A little Check (var: false; before saving --> var: true; after saving) so that no todo goes missing.
+    chrome.storage.local.get(
+      ["todoist-project-id", "todoist-oauth-token"],
+
+      (values) => {
+        axios
+          .get("https://api.todoist.com/rest/v1/tasks", {
+            headers: {
+              Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+            },
+            params: {
+              project_id: values["todoist-project-id"],
+            },
+          })
+          .then((response) => {
+            //TODO: Add Last-Synced var
+            chrome.storage.local.set({
+              todos: response.data,
+            });
+          });
+      },
+    );
+  }
+});

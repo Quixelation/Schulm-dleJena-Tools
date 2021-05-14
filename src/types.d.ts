@@ -25,6 +25,7 @@ interface syncStorage {
   autologin_untrusted: boolean;
   shortcoursenames: boolean;
   "no-hidden-topics": boolean;
+  //TODO: Todoist types
   todos: { [key: string]: todoItem };
   fächer: fächer;
   "no-empty-topics": number[];

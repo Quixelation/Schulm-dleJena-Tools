@@ -36,7 +36,8 @@
     "unlimitedStorage",
     "webRequest",
     "webRequestBlocking",
-    "*://smjt.robertstuendl.com/*"
+    "*://smjt.robertstuendl.com/*",
+    "alarms"
   ],
   "author": "Robert Steffen Stündl",
   "content_scripts": [
