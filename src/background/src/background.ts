@@ -76,3 +76,30 @@ chrome.runtime.onConnect.addListener(
     });
   },
 );
+
+chrome.webRequest.onBeforeRequest.addListener(
+  function (details) {
+    const url = new URL(details.url);
+    if (url.href.includes("/api/todoist-loggedin")) {
+      chrome.storage.local.set({
+        "todoist-oauth-token": url.searchParams.get("token"),
+      });
+      return {
+        redirectUrl: "https://moodle.jsp.jena.de/?action=todoist-loggedin",
+      };
+    }
+    if (
+      url.href.includes("/api/todoist-oauth") &&
+      url.searchParams.get("smjt_state") == null
+    ) {
+      url.searchParams.append("smjt_state", chrome.runtime.id);
+      url.searchParams.append("client_id", "dffd8cf0da854df890922f69d6ff43a1");
+
+      return { redirectUrl: url.href };
+    }
+  },
+  {
+    urls: ["https://smjt.robertstuendl.com/*"],
+  },
+  ["blocking"],
+);

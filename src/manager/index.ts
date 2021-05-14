@@ -19,6 +19,7 @@ import noAssignForceDownload from "./noAssignForceDownload";
 import tileCourseManager from "./tileCourseManager";
 import { storage } from "@/types";
 import adjustVideo from "./adjustVideo";
+import queryAction from "./queryAction";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   const newStyle = document.createElement("style");
@@ -96,6 +97,10 @@ if (!location.pathname.includes("/mod/quiz/")) {
         location.pathname.startsWith("/course/view.php") &&
         options["tilesToList"],
       script: tileCourseManager,
+    },
+    {
+      match: null,
+      script: queryAction,
     },
   ]);
 

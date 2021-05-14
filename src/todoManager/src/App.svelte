@@ -8,7 +8,7 @@
       //@ts-ignore: "args.options"
       router.to("addTodo", args.options);
     },
-    false
+    false,
   );
 
   let router = {
@@ -37,9 +37,9 @@
     return newDate.valueOf();
   }
   let sorted;
-  function sortTodos(Todos: {
-    [key: number]: todoItem;
-  }): { [key: number]: todoItem[] } {
+  function sortTodos(Todos: { [key: number]: todoItem }): {
+    [key: number]: todoItem[];
+  } {
     const sortedObject: { [key: number]: todoItem[] } = {};
     Object.keys(Todos).forEach((key) => {
       let todo = Todos[key];
@@ -54,7 +54,7 @@
       sortedObject[item] = sortedObject[item].sort(
         (a: todoItem, b: todoItem) => {
           return new Date(a.time).valueOf() - new Date(b.time).valueOf();
-        }
+        },
       );
     });
     //#region Sort By Date
@@ -100,7 +100,7 @@
       new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate() - 1
+        new Date().getDate() - 1,
       ).valueOf()
     ) {
       return "Gestern";
@@ -109,7 +109,7 @@
       new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate() + 1
+        new Date().getDate() + 1,
       ).valueOf()
     ) {
       return "Morgen";
@@ -153,6 +153,14 @@
           router.to("addTodo");
         }}
       >
+        <i class="fa fa-link" />
+      </div>
+      <div
+        class="btn btn-secondary"
+        on:click={() => {
+          router.to("addTodo");
+        }}
+      >
         <i class="fa fa-plus" />
       </div>
     </div>
@@ -164,7 +172,7 @@
             style="font-weight: bold; margin-top: 10px"
           >
             {headerText(parseInt(date))}, {getHeaderWeekday(parseInt(date))}. {new Date(
-              parseInt(date)
+              parseInt(date),
             ).getDate()}.{new Date(parseInt(date)).getMonth() + 1}
           </div>
           {#each sorted[date] as todo, index}

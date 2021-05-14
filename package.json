@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@jaames/iro": "^5.3.2",
+    "axios": "^0.21.1",
     "browserify": "^17.0.0",
     "chroma-js": "^2.1.0",
     "command-pal": "^0.2.7",
@@ -56,11 +57,12 @@
   "scripts": {
     "pack": "npm run build && cd dist && web-ext build --overwrite-dest",
     "code": "powershell Compress-Archive tsconfig.json,package.json,package-lock.json,README.md,dist,src code.zip",
-    "build": "npm run build:popup && npm run build:todo && npm run build:manager && npm run build:background",
+    "build": "npm run build:popup && npm run build:todo && npm run build:manager && npm run build:background && npm run build:todoist",
     "build:popup": "cd src/popup && rollup -c",
     "build:todo": "cd src/todoManager && rollup -c",
     "build:manager": "browserify ./src/manager/index.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/manager.js && node -e \"console.log(new Date())\"",
     "build:background": "cd src/background && npm run build",
+    "build:todoist": "browserify ./src/todoist-oauth/index.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/todoist-oauth.js  ",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
     "license": "npm-license-generator --out-path=./page/licenses.html",
     "check-licenses": "npx license-compatibility-checker",

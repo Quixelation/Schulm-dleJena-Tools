@@ -30,9 +30,20 @@
     "scripts": ["generated/background.js"],
     "persistent": true
   },
-  "permissions": ["storage", "tabs", "unlimitedStorage"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "unlimitedStorage",
+    "webRequest",
+    "webRequestBlocking",
+    "*://smjt.robertstuendl.com/*"
+  ],
   "author": "Robert Steffen Stündl",
   "content_scripts": [
+    {
+      "matches": ["https://smjt.robertstuendl.com/api/todoist-oauth*"],
+      "js": ["generated/todoist-oauth.js"]
+    },
     {
       "matches": [
         "https://moodle.jsp.jena.de/*",
