@@ -45,7 +45,7 @@ export default {
     //!Mit TS Config updated
     typescript({
       sourceMap: !production,
-      include: ["./../utils.ts"],
+      include: ["./../utils.ts", "./src/**/*.ts"],
       paths: {
         "@shared/*": ["../*"],
       },

@@ -1,5 +1,11 @@
 {
-  "include": ["src/**/*", "src/node_modules", "./../utils.ts", "./scripts/*"],
+  "include": [
+    "src/**/*",
+    "src/**/*.ts",
+    "src/node_modules",
+    "./../utils.ts",
+    "./scripts/*"
+  ],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
 
   "compilerOptions": {

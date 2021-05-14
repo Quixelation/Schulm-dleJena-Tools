@@ -54,6 +54,8 @@ chrome.storage.local.get(null, (options): void => {
   const defaultOptions: localStorage = {
     courseInfo: {},
     downloaded: [],
+    "todoist-oauth-token": "",
+    "todoist-project-id": "",
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

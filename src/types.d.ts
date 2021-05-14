@@ -40,6 +40,8 @@ interface syncStorage {
 interface localStorage {
   courseInfo: { [courseId: string]: CourseTopics };
   downloaded: number[];
+  "todoist-oauth-token": string;
+  "todoist-project-id": string;
 }
 
 interface storage extends localStorage, syncStorage {}

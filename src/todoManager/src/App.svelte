@@ -1,6 +1,6 @@
 <script lang="ts">
   import { deleteTodoItem } from "./main";
-
+  import TodoistSettings from "./todoistSettings.svelte";
   import CreateTodoPage from "./manageTodoPage.svelte";
   window.addEventListener(
     "addTodo",
@@ -147,21 +147,23 @@
       style="display: flex; justify-content: space-between; align-items: center;"
     >
       <h5 style="margin: 0px;">Todos</h5>
-      <div
-        class="btn btn-secondary"
-        on:click={() => {
-          router.to("addTodo");
-        }}
-      >
-        <i class="fa fa-link" />
-      </div>
-      <div
-        class="btn btn-secondary"
-        on:click={() => {
-          router.to("addTodo");
-        }}
-      >
-        <i class="fa fa-plus" />
+      <div>
+        <div
+          class="btn btn-secondary"
+          on:click={() => {
+            router.to("todoistSettings");
+          }}
+        >
+          <i class="fa fa-link" />
+        </div>
+        <div
+          class="btn btn-secondary"
+          on:click={() => {
+            router.to("addTodo");
+          }}
+        >
+          <i class="fa fa-plus" />
+        </div>
       </div>
     </div>
     <div style="display: flex; flex-direction: column">
@@ -215,6 +217,12 @@
       on:saved={() => {
         router.to("main");
         getTodos();
+      }}
+    />
+  {:else if router.route === "todoistSettings"}
+    <TodoistSettings
+      on:back={() => {
+        router.to("main");
       }}
     />
   {:else}
