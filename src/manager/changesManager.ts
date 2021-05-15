@@ -1,4 +1,3 @@
-import { Activity, CourseTopics, storage } from "@shared/types";
 import course2json from "./course2json";
 import {
   card,
@@ -69,9 +68,11 @@ export default function (params: { options: storage }): void {
                         document.getElementById(
                           "SpanHtmlBuilderButtonSaveAllCourseTopics",
                         ).innerText = "Speichert & Entfernt";
-                        (document.getElementById(
-                          "htmlBuilderButtonSaveAllCourseTopics",
-                        ) as HTMLButtonElement).disabled = true;
+                        (
+                          document.getElementById(
+                            "htmlBuilderButtonSaveAllCourseTopics",
+                          ) as HTMLButtonElement
+                        ).disabled = true;
                         saveAllCourseTopics().then(() => {
                           document
                             .getElementById(

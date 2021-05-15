@@ -1,19 +1,13 @@
-import {
-  storage,
-  syncStorage as syncStorageType,
-  localStorage as localStorageType,
-} from "@/types";
-
 export default function (
   scripts: {
     match?: string | boolean | ((options: storage) => boolean);
     script: (params: { options: storage }) => void;
   }[],
 ): void {
-  const syncStorage: Promise<syncStorageType> = new Promise((resolve) => {
+  const syncStorage: Promise<syncStorage> = new Promise((resolve) => {
     chrome.storage.sync.get(null, resolve);
   });
-  const localStorage: Promise<localStorageType> = new Promise((resolve) => {
+  const localStorage: Promise<localStorage> = new Promise((resolve) => {
     chrome.storage.local.get(null, resolve);
   });
 

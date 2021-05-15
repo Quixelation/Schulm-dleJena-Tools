@@ -1,4 +1,3 @@
-import { fächer, storage } from "./../types";
 import { createEmojiImage, createWavesImage } from "./createCourseImage";
 import { getIdFromLink, replaceSpecialChars } from "./utils";
 import { FächerList } from "./..//utils";
@@ -273,8 +272,10 @@ function changeAllCards(params: { options: storage }): void {
       }
 
       try {
-        const name = (item.children[1].children[0].children[0].children[1]
-          .children[2] as HTMLSpanElement).innerText.trim();
+        const name = (
+          item.children[1].children[0].children[0].children[1]
+            .children[2] as HTMLSpanElement
+        ).innerText.trim();
         const id = getIdFromLink((item.children[0] as HTMLLinkElement).href);
 
         try {
@@ -294,8 +295,10 @@ function changeAllCards(params: { options: storage }): void {
               "data-moodlehelperfilteredname",
               "true",
             );
-            (item.children[1].children[0].children[0].children[1]
-              .children[2] as HTMLSpanElement).style.fontSize = "20px";
+            (
+              item.children[1].children[0].children[0].children[1]
+                .children[2] as HTMLSpanElement
+            ).style.fontSize = "20px";
             item.children[1].children[0].children[0].children[0].children[1].textContent =
               "";
           }
@@ -368,8 +371,10 @@ function changeAllCards(params: { options: storage }): void {
                 .getAttribute("aria-valuenow") != "100"
             : false
         ) {
-          (item.children[1].children[0].children[0].children[1]
-            .children[2] as HTMLSpanElement).style.fontWeight = "bold";
+          (
+            item.children[1].children[0].children[0].children[1]
+              .children[2] as HTMLSpanElement
+          ).style.fontWeight = "bold";
         }
 
         //(item as HTMLDivElement).style.backgroundColor = "#0f172a";
@@ -381,8 +386,10 @@ function changeAllCards(params: { options: storage }): void {
         if (smallFooterCard) smallFooterCard.style.color = "#cbd5e1";
 
         try {
-          (item.children[1].children[0].children[0].children[1]
-            .children[2] as HTMLSpanElement).style.color = `#39CCCC`;
+          (
+            item.children[1].children[0].children[0].children[1]
+              .children[2] as HTMLSpanElement
+          ).style.color = `#39CCCC`;
           const theProgressBar = item.querySelector(
             ".progress-bar.bar",
           ) as HTMLDivElement;
@@ -431,12 +438,14 @@ function changeAllCards(params: { options: storage }): void {
               )
               .css();
 
-            (item.children[1].children[0].children[0].children[1]
-              .children[2] as HTMLSpanElement).style.color = hsl;
+            (
+              item.children[1].children[0].children[0].children[1]
+                .children[2] as HTMLSpanElement
+            ).style.color = hsl;
 
-            (item.querySelector(
-              ".progress-bar.bar",
-            ) as HTMLDivElement).style.backgroundColor = hsl;
+            (
+              item.querySelector(".progress-bar.bar") as HTMLDivElement
+            ).style.backgroundColor = hsl;
           }
         }
       } catch (err) {
@@ -458,8 +467,7 @@ function addInfo(): void {
               text: "Hinweis!",
             }),
             span({
-              text:
-                "Es wurden neue Kurse erkannt. Aktualisiere diese Seite um Änderungen zu sehen.",
+              text: "Es wurden neue Kurse erkannt. Aktualisiere diese Seite um Änderungen zu sehen.",
             }),
             span({
               text: "(SchulmoodleJena Tools)",

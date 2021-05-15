@@ -1,7 +1,4 @@
-import { Activity, CourseTopics } from "@/types";
-export default function (
-  courseHtmlData: string,
-):
+export default function (courseHtmlData: string):
   | {
       status: "not-supported";
     }
