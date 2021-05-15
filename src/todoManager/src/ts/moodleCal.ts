@@ -37,24 +37,25 @@ function getCalData(): Promise<calData.result> {
   });
 }
 
-function getEvents(): Promise<todoItem[]> {
-  return new Promise((resolve, reject) => {
+function getEvents(): Promise<{ [key: string]: todoItem }> {
+  return new Promise((resolve) => {
     getCalData().then((fetchResult) => {
-      const events: todoItem[] = [];
+      const events: { [key: string]: todoItem } = {};
       fetchResult[0].data.weeks.forEach((week) => {
         week.days.forEach((day) => {
           day.events.forEach((event) => {
-            events.push({
+            events[event.id] = {
               title: event.name,
-              course: event.course,
+              isMoodle: true,
               time: new Date(event.timestart * 1000).toISOString(),
-              color: "#ffee00",
+
               done: false,
-              moodleEvent: true,
-            });
+            } as todoItem;
           });
         });
       });
+      console.log(events);
+      chrome.storage.local.set({ "todos-moodle": events });
       resolve(events);
     });
   });

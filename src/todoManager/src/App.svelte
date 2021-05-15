@@ -20,7 +20,7 @@
     },
   };
 
-  function getDateAt0(date: number) {
+  function getDateAt0(date: string | number | Date) {
     let newDate = new Date(date);
 
     newDate.setHours(0);
@@ -30,29 +30,43 @@
     return newDate.valueOf();
   }
   let sorted;
-  function sortTodos(Todos: { [key: number]: todoItem }): {
-    [key: number]: todoItem[];
+  let chromeSyncTodos: { [key: string]: todoItem } = {};
+  let moodleCalTodos: { [key: string]: todoItem } = {};
+  $: sorted = sortTodos({ ...chromeSyncTodos, ...moodleCalTodos });
+
+  function sortTodos(Todos: { [key: string]: todoItem }): {
+    [key: string]: todoItem[];
   } {
     const sortedObject: { [key: number]: todoItem[] } = {};
     Object.keys(Todos).forEach((key) => {
       let todo = Todos[key];
+      /* eslint-disable-next-line*/
+      var keyToPushTo = "";
+      if (todo.time !== false) {
+        keyToPushTo = getDateAt0(todo.time).toString();
+      } else {
+        keyToPushTo = "no-date";
+      }
 
-      if (sortedObject[getDateAt0(todo.time)] == null) {
-        sortedObject[getDateAt0(todo.time)] = [];
+      if (sortedObject[keyToPushTo] == null) {
+        sortedObject[keyToPushTo] = [];
       }
       todo["key"] = key;
-      sortedObject[getDateAt0(todo.time)].push(todo);
+      sortedObject[keyToPushTo].push(todo);
     });
     Object.keys(sortedObject).forEach((item) => {
       sortedObject[item] = sortedObject[item].sort(
         (a: todoItem, b: todoItem) => {
-          return new Date(a.time).valueOf() - new Date(b.time).valueOf();
+          if (a.time && b.time) {
+            return new Date(a.time).valueOf() - new Date(b.time).valueOf();
+          }
         },
       );
     });
     //#region Sort By Date
     let sortedObjectKeys = Object.keys(sortedObject);
     sortedObjectKeys = sortedObjectKeys.sort((a, b) => {
+      console.log("dateSort", { a, b });
       return parseInt(a) - parseInt(b);
     });
     const finalSorted = {};
@@ -64,42 +78,55 @@
     return finalSorted;
   }
   let getTodos = () => {
-    getEvents().then((Todos) => {
-      Object.keys(Todos).forEach((todoKey) => {
-        if (
-          getDateAt0(new Date(Todos[todoKey]?.time).valueOf()) <
-            getDateAt0(Date.now()) &&
-          Todos[todoKey].done
-        ) {
-          deleteTodoItem(todoKey);
-          // Remove from Object,so the user doesn't see it
-          delete Todos[todoKey];
-        }
-      });
-      sorted = sortTodos(Todos);
-    });
-    return;
-    chrome.storage.sync.get(["todos"], (val) => {
-      const Todos: { [key: number]: todoItem } = val.todos;
-      /**
-       * Entfernt alte Todos
-       */
-      Object.keys(Todos).forEach((todoKey) => {
-        if (
-          getDateAt0(new Date(Todos[todoKey]?.time).valueOf()) <
-            getDateAt0(Date.now()) &&
-          Todos[todoKey].done
-        ) {
-          deleteTodoItem(todoKey);
-          // Remove from Object,so the user doesn't see it
-          delete Todos[todoKey];
-        }
-      });
-      sorted = sortTodos(Todos);
-    });
+    // getEvents().then((Todos) => {
+    //   Object.keys(Todos).forEach((todoKey) => {
+    //     if (
+    //       getDateAt0(new Date(Todos[todoKey]?.time).valueOf()) <
+    //         getDateAt0(Date.now()) &&
+    //       Todos[todoKey].done
+    //     ) {
+    //       deleteTodoItem(todoKey);
+    //       // Remove from Object,so the user doesn't see it
+    //       delete Todos[todoKey];
+    //     }
+    //   });
+    chrome.storage.local.get(
+      ["todos", "todos-moodle"],
+      (values: extension.storage.local) => {
+        chromeSyncTodos = cleanTodoList({
+          ...values.todos,
+        });
+        moodleCalTodos = cleanTodoList({ ...values["todos-moodle"] });
+        getEvents().then((value) => {
+          moodleCalTodos = cleanTodoList({ ...value });
+        });
+      },
+    );
   };
   getTodos();
-
+  chrome.storage.onChanged.addListener((changes) => {
+    getTodos();
+  });
+  /**
+   * Entfernt alte Todos
+   */
+  function cleanTodoList(list: { [key: string]: todoItem }): {
+    [key: string]: todoItem;
+  } {
+    Object.keys(list).forEach((todoKey) => {
+      if (
+        (list[todoKey].done !== false || list[todoKey].isMoodle === true) &&
+        list[todoKey]?.time !== false &&
+        getDateAt0(new Date(list[todoKey]?.time).valueOf()) <
+          getDateAt0(Date.now())
+      ) {
+        deleteTodoItem(todoKey);
+        // Remove from Object,so the user doesn't see it
+        delete list[todoKey];
+      }
+    });
+    return list;
+  }
   let headerText = (time: number) => {
     if (time === getDateAt0(Date.now())) {
       return "Heute";

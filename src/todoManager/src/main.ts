@@ -18,10 +18,10 @@ export default app;
 
 function deleteTodoItem(key) {
   return new Promise((resolve) => {
-    chrome.storage.sync.get(["todos"], (val) => {
+    chrome.storage.local.get(["todos"], (val) => {
       const { todos } = val;
       delete todos[key];
-      chrome.storage.sync.set({ todos }, () => {
+      chrome.storage.local.set({ todos }, () => {
         resolve();
       });
     });
@@ -30,10 +30,10 @@ function deleteTodoItem(key) {
 
 function changeDoneState(key, state) {
   return new Promise((resolve) => {
-    chrome.storage.sync.get(["todos"], (val) => {
+    chrome.storage.local.get(["todos"], (val) => {
       const { todos } = val;
       todos[key].done = state;
-      chrome.storage.sync.set({ todos }, () => {
+      chrome.storage.local.set({ todos }, () => {
         resolve();
       });
     });

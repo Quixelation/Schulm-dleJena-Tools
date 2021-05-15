@@ -12,6 +12,8 @@ function padding(
       padding += paddingChar;
     }
     newText = padding + text;
+  } else {
+    newText = text;
   }
   return newText;
 }

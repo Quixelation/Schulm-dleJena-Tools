@@ -67,9 +67,21 @@ export default {
     //!Mit TS Config updated
     typescript({
       sourceMap: !production,
-      include: ["./../utils.ts", "./src/**/*"],
+      include: [
+        "src/**/*.ts",
+        "src/**/*",
+        "src/node_modules",
+        "./../utils.ts",
+        "./scripts/**/*",
+        "./../typings/**/*.ts",
+        "./../shared/**/*.ts",
+      ],
+      exclude: ["node_modules/*", "__sapper__/*", "public/*"],
+
+      typeRoots: ["./../../node_modules/@types", "./../typings/"],
+      baseUrl: ".",
       paths: {
-        "@shared/*": ["../*"],
+        "@/*": ["../*"],
       },
     }),
     commonjs(),

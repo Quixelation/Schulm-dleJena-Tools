@@ -1,4 +1,4 @@
-import axios from "axios";
+import { syncTodoist } from "./../shared/todoist";
 
 chrome.runtime.onInstalled.addListener(
   (object: chrome.runtime.InstalledDetails): void => {
@@ -26,7 +26,7 @@ chrome.commands.onCommand.addListener((command): void => {
   }
 });
 chrome.storage.sync.get(null, (options): void => {
-  const defaultOptions: syncStorage = {
+  const defaultOptions: extension.storage.sync = {
     allowMultipleDownloads: false,
     autodashboardredirect: true,
     autologin_untrusted: false,
@@ -42,7 +42,6 @@ chrome.storage.sync.get(null, (options): void => {
     shortcoursenames: true,
     showemojicourses: true,
     sortedCourses: [],
-    todos: {},
     usecoloredprogress: true,
     tilesToList: false,
   };
@@ -52,11 +51,14 @@ chrome.storage.sync.get(null, (options): void => {
   chrome.storage.sync.set(options);
 });
 chrome.storage.local.get(null, (options): void => {
-  const defaultOptions: localStorage = {
+  const defaultOptions: extension.storage.local = {
     courseInfo: {},
     downloaded: [],
-    "todoist-oauth-token": "",
-    "todoist-project-id": "",
+    "todoist-oauth-token": null,
+    "todoist-project-id": null,
+    todos: {},
+    "todos-moodle": {},
+    "todos-todoist-lastSynced": null,
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";
@@ -108,45 +110,15 @@ chrome.webRequest.onBeforeRequest.addListener(
 );
 
 chrome.alarms.create("todoist-sync", {
-  periodInMinutes: 0.5,
+  periodInMinutes: 15,
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "todoist-sync") {
     console.log("Alarm Todoist Sync");
     //TODO: Add A little Check (var: false; before saving --> var: true; after saving) so that no todo goes missing.
-    chrome.storage.local.get(
-      ["todoist-project-id", "todoist-oauth-token"],
-
-      (values) => {
-        axios
-          .get("https://api.todoist.com/rest/v1/tasks", {
-            headers: {
-              Authorization: `Bearer ${values["todoist-oauth-token"]}`,
-            },
-            params: {
-              project_id: values["todoist-project-id"],
-            },
-          })
-          .then((response) => {
-            const output: todoItem[] = [];
-            (response.data as Array<todoist.task>).forEach((todoistItem) => {
-              output.push({
-                title: todoistItem.content,
-                done: false,
-                integration: "todoist",
-                time: todoistItem.due?.datetime ?? false,
-                label: todoistItem.label_ids.map(String),
-                color: null,
-              });
-            });
-            console.log(output);
-            //TODO: Add Last-Synced var
-            chrome.storage.sync.set({
-              todos: output,
-            });
-          });
-      },
-    );
+    syncTodoist();
   }
 });
+
+//TODO: von todos auf sync zu todos auf lokal migrieren

@@ -21,7 +21,6 @@
   "exclude": [
     "src/popup/*",
     "src/todoManager/*",
-    "src/shared/*",
     "src/changesManager",
     "archive"
   ],

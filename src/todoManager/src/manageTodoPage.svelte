@@ -4,8 +4,9 @@
   const dispatch = createEventDispatcher();
   export let routerData;
   console.log("routerData", routerData);
-  import { padding } from "@shared/utils";
+  import { padding } from "@/utils";
   import { deleteTodoItem } from "./main";
+  import { syncTodoist } from "@/shared/todoist";
   let title = routerData?.title ?? "";
   let datetime = routerData?.time ?? "";
   let type = routerData?.type ?? "ha";
@@ -17,30 +18,36 @@
         title.trim() === "" && datetime === "" ? " und " : " "
       }${datetime === "" ? "Datum" : ""} fehlt!`;
     } else {
-      chrome.storage.sync.get(["todos"], (val) => {
+      chrome.storage.local.get(["todos"], (val) => {
         var { todos } = val;
         if (action === "create") {
           todos[
             Math.random().toString(36).replace("0.", Date.now().toString())
           ] = {
             time: datetime,
+            sync: {
+              //TODO
+              todoist: false,
+            },
 
             title: title,
             done: false,
-            moodleEvent: false,
-            color: "#ffee00",
           } as todoItem;
         } else {
           todos[routerData.key] = {
             time: datetime,
-            type: type,
             title: title,
+            sync: {
+              //TODO
+              todoist: false,
+            },
             done: routerData.done,
           };
         }
-        chrome.storage.sync.set({ todos }, () => {
+        console.log("todos", todos);
+        chrome.storage.local.set({ todos }, () => {
           console.log("set that shit");
-
+          syncTodoist();
           dispatch("saved");
         });
       });
@@ -48,15 +55,21 @@
   };
 
   function goBack() {
-    (document.getElementById(
-      "moodleHelper__TitleSaveNewTodo",
-    ) as HTMLInputElement).value = "";
-    (document.getElementById(
-      "moodleHelper__dateTimeSaveNewTodo",
-    ) as HTMLInputElement).value = "";
-    (document.getElementById(
-      "moodleHelper__selectSaveNewTodo",
-    ) as HTMLSelectElement).value = "ha";
+    (
+      document.getElementById(
+        "moodleHelper__TitleSaveNewTodo",
+      ) as HTMLInputElement
+    ).value = "";
+    (
+      document.getElementById(
+        "moodleHelper__dateTimeSaveNewTodo",
+      ) as HTMLInputElement
+    ).value = "";
+    (
+      document.getElementById(
+        "moodleHelper__selectSaveNewTodo",
+      ) as HTMLSelectElement
+    ).value = "ha";
     dispatch("back");
   }
 
@@ -115,13 +128,7 @@
     />
   {/if}
   <br style="margin: 10px 0 10px 0;" />
-  <div>Typ:</div>
-  <select id="moodleHelper__selectSaveNewTodo" bind:value={type}>
-    <option value="ha" selected>Hausaufgabe</option>
-    <option value="exam">Test</option>
-    <option value="video">Videokonferenz</option>
-  </select>
-  <br style="margin: 10px 0 10px 0;" />
+
   {#if errorMsg !== ""}
     <span style="color: #FF851B">{errorMsg}</span>
     <br style="margin: 10px 0 10px 0;" />

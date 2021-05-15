@@ -1,11 +1,3 @@
-interface todoItem {
-  time: string;
-  color: string;
-  moodleEvent: boolean;
-  course: course;
-  title: string;
-  done: boolean;
-}
 interface course {
   id: number;
   fullname: string;
