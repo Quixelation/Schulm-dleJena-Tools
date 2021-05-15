@@ -24,10 +24,12 @@
             Math.random().toString(36).replace("0.", Date.now().toString())
           ] = {
             time: datetime,
-            type: type,
+
             title: title,
             done: false,
-          };
+            moodleEvent: false,
+            color: "#ffee00",
+          } as todoItem;
         } else {
           todos[routerData.key] = {
             time: datetime,
@@ -47,13 +49,13 @@
 
   function goBack() {
     (document.getElementById(
-      "moodleHelper__TitleSaveNewTodo"
+      "moodleHelper__TitleSaveNewTodo",
     ) as HTMLInputElement).value = "";
     (document.getElementById(
-      "moodleHelper__dateTimeSaveNewTodo"
+      "moodleHelper__dateTimeSaveNewTodo",
     ) as HTMLInputElement).value = "";
     (document.getElementById(
-      "moodleHelper__selectSaveNewTodo"
+      "moodleHelper__selectSaveNewTodo",
     ) as HTMLSelectElement).value = "ha";
     dispatch("back");
   }
