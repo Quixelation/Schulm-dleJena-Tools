@@ -135,14 +135,14 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                 title: todoistItem.content,
                 done: false,
                 integration: "todoist",
-                time: todoistItem.due.datetime,
+                time: todoistItem.due?.datetime ?? false,
                 label: todoistItem.label_ids.map(String),
                 color: null,
               });
             });
             console.log(output);
             //TODO: Add Last-Synced var
-            chrome.storage.local.set({
+            chrome.storage.sync.set({
               todos: output,
             });
           });

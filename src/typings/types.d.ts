@@ -1,6 +1,6 @@
 declare type todoType = "video" | "exam" | "ha";
 declare interface todoItem {
-  time: string;
+  time: string | false;
   color: string;
   label: string[];
   title: string;
