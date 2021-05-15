@@ -1,4 +1,3 @@
-import { CourseTopics, localStorage } from "@shared/types";
 import course2json from "./course2json";
 import { getIdFromLink } from "./utils";
 

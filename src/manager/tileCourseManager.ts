@@ -1,11 +1,11 @@
-import { storage } from "@shared/types";
-
 export default function (params: { options: storage }): void {
   // Example POST method implementation:
   const sessionKey = new URL(
-    (document.querySelector(
-      ".usermenu .dropdown div[data-rel='menu-content'] > a:last-child",
-    ) as HTMLAnchorElement).href,
+    (
+      document.querySelector(
+        ".usermenu .dropdown div[data-rel='menu-content'] > a:last-child",
+      ) as HTMLAnchorElement
+    ).href,
   ).searchParams.get("sesskey");
   console.log("SessionKey", sessionKey);
   // Default options are marked with *

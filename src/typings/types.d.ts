@@ -1,22 +1,24 @@
-type todoType = "video" | "exam" | "ha";
-interface todoItem {
+declare type todoType = "video" | "exam" | "ha";
+declare interface todoItem {
   time: string;
-  type: "ha" | "exam" | "video";
+  color: string;
+  label: string[];
   title: string;
   done: boolean;
+  integration: "user" | "moodle" | "todoist";
 }
 
-interface Activity {
+declare interface Activity {
   name: string;
   details: string;
   type: string;
   id: number;
 }
-interface CourseTopics {
+declare interface CourseTopics {
   [sectionId: string]: { name: string; activities: Activity[] };
 }
 
-interface syncStorage {
+declare interface syncStorage {
   usecoloredprogress: boolean;
   showemojicourses: boolean;
   autologinredirect: boolean;
@@ -38,16 +40,16 @@ interface syncStorage {
   tilesToList: boolean;
 }
 
-interface localStorage {
+declare interface localStorage {
   courseInfo: { [courseId: string]: CourseTopics };
   downloaded: number[];
   "todoist-oauth-token": string;
   "todoist-project-id": string;
 }
 
-interface storage extends localStorage, syncStorage {}
+declare interface storage extends localStorage, syncStorage {}
 
-interface fach {
+declare interface fach {
   /**
    * Der lange Name des Kurses
    */
@@ -61,25 +63,13 @@ interface fach {
   color: string;
 }
 
-interface fächer {
+declare interface fächer {
   [id: string]: fach;
 }
-type fachImageTypes =
+declare type fachImageTypes =
   | "emoji"
   | "muster"
   | "original"
   | "emoji_muster"
   | "emoji_bg"
   | "bg";
-export {
-  todoItem,
-  todoType,
-  fach,
-  syncStorage,
-  localStorage,
-  storage,
-  fächer,
-  fachImageTypes,
-  CourseTopics,
-  Activity,
-};

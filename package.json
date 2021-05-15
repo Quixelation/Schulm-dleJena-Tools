@@ -62,7 +62,7 @@
     "build:popup": "cd src/popup && rollup -c",
     "build:todo": "cd src/todoManager && rollup -c",
     "build:manager": "browserify ./src/manager/index.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/manager.js && node -e \"console.log(new Date())\"",
-    "build:background": "cd src/background && npm run build",
+    "build:background": "browserify ./src/background/background.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/background.js",
     "build:todoist": "browserify ./src/todoist-oauth/index.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/todoist-oauth.js  ",
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
     "license": "npm-license-generator --out-path=./page/licenses.html",

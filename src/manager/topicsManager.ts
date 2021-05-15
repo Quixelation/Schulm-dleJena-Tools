@@ -1,5 +1,3 @@
-import { storage } from "@/types";
-
 function toggleNoEmptyTopics(force?: true): void {
   if (force) {
     document.body.classList.add("no-empty-topics");
@@ -179,8 +177,7 @@ export default function (params: { options: storage }): void {
 
           //#endregion
         },
-        text:
-          "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
+        text: "Leere Themen <span id='leereThemenAnzeigenTextVersteckenAnzeigen'>verstecken</span> <i id='leereThemenAnzeigenIcon' class='fa fa-eye-slash' ></i>",
       });
     }
     optionsArray.forEach((option) => {
@@ -198,9 +195,8 @@ export default function (params: { options: storage }): void {
     document.getElementById("region-main-box").prepend(buttonsContainer);
 
     if (document.querySelectorAll("div.content > ul.section") !== null) {
-      const allSections = document.querySelectorAll<HTMLLIElement>(
-        "li.section.main",
-      );
+      const allSections =
+        document.querySelectorAll<HTMLLIElement>("li.section.main");
       allSections.forEach((section) => {
         const courseTitle = /Thema [0-9]+$/g.test(
           section.querySelector(".sectionname").textContent.trim(),

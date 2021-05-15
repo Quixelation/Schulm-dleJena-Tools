@@ -1,5 +1,3 @@
-import { storage } from "src/types";
-
 import * as Sortable from "sortablejs";
 
 import tippy from "tippy.js";

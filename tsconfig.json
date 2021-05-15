@@ -15,7 +15,8 @@
       //For legacy
       "@shared/*": ["./src/*"],
       "src": ["./src/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./src/typings/"]
   },
   "exclude": [
     "src/popup/*",
@@ -24,5 +25,6 @@
     "src/changesManager",
     "archive"
   ],
+
   "include": ["./src/**/*"]
 }

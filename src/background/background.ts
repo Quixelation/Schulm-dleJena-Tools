@@ -1,5 +1,5 @@
 import axios from "axios";
-import { localStorage, storage, syncStorage } from "../../types";
+
 chrome.runtime.onInstalled.addListener(
   (object: chrome.runtime.InstalledDetails): void => {
     if ("install" === object.reason)
@@ -108,11 +108,12 @@ chrome.webRequest.onBeforeRequest.addListener(
 );
 
 chrome.alarms.create("todoist-sync", {
-  periodInMinutes: 5,
+  periodInMinutes: 0.5,
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "todoist-sync") {
+    console.log("Alarm Todoist Sync");
     //TODO: Add A little Check (var: false; before saving --> var: true; after saving) so that no todo goes missing.
     chrome.storage.local.get(
       ["todoist-project-id", "todoist-oauth-token"],
@@ -128,9 +129,21 @@ chrome.alarms.onAlarm.addListener((alarm) => {
             },
           })
           .then((response) => {
+            const output: todoItem[] = [];
+            (response.data as Array<todoist.task>).forEach((todoistItem) => {
+              output.push({
+                title: todoistItem.content,
+                done: false,
+                integration: "todoist",
+                time: todoistItem.due.datetime,
+                label: todoistItem.label_ids.map(String),
+                color: null,
+              });
+            });
+            console.log(output);
             //TODO: Add Last-Synced var
             chrome.storage.local.set({
-              todos: response.data,
+              todos: output,
             });
           });
       },
