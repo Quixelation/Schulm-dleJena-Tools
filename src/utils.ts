@@ -57,4 +57,16 @@ const FächerList = {
   Sozialkunde: "",
   Sport: "🏃‍♂️",
 };
-export { padding, increase_brightness, FächerList };
+
+function convertDateToHtmlInputFormat(date: string | number | Date): string {
+  return new Date(new Date(date).toString().split("GMT")[0] + " UTC")
+    .toISOString()
+    .split(".")[0];
+}
+
+export {
+  padding,
+  increase_brightness,
+  FächerList,
+  convertDateToHtmlInputFormat,
+};

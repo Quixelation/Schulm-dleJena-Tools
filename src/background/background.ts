@@ -1,3 +1,4 @@
+import { defaultTaskPrio } from "./../shared/defaults";
 import { syncTodoist } from "./../shared/todoist";
 
 chrome.runtime.onInstalled.addListener(
@@ -25,6 +26,7 @@ chrome.commands.onCommand.addListener((command): void => {
     });
   }
 });
+
 chrome.storage.sync.get(null, (options): void => {
   const defaultOptions: extension.storage.sync = {
     allowMultipleDownloads: false,
@@ -44,6 +46,8 @@ chrome.storage.sync.get(null, (options): void => {
     sortedCourses: [],
     usecoloredprogress: true,
     tilesToList: false,
+    //TODO: Change Colors
+    "todo-prio": defaultTaskPrio,
   };
   Object.keys(defaultOptions).forEach((item: string): void => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

@@ -2,14 +2,20 @@
   import { createEventDispatcher } from "svelte";
   export let action;
   const dispatch = createEventDispatcher();
-  export let routerData;
+  export let routerData: todoItem;
   console.log("routerData", routerData);
   import { padding } from "@/utils";
   import { deleteTodoItem } from "./main";
   import { syncTodoist } from "@/shared/todoist";
+  import { defaultTaskPrio } from "@/shared/defaults";
+  import { each } from "svelte/internal";
+  import { convertDateToHtmlInputFormat } from "@/utils";
   let title = routerData?.title ?? "";
-  let datetime = routerData?.time ?? "";
-  let type = routerData?.type ?? "ha";
+  let datetime = routerData?.time
+    ? convertDateToHtmlInputFormat(routerData?.time)
+    : "";
+
+  let taskPriority = routerData?.priority ?? 1;
   let errorMsg = "";
   let saveHandler = () => {
     console.log({ title, datetime });
@@ -24,25 +30,26 @@
           todos[
             Math.random().toString(36).replace("0.", Date.now().toString())
           ] = {
-            time: datetime,
+            time: new Date(datetime).toISOString(),
             sync: {
               //TODO
               todoist: false,
             },
-
+            priority: taskPriority,
             title: title,
             done: false,
           } as todoItem;
         } else {
           todos[routerData.key] = {
-            time: datetime,
+            time: new Date(datetime).toISOString(),
             title: title,
             sync: {
               //TODO
-              todoist: false,
+              todoist: "update",
             },
             done: routerData.done,
-          };
+            priority: taskPriority,
+          } as todoItem;
         }
         console.log("todos", todos);
         chrome.storage.local.set({ todos }, () => {
@@ -65,11 +72,7 @@
         "moodleHelper__dateTimeSaveNewTodo",
       ) as HTMLInputElement
     ).value = "";
-    (
-      document.getElementById(
-        "moodleHelper__selectSaveNewTodo",
-      ) as HTMLSelectElement
-    ).value = "ha";
+
     dispatch("back");
   }
 
@@ -82,6 +85,12 @@
   }
   // Check if datetime-local ist supported or if I should use date (Firefox)
   let isFirefox = navigator.userAgent.indexOf("Firefox") != -1;
+
+  let prioData: taskPriorities = defaultTaskPrio;
+  chrome.storage.sync.get("todo-prio", (values: extension.storage.sync) => {
+    //Should not fail... But if it does, there is a check
+    values["todo-prio"] && (prioData = values["todo-prio"]);
+  });
 </script>
 
 <div
@@ -127,6 +136,33 @@
       type="datetime-local"
     />
   {/if}
+  <br style="margin: 10px 0 10px 0;" />
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 5px;">
+    {#each [1, 2, 3, 4] as prioBtnData}
+      <button
+        class="btn {taskPriority === prioBtnData
+          ? 'btn-primary'
+          : 'btn-secondary'}"
+        style={taskPriority === prioBtnData
+          ? `background-color: ${
+              prioData[String(prioBtnData)].color
+            }; border-color: ${prioData[String(prioBtnData)].color}`
+          : ``}
+        on:click={() => {
+          //@ts-ignore: Type 'number' is not assignable to type '1 | 2 | 3 | 4'.ts(2322)
+          taskPriority = prioBtnData;
+        }}
+      >
+        <i
+          class="fa fa-{prioData[String(prioBtnData)].icon}"
+          aria-hidden="true"
+          style={taskPriority === prioBtnData
+            ? `color: white`
+            : `color: ${prioData[String(prioBtnData)].color}`}
+        />
+      </button>
+    {/each}
+  </div>
   <br style="margin: 10px 0 10px 0;" />
 
   {#if errorMsg !== ""}

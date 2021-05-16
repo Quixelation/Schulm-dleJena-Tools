@@ -4,9 +4,14 @@ declare interface todoItem {
   title: string;
   done: boolean;
   sync: {
-    todoist: boolean;
+    todoist: boolean | "update";
   };
   isMoodle: boolean;
+  /**
+   * Je höher, desto wichtiger.
+   * Vetraue nicht dem Todoist Desktop-GUI, wo 1 das wichtigste ist... Das ist falsch!!!
+   */
+  priority: 1 | 2 | 3 | 4;
 }
 
 declare interface Activity {
@@ -21,38 +26,11 @@ declare interface CourseTopics {
 /**
  * @deprecated
  */
-declare interface syncStorage {
-  usecoloredprogress: boolean;
-  showemojicourses: boolean;
-  autologinredirect: boolean;
-  forcedownload: boolean;
-  autodashboardredirect: boolean;
-  autologin_untrusted: boolean;
-  shortcoursenames: boolean;
-  "no-hidden-topics": boolean;
-
-  todos: { [key: string]: todoItem };
-  fächer: fächer;
-  "no-empty-topics": number[];
-  reversed_courses: number[];
-  removeNavigationBlock: boolean;
-  biggerVideo: boolean;
-  allowMultipleDownloads: boolean;
-  dashboardEmojiFontSize: number;
-  sortedCourses: string[];
-  tilesToList: boolean;
-}
+declare type syncStorage = extension.storage.sync;
 /**
  * @deprecated
  */
-declare interface localStorage {
-  courseInfo: { [courseId: string]: CourseTopics };
-  downloaded: number[];
-  "todoist-oauth-token": string;
-  "todoist-project-id": string;
-  "todos-todoist": { [key: string]: todoItem };
-  "todos-moodle": { [key: string]: todoItem };
-}
+declare type localStorage = extension.storage.local;
 /**
  * @deprecated
  */
@@ -83,6 +61,13 @@ declare type fachImageTypes =
   | "emoji_bg"
   | "bg";
 
+declare interface taskPriorities {
+  "1": { color: string; icon: string };
+  "2": { color: string; icon: string };
+  "3": { color: string; icon: string };
+  "4": { color: string; icon: string };
+}
+
 declare namespace extension {
   export namespace storage {
     export interface sync {
@@ -94,7 +79,7 @@ declare namespace extension {
       autologin_untrusted: boolean;
       shortcoursenames: boolean;
       "no-hidden-topics": boolean;
-
+      "todo-prio": taskPriorities;
       fächer: fächer;
       "no-empty-topics": number[];
       reversed_courses: number[];

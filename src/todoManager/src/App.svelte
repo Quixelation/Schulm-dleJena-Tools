@@ -17,6 +17,9 @@
     to: (location: string, data?: any) => {
       router.route = location;
       router.data = data;
+      if (location === "addTodo" || location === "editTodo") {
+        scrollTo(0, 0);
+      }
     },
   };
 
@@ -66,7 +69,6 @@
     //#region Sort By Date
     let sortedObjectKeys = Object.keys(sortedObject);
     sortedObjectKeys = sortedObjectKeys.sort((a, b) => {
-      console.log("dateSort", { a, b });
       return parseInt(a) - parseInt(b);
     });
     const finalSorted = {};
@@ -174,6 +176,13 @@
 
   import TodoListItem from "./todoListItem.svelte";
   import { getCalData, getEvents } from "./ts/moodleCal";
+  import { defaultTaskPrio } from "@/shared/defaults";
+
+  let prioData: taskPriorities = defaultTaskPrio;
+  chrome.storage.sync.get("todo-prio", (values: extension.storage.sync) => {
+    //Should not fail... But if it does, there is a check
+    values["todo-prio"] && (prioData = values["todo-prio"]);
+  });
 </script>
 
 <div class="card-body p-3">
@@ -190,7 +199,7 @@
             router.to("todoistSettings");
           }}
         >
-          <i class="fa fa-link" />
+          <i class="fa fa-cog" />
         </div>
         <div
           class="btn btn-secondary"
@@ -215,6 +224,7 @@
           </div>
           {#each sorted[date] as todo, index}
             <TodoListItem
+              {prioData}
               todoItem={sorted[date][index]}
               key={sorted[date][index].key}
               on:todoClick={(e) => router.to("editTodo", sorted[date][index])}

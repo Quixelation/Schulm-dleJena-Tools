@@ -19,29 +19,50 @@ function syncTodoist(): Promise<number> {
              * format: UTC
              */
             due_datetime?: string;
+            priority: 1 | 2 | 3 | 4;
           } = {
             content: currentTodo.title,
             due_datetime: currentTodo.time
               ? new Date(currentTodo.time).toISOString()
-              : null,
+              : undefined,
+            priority: currentTodo.priority,
           };
           if (currentTodo.sync.todoist !== true) {
-            pushTasks.push(
-              axios
-                .post(
-                  "https://api.todoist.com/rest/v1/tasks",
-                  {
-                    project_id: parseInt(values["todoist-project-id"]),
-                    ...data,
-                  },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+            if (currentTodo.sync.todoist === "update") {
+              pushTasks.push(
+                axios
+                  .post(
+                    "https://api.todoist.com/rest/v1/tasks/" +
+                      todoKey.replace("smjt-todoist-", ""),
+
+                    data,
+
+                    {
+                      headers: {
+                        Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+                      },
                     },
-                  },
-                )
-                .then(console.log, console.log),
-            );
+                  )
+                  .then(console.log, console.log),
+              );
+            } else {
+              pushTasks.push(
+                axios
+                  .post(
+                    "https://api.todoist.com/rest/v1/tasks",
+                    {
+                      project_id: parseInt(values["todoist-project-id"]),
+                      ...data,
+                    },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+                      },
+                    },
+                  )
+                  .then(console.log, console.log),
+              );
+            }
           }
         });
         try {
@@ -65,7 +86,7 @@ function syncTodoist(): Promise<number> {
             console.log(response);
             const output: { [key: string]: todoItem } = {};
             (response.data as Array<todoist.task>).forEach((todoistItem) => {
-              output["todoist" + todoistItem.id] = {
+              output["smjt-todoist-" + todoistItem.id] = {
                 title: todoistItem.content,
                 done: false,
                 sync: {
@@ -77,6 +98,7 @@ function syncTodoist(): Promise<number> {
                   : todoistItem.due?.date
                   ? new Date(todoistItem.due?.date).toISOString()
                   : false,
+                priority: todoistItem.priority,
               };
             });
             console.log(output);

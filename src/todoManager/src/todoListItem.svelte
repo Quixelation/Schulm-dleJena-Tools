@@ -6,7 +6,7 @@
     dispatch("todoClick");
   }
   export let todoItem: todoItem;
-
+  export let prioData: taskPriorities;
   export let key;
   let typeIcons = {
     ha: { icon: "file", color: "grey" },
@@ -25,7 +25,9 @@
 
 <div
   class="{done ? 'hoverBlackActivator' : 'card'} todoItem p-1"
-  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; border-left: 5px solid {todoItem.color}; background-color: white;"
+  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; border-left: 5px solid {todoItem.color}; background-color: white; border-color: {prioData[
+    String(todoItem.priority)
+  ]?.color ?? 'none'}"
 >
   <input
     type="checkbox"
@@ -65,9 +67,7 @@
     {/if}
     <span
       style="font-size: {isFirefox ? '15px' : '13px'}; 
-       {done
-        ? 'color: #80808080;'
-        : 'color: #000000'}"
+       {done ? 'color: #80808080;' : 'color: #000000'}"
       class="colorTransition hoverBlack">{todoItem.title}</span
     >
   </div>
