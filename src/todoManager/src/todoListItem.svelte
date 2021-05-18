@@ -3,9 +3,10 @@
   import { changeDoneState } from "./main";
   const dispatch = createEventDispatcher();
   function todoClick(item: string) {
-    dispatch("todoClick");
+    !todoItem.isMoodle && dispatch("todoClick");
   }
   export let todoItem: todoItem;
+
   export let prioData: taskPriorities;
   export let key;
   let typeIcons = {
@@ -24,26 +25,34 @@
 </script>
 
 <div
-  class="{done ? 'hoverBlackActivator' : 'card'} todoItem p-1"
-  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; border-left: 5px solid {todoItem.color}; background-color: white; border-color: {prioData[
-    String(todoItem.priority)
-  ]?.color ?? 'none'}"
+  class="{done ? 'hoverBlackActivator' : ''} card todoItem {todoItem.isMoodle
+    ? 'pb-1 pt-1 pr-2 pl-2'
+    : 'p-1'}"
+  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; background-color: white; border-color: {done
+    ? 'white'
+    : prioData[String(todoItem.priority)]?.color ?? 'none'}; {!todoItem.isMoodle
+    ? 'border-left-width: 4px'
+    : ''}"
 >
-  <input
-    type="checkbox"
-    style="margin-right: 10px; margin-left: 5px;"
-    checked={todoItem.done}
-    on:input={(e) => {
-      //@ts-ignore
-      done = e.target.checked;
-      //@ts-ignore
-      console.log(e.target.checked);
-      //@ts-ignore
-      changeDoneState(key, e.target.checked);
-    }}
-  />
+  {#if !todoItem.isMoodle}
+    <input
+      type="checkbox"
+      style="margin-right: 10px; margin-left: 5px;"
+      checked={todoItem.done}
+      on:input={(e) => {
+        //@ts-ignore
+        done = e.target.checked;
+        //@ts-ignore
+        console.log(e.target.checked);
+        //@ts-ignore
+        changeDoneState(key, e.target.checked);
+      }}
+    />
+  {/if}
   <div
-    style="display: flex; flex-direction: column"
+    style="display: flex; flex-direction: column; width:100%; {todoItem.isMoodle
+      ? ''
+      : 'cursor: pointer'}"
     on:click={() => {
       todoClick(key);
     }}

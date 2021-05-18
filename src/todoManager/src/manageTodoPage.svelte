@@ -2,11 +2,14 @@
   import { createEventDispatcher } from "svelte";
   export let action;
   const dispatch = createEventDispatcher();
-  export let routerData: todoItem;
+  interface routerData extends todoItem {
+    key: string;
+  }
+  export let routerData: routerData;
   console.log("routerData", routerData);
   import { padding } from "@/utils";
   import { deleteTodoItem } from "./main";
-  import { syncTodoist } from "@/shared/todoist";
+  import { syncTodoist, createCommand } from "@/shared/todoist";
   import { defaultTaskPrio } from "@/shared/defaults";
   import { each } from "svelte/internal";
   import { convertDateToHtmlInputFormat } from "@/utils";
@@ -24,32 +27,36 @@
         title.trim() === "" && datetime === "" ? " und " : " "
       }${datetime === "" ? "Datum" : ""} fehlt!`;
     } else {
-      chrome.storage.local.get(["todos"], (val) => {
+      chrome.storage.local.get(["todos"], (val: extension.storage.local) => {
         var { todos } = val;
         if (action === "create") {
-          todos[
-            Math.random().toString(36).replace("0.", Date.now().toString())
-          ] = {
+          const id = Math.random()
+            .toString(36)
+            .replace("0.", Date.now().toString());
+          todos[id] = {
             time: new Date(datetime).toISOString(),
             sync: {
-              //TODO
-              todoist: false,
+              todoist: [],
             },
             priority: taskPriority,
             title: title,
             done: false,
           } as todoItem;
+          todos[id].sync.todoist.push(createCommand("item_add", todos[id]));
         } else {
           todos[routerData.key] = {
             time: new Date(datetime).toISOString(),
             title: title,
             sync: {
               //TODO
-              todoist: "update",
+              todoist: routerData.sync.todoist,
             },
             done: routerData.done,
             priority: taskPriority,
           } as todoItem;
+          todos[routerData.key].sync.todoist.push(
+            createCommand("item_update", todos[routerData.key]),
+          );
         }
         console.log("todos", todos);
         chrome.storage.local.set({ todos }, () => {
@@ -79,6 +86,7 @@
   function deleteHandler() {
     if (confirm("Wirklich löschen?")) {
       deleteTodoItem(routerData.key).then(() => {
+        syncTodoist();
         dispatch("saved");
       });
     }

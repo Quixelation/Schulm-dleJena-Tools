@@ -53,7 +53,8 @@
     "sweetalert2": "^11.0.0",
     "tippy.js": "^6.3.1",
     "tsify": "^5.0.2",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "uuid": "^8.3.2"
   },
   "scripts": {
     "pack": "npm run build && cd dist && web-ext build --overwrite-dest",

@@ -60,6 +60,7 @@ chrome.storage.local.get(null, (options): void => {
     downloaded: [],
     "todoist-oauth-token": null,
     "todoist-project-id": null,
+    "todo-close-on-complete": false,
     todos: {},
     "todos-moodle": {},
     "todos-todoist-lastSynced": null,

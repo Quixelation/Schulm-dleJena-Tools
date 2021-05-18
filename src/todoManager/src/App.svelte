@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { deleteTodoItem } from "./main";
+  import { closeTodoItem, deleteTodoItem } from "./main";
   import TodoistSettings from "./todoistSettings.svelte";
   import CreateTodoPage from "./manageTodoPage.svelte";
   window.addEventListener(
@@ -42,6 +42,16 @@
   } {
     const sortedObject: { [key: number]: todoItem[] } = {};
     Object.keys(Todos).forEach((key) => {
+      if (
+        Todos[key].deleted === true ||
+        (Todos[key]?.isMoodle &&
+          Todos[key]?.time !== false &&
+          getDateAt0(new Date(Todos[key]?.time).valueOf()) <
+            getDateAt0(Date.now()))
+      ) {
+        delete Todos[key];
+        return;
+      }
       let todo = Todos[key];
       /* eslint-disable-next-line*/
       var keyToPushTo = "";
@@ -108,6 +118,11 @@
   getTodos();
   chrome.storage.onChanged.addListener((changes) => {
     getTodos();
+    Object.keys(changes).forEach((key) => {
+      if (key === "todo-prio") {
+        prioData = changes[key].newValue;
+      }
+    });
   });
   /**
    * Entfernt alte Todos
@@ -117,12 +132,13 @@
   } {
     Object.keys(list).forEach((todoKey) => {
       if (
-        (list[todoKey].done !== false || list[todoKey].isMoodle === true) &&
+        !list[todoKey]?.isMoodle &&
+        list[todoKey].done !== false &&
         list[todoKey]?.time !== false &&
         getDateAt0(new Date(list[todoKey]?.time).valueOf()) <
           getDateAt0(Date.now())
       ) {
-        deleteTodoItem(todoKey);
+        closeTodoItem(todoKey);
         // Remove from Object,so the user doesn't see it
         delete list[todoKey];
       }

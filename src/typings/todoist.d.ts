@@ -31,4 +31,27 @@ declare namespace todoist {
     parent_id: number;
     url: string;
   }
+  export interface command<
+    argsType = {
+      [key: string]: string | number | boolean;
+    },
+  > {
+    type: "item_add" | "item_update" | "item_delete" | "item_close";
+    uuid: string;
+    args: argsType;
+  }
+  export namespace commandArgs {
+    export interface item {
+      content: string;
+
+      /** Hier kann nicht ISO verwendet werden, sondern die spezielle Variante */
+      due_datetime: string;
+
+      priority: 1 | 2 | 3 | 4;
+    }
+
+    export interface item_project_id extends item {
+      project_id: number;
+    }
+  }
 }

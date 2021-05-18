@@ -4,7 +4,7 @@ declare interface todoItem {
   title: string;
   done: boolean;
   sync: {
-    todoist: boolean | "update";
+    todoist: todoist.command<todoist.commandArgs.item>[];
   };
   isMoodle: boolean;
   /**
@@ -12,6 +12,10 @@ declare interface todoItem {
    * Vetraue nicht dem Todoist Desktop-GUI, wo 1 das wichtigste ist... Das ist falsch!!!
    */
   priority: 1 | 2 | 3 | 4;
+  /**
+   * Items werden nicht sofort gelöscht, damit diese noch von todoist gelöscht werden.
+   */
+  deleted: boolean;
 }
 
 declare interface Activity {
@@ -99,6 +103,7 @@ declare namespace extension {
       todos: { [key: string]: todoItem };
       "todos-todoist-lastSynced": number;
       "todos-moodle": { [key: string]: todoItem };
+      "todo-close-on-complete": boolean;
     }
   }
 
