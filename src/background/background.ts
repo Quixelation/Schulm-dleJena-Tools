@@ -83,6 +83,7 @@ chrome.storage.local.get(null, (options): void => {
     "todos-moodle": {},
     "todos-todoist-lastSynced": null,
     "todoist-active": false,
+    courseProgress: {},
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

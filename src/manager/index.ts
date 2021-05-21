@@ -16,6 +16,8 @@ import changesManager from "./changesManager";
 //import courseSorting from "./courseSorting";
 import scriptManager from "./scriptManager";
 import noAssignForceDownload from "./noAssignForceDownload";
+
+import courseProgress from "./courseProgress";
 import tileCourseManager from "./tileCourseManager";
 
 import adjustVideo from "./adjustVideo";
@@ -91,6 +93,10 @@ if (!location.pathname.includes("/mod/quiz/")) {
     {
       match: location.pathname.startsWith("/mod/assign/view.php"),
       script: noAssignForceDownload,
+    },
+    {
+      match: location.pathname.startsWith("/course/view.php"),
+      script: courseProgress,
     },
     {
       match: (options: storage) =>

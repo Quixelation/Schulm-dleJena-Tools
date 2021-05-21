@@ -1,3 +1,4 @@
+import { courseProgress, fächer, storage } from "./../types";
 import { createEmojiImage, createWavesImage } from "./createCourseImage";
 import { getIdFromLink, replaceSpecialChars } from "./utils";
 import { FächerList } from "./..//utils";
@@ -12,8 +13,9 @@ import {
 } from "./htmlBuilder";
 import { activate as activateSortable, sortCourses } from "./sortableCourses";
 import { renewChangeDescriptors } from "./changesManager";
+import { calculateProgressPercentage } from "./courseProgress";
 
-function getViewType(): "list" | "card" | "summary" {
+function getViewType(html?: string): "list" | "card" | "summary" {
   console.log(
     document.querySelector(getCoursesQuerySelector(false, "card")),
     getCoursesQuerySelector(false, "card"),
@@ -207,7 +209,7 @@ function changeAllListItems(params: { options: storage }): void {
 
       //Die Trennung zwischen den Listen-Elementen sichtbarer machen
       item.parentElement.style.borderColor = "rgb(255,255,255,0.13)";
-
+      //TODO: Make compatible with new courseProgress-System
       if (options["usecoloredprogress"] === true) {
         const progressbar = item.querySelector(
           ".progress-bar.bar",
@@ -425,34 +427,84 @@ function changeAllCards(params: { options: storage }): void {
         //   e;
         // }
 
-        if (options["usecoloredprogress"] === true) {
-          if (item.querySelector(".progress-bar.bar") != null) {
-            const hsl = chromaScale(["#ff0000", "#00ff1e"])
-              .domain([0, 75, 95, 100])
-              .mode("hsl")(
-                Number(
+        if (item.querySelector(".progress-bar.bar") != null) {
+          item.querySelector(".progress-bar.bar").id =
+            generateProgressbarId(id);
+
+          manageProgressbar(
+            id,
+            options.courseProgress[id] != undefined &&
+              options.courseProgress[id] !== false
+              ? calculateProgressPercentage(
+                  options.courseProgress[id] as courseProgress,
+                )
+              : parseInt(
                   item
                     .querySelector(".progress-bar.bar")
                     .getAttribute("aria-valuenow"),
                 ),
-              )
-              .css();
-
-            (
-              item.children[1].children[0].children[0].children[1]
-                .children[2] as HTMLSpanElement
-            ).style.color = hsl;
-
-            (
-              item.querySelector(".progress-bar.bar") as HTMLDivElement
-            ).style.backgroundColor = hsl;
-          }
+          );
         }
       } catch (err) {
         console.warn(err);
       }
       //item.insertAdjacentElement("afterbegin", generateDashboardCardHeader(1));
     });
+}
+
+function generateProgressbarId(courseId: string) {
+  return `smjt-course-progressbar-${courseId}`;
+}
+
+function manageProgressbar(courseId: string, percentage: number): void {
+  console.log("percentage", percentage);
+  // Um mich vor meiner eigenen DUmmheit zu schützen
+  const id = courseId.includes("smjt-course-progressbar")
+    ? courseId.replace("smjt-course-progressbar-", "")
+    : courseId;
+
+  //TODO: Check for coloredprogress feature-flag
+  //TODO: Listen-Ansicht unterstützen
+  if (document.getElementById(generateProgressbarId(id)) != null) {
+    const hsl = chromaScale(["#ff0000", "#00ff1e"])
+      .domain([0, 75, 95, 100])
+      .mode("hsl")(Number(percentage))
+      .css();
+
+    (
+      document
+        .getElementById(generateProgressbarId(id))
+        .parentElement.parentElement.parentElement.querySelector(".coursename ")
+        .children[2] as HTMLSpanElement
+    ).style.color = hsl;
+
+    document.getElementById(generateProgressbarId(id)).style.backgroundColor =
+      hsl;
+    document.getElementById(
+      generateProgressbarId(id),
+    ).style.width = `${percentage.toFixed()}%`;
+
+    (
+      document
+        .getElementById(generateProgressbarId(id))
+        //Ist zwar eigentlich ein <strong> aber das gab es nicht zur Auswahl.
+        .parentElement.parentElement.querySelector(
+          ".small strong",
+        ) as HTMLSpanElement
+    ).innerText = String(percentage.toFixed());
+    (
+      document
+        .getElementById(generateProgressbarId(id))
+        //Ist zwar eigentlich ein <strong> aber das gab es nicht zur Auswahl.
+        .parentElement.parentElement.querySelector(
+          ".small strong",
+        ) as HTMLSpanElement
+    ).setAttribute("aria-valuenow", String(percentage.toFixed()));
+
+    console.log("ManageProgressBar");
+  } else {
+    console.log("No Progressbar to manage");
+  }
 }
 
 let addedInfoToPage = false;
@@ -527,4 +579,4 @@ function syncCourse(id: string, longName: string): void {
   }
 }
 
-export { getViewType, getCoursesQuerySelector };
+export { getViewType, getCoursesQuerySelector, manageProgressbar };
