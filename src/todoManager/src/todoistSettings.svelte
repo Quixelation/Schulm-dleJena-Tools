@@ -197,8 +197,9 @@
       on:change={changeTDOC}
       type="checkbox"
     />
-    Aufgaben beim Abhaken komplett schließen (a.k.a. verschwinden lassen) [AUS: Aufgaben
-    bei Todoist werden nicht abgehakt, da diese sonst verschwinden würden.]
+    Aufgaben beim Abhaken komplett schließen (a.k.a. verschwinden lassen)<br
+    />[AUS: Aufgaben bei Todoist werden nicht abgehakt, da diese sonst
+    verschwinden würden.]
   </label>
 {:else}
   <button on:click={activateTodoist} style="width: 100%" class="btn btn-primary"

@@ -114,7 +114,7 @@ chrome.webRequest.onBeforeRequest.addListener(
         "todoist-oauth-token": url.searchParams.get("token"),
       });
       return {
-        redirectUrl: "https://moodle.jsp.jena.de/?action=todoist-loggedin",
+        redirectUrl: "https://moodle.jsp.jena.de/?smjtaction=todoist-loggedin",
       };
     }
     if (

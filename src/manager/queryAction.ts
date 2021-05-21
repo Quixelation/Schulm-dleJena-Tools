@@ -128,7 +128,7 @@ const actions = {
           },
         }).then(() => {
           const url = new URL(location.href);
-          url.searchParams.delete("action");
+          url.searchParams.delete("smjtaction");
           location.href = url.href;
         });
       }
@@ -137,5 +137,5 @@ const actions = {
 };
 
 export default function (): void {
-  actions[new URL(location.href).searchParams.get("action")]?.();
+  actions[new URL(location.href).searchParams.get("smjtaction")]?.();
 }

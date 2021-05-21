@@ -72,19 +72,28 @@
         (a: todoItem, b: todoItem) => {
           if (a.time && b.time) {
             return new Date(a.time).valueOf() - new Date(b.time).valueOf();
+          } else {
+            return 1;
           }
         },
       );
     });
-    //#region Sort By Date
-    let sortedObjectKeys = Object.keys(sortedObject);
-    sortedObjectKeys = sortedObjectKeys.sort((a, b) => {
-      return parseInt(a) - parseInt(b);
-    });
+
     const finalSorted = {};
-    sortedObjectKeys.forEach((item) => {
-      finalSorted[item] = sortedObject[item];
-    });
+    //#region Sort By Date
+    Object.keys(sortedObject)
+      .sort((a, b) => {
+        if (a === "no-date") {
+          return -1;
+        }
+        if (b === "no-date") {
+          return 1;
+        }
+        return parseInt(a) - parseInt(b);
+      })
+      .forEach((item) => {
+        finalSorted[item] = sortedObject[item];
+      });
     //#endregion
 
     return finalSorted;
@@ -230,14 +239,18 @@
     <div style="display: flex; flex-direction: column">
       {#if sorted}
         {#each Object.keys(sorted) as date}
-          <div
-            class="MoodleHelperTodoDateHeader"
-            style="font-weight: bold; margin-top: 15px; margin-bottom: 5px; font-size:1.15em; "
-          >
-            {headerText(parseInt(date))}, {getHeaderWeekday(parseInt(date))}. {new Date(
-              parseInt(date),
-            ).getDate()}.{new Date(parseInt(date)).getMonth() + 1}
-          </div>
+          {#if date !== "no-date"}
+            <div
+              class="MoodleHelperTodoDateHeader"
+              style="font-weight: bold; margin-top: 15px; margin-bottom: 5px; font-size:1.15em; "
+            >
+              {headerText(parseInt(date))}, {getHeaderWeekday(parseInt(date))}. {new Date(
+                parseInt(date),
+              ).getDate()}.{new Date(parseInt(date)).getMonth() + 1}
+            </div>
+          {:else}
+            <br />
+          {/if}
           {#each sorted[date] as todo, index}
             <TodoListItem
               {prioData}

@@ -151,9 +151,12 @@
           ? 'btn-primary'
           : 'btn-secondary'}"
         style={taskPriority === prioBtnData
-          ? `background-color: ${
-              prioData[String(prioBtnData)].color
-            }; border-color: ${prioData[String(prioBtnData)].color}`
+          ? `${
+              prioData[String(prioBtnData)].color.length === 9 &&
+              prioData[String(prioBtnData)].color.slice(-2) === "00"
+                ? "background-color: #222222;"
+                : `background-color: ${prioData[String(prioBtnData)].color};`
+            } border-color: ${prioData[String(prioBtnData)].color}`
           : ``}
         on:click={() => {
           //@ts-ignore: Type 'number' is not assignable to type '1 | 2 | 3 | 4'.ts(2322)
@@ -165,7 +168,12 @@
           aria-hidden="true"
           style={taskPriority === prioBtnData
             ? `color: white`
-            : `color: ${prioData[String(prioBtnData)].color}`}
+            : `color: ${
+                prioData[String(prioBtnData)].color.length === 9 &&
+                prioData[String(prioBtnData)].color.slice(-2) === "00"
+                  ? "black"
+                  : prioData[String(prioBtnData)].color
+              }`}
         />
       </button>
     {/each}

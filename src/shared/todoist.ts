@@ -138,13 +138,15 @@ function syncTodoist(): Promise<number> {
               console.log(response);
               const output: { [key: string]: todoItem } = {};
               (response.data as Array<todoist.task>).forEach((todoistItem) => {
+                console.log(values["todos"][todoistItem.id]);
                 output[todoistItem.id] = {
                   title: todoistItem.content,
-                  done: false,
+
                   sync: {
                     todoist: true,
                   },
                   isMoodle: false,
+                  done: values["todos"][todoistItem.id].done,
                   time: todoistItem.due?.datetime
                     ? new Date(todoistItem.due.datetime).toISOString()
                     : todoistItem.due?.date
