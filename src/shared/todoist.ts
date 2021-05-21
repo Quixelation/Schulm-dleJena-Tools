@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from "axios";
-import { v1 as uuidv1, v4 as uuidv4 } from "uuid";
+import { v1 as uuidv1 } from "uuid";
 /**
  *
  * @returns lastSynced
@@ -7,142 +7,166 @@ import { v1 as uuidv1, v4 as uuidv4 } from "uuid";
 function syncTodoist(): Promise<number> {
   return new Promise((resolve, reject) => {
     console.log("Syncing Todoist...");
+
     chrome.storage.local.get(
-      ["todoist-project-id", "todoist-oauth-token", "todos"],
+      [
+        "todoist-project-id",
+        "todoist-oauth-token",
+        "todos",
+        "todoist-active",
+        "todo-close-on-complete",
+      ],
 
       async (values: extension.storage.local) => {
-        const commands: AxiosPromise[] = [];
-        Object.keys(values["todos"]).forEach(async (todoKey) => {
-          const currentTodo = values["todos"][todoKey];
-          if (currentTodo.sync.todoist == null) {
-            currentTodo.sync.todoist = [createCommand("item_add", currentTodo)];
-          }
-
-          if (
-            Array.isArray(currentTodo.sync.todoist) &&
-            currentTodo.sync.todoist
-          ) {
-            currentTodo.sync.todoist.forEach((command) => {
-              switch (command.type) {
-                case "item_add":
-                  commands.push(
-                    axios.post(
-                      "https://api.todoist.com/rest/v1/tasks",
-                      injectProjectId(
-                        parseInt(values["todoist-project-id"]),
-                        command,
-                      ).args,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${values["todoist-oauth-token"]}`,
-                          "X-Request-Id": command.uuid,
-                        },
-                      },
-                    ),
-                  );
-                  break;
-                case "item_update":
-                  commands.push(
-                    axios.post(
-                      "https://api.todoist.com/rest/v1/tasks/" +
-                        todoKey.replace("smjt-todoist-", ""),
-                      command.args,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${values["todoist-oauth-token"]}`,
-                          "X-Request-Id": command.uuid,
-                        },
-                      },
-                    ),
-                  );
-                  break;
-                case "item_delete":
-                  commands.push(
-                    axios.delete(
-                      "https://api.todoist.com/rest/v1/tasks/" +
-                        todoKey.replace("smjt-todoist-", ""),
-
-                      {
-                        headers: {
-                          Authorization: `Bearer ${values["todoist-oauth-token"]}`,
-                          "X-Request-Id": command.uuid,
-                        },
-                      },
-                    ),
-                  );
-                  break;
-                //TODO: Falls hier ein Close/Delete kommt und todoist aus ist, soll hier sofort gelöscht werden
-                case "item_close":
-                  commands.push(
-                    axios.post(
-                      "https://api.todoist.com/rest/v1/tasks/" +
-                        todoKey.replace("smjt-todoist-", "") +
-                        "/close",
-                      null,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${values["todoist-oauth-token"]}`,
-                          "X-Request-Id": command.uuid,
-                        },
-                      },
-                    ),
-                  );
-                  break;
-              }
-            });
-          }
-        });
-        try {
-          console.log(commands);
-          //TODO: Add more 100 (limit)
-          const axiosResponse = await Promise.all(commands);
-          console.log(axiosResponse);
-        } catch (err) {
-          console.log(err);
-          alert(err);
-        }
-
-        axios
-          .get(`https://api.todoist.com/rest/v1/tasks`, {
-            params: {
-              project_id: parseInt(values["todoist-project-id"]),
+        if (!values["todoist-active"]) {
+          console.log("todoist nicht aktiv");
+          reject("todoist nicht aktiv");
+        } else if (values["todoist-oauth-token"] == null) {
+          console.log("Kein Todoist Auth Token");
+          chrome.storage.local.set(
+            {
+              "todoist-active": false,
             },
-            headers: {
-              Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+            () => {
+              reject("Kein Todoist Auth Token");
             },
-          })
-          .then((response) => {
-            console.log(response);
-            const output: { [key: string]: todoItem } = {};
-            (response.data as Array<todoist.task>).forEach((todoistItem) => {
-              output[todoistItem.id] = {
-                title: todoistItem.content,
-                done: false,
-                sync: {
-                  todoist: [],
-                },
-                isMoodle: false,
-                time: todoistItem.due?.datetime
-                  ? new Date(todoistItem.due.datetime).toISOString()
-                  : todoistItem.due?.date
-                  ? new Date(todoistItem.due?.date).toISOString()
-                  : false,
-                priority: todoistItem.priority,
-                deleted: false,
-              };
-            });
-            console.log(output);
-            const lastSynced = Date.now();
-            chrome.storage.local.set(
-              {
-                todos: output,
-                "todos-todoist-lastSynced": lastSynced,
-              },
-              () => {
-                resolve(lastSynced);
-              },
-            );
+          );
+        } else if (values["todoist-project-id"] == null) {
+          console.log("Keine Todoist Project ID");
+          chrome.storage.local.set(
+            {
+              "todoist-active": false,
+            },
+            () => {
+              reject("Keine Todoist Project ID");
+            },
+          );
+        } else {
+          const commands: AxiosPromise[] = [];
+          Object.keys(values["todos"]).forEach(async (todoKey) => {
+            const currentTodo = values["todos"][todoKey];
+
+            if (currentTodo.sync.todoist === null) {
+              commands.push(
+                axios.post(
+                  "https://api.todoist.com/rest/v1/tasks",
+                  {
+                    content: currentTodo.title,
+                    due_datetime: currentTodo.time
+                      ? new Date(currentTodo.time).toISOString()
+                      : undefined,
+                    priority: currentTodo.priority,
+                    project_id: parseInt(values["todoist-project-id"]),
+                  } as todoist.commandArgs.item_project_id,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+                    },
+                  },
+                ),
+              );
+            } else if (currentTodo.sync.todoist === false) {
+              commands.push(
+                axios.post(
+                  "https://api.todoist.com/rest/v1/tasks/" +
+                    todoKey.replace("smjt-todoist-", ""),
+                  {
+                    content: currentTodo.title,
+                    due_datetime: currentTodo.time
+                      ? new Date(currentTodo.time).toISOString()
+                      : undefined,
+                    priority: currentTodo.priority,
+                  } as todoist.commandArgs.item,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+                    },
+                  },
+                ),
+              );
+            }
+            if (currentTodo.deleted) {
+              commands.push(
+                axios.delete(
+                  "https://api.todoist.com/rest/v1/tasks/" +
+                    todoKey.replace("smjt-todoist-", ""),
+
+                  {
+                    headers: {
+                      Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+                    },
+                  },
+                ),
+              );
+            } else if (currentTodo.done && values["todo-close-on-complete"]) {
+              commands.push(
+                axios.post(
+                  "https://api.todoist.com/rest/v1/tasks/" +
+                    todoKey.replace("smjt-todoist-", "") +
+                    "/close",
+                  null,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+                    },
+                  },
+                ),
+              );
+            }
           });
+
+          try {
+            console.log(commands);
+            //TODO: Add more 100 (limit)
+            const axiosResponse = await Promise.all(commands);
+            console.log(axiosResponse);
+          } catch (err) {
+            console.log(err);
+            alert(err);
+          }
+
+          axios
+            .get(`https://api.todoist.com/rest/v1/tasks`, {
+              params: {
+                project_id: parseInt(values["todoist-project-id"]),
+              },
+              headers: {
+                Authorization: `Bearer ${values["todoist-oauth-token"]}`,
+              },
+            })
+            .then((response) => {
+              console.log(response);
+              const output: { [key: string]: todoItem } = {};
+              (response.data as Array<todoist.task>).forEach((todoistItem) => {
+                output[todoistItem.id] = {
+                  title: todoistItem.content,
+                  done: false,
+                  sync: {
+                    todoist: true,
+                  },
+                  isMoodle: false,
+                  time: todoistItem.due?.datetime
+                    ? new Date(todoistItem.due.datetime).toISOString()
+                    : todoistItem.due?.date
+                    ? new Date(todoistItem.due?.date).toISOString()
+                    : false,
+                  priority: todoistItem.priority,
+                  deleted: false,
+                };
+              });
+              console.log(output);
+              const lastSynced = Date.now();
+              chrome.storage.local.set(
+                {
+                  todos: output,
+                  "todos-todoist-lastSynced": lastSynced,
+                },
+                () => {
+                  resolve(lastSynced);
+                },
+              );
+            });
+        }
       },
     );
   });

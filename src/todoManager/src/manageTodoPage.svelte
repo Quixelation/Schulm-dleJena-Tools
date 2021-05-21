@@ -27,44 +27,43 @@
         title.trim() === "" && datetime === "" ? " und " : " "
       }${datetime === "" ? "Datum" : ""} fehlt!`;
     } else {
-      chrome.storage.local.get(["todos"], (val: extension.storage.local) => {
-        var { todos } = val;
-        if (action === "create") {
-          const id = Math.random()
-            .toString(36)
-            .replace("0.", Date.now().toString());
-          todos[id] = {
-            time: new Date(datetime).toISOString(),
-            sync: {
-              todoist: [],
-            },
-            priority: taskPriority,
-            title: title,
-            done: false,
-          } as todoItem;
-          todos[id].sync.todoist.push(createCommand("item_add", todos[id]));
-        } else {
-          todos[routerData.key] = {
-            time: new Date(datetime).toISOString(),
-            title: title,
-            sync: {
-              //TODO
-              todoist: routerData.sync.todoist,
-            },
-            done: routerData.done,
-            priority: taskPriority,
-          } as todoItem;
-          todos[routerData.key].sync.todoist.push(
-            createCommand("item_update", todos[routerData.key]),
-          );
-        }
-        console.log("todos", todos);
-        chrome.storage.local.set({ todos }, () => {
-          console.log("set that shit");
-          syncTodoist();
-          dispatch("saved");
-        });
-      });
+      chrome.storage.local.get(
+        ["todos", "todoist-active"],
+        (val: extension.storage.local) => {
+          var { todos } = val;
+          if (action === "create") {
+            const id = Math.random()
+              .toString(36)
+              .replace("0.", Date.now().toString());
+            todos[id] = {
+              time: new Date(datetime).toISOString(),
+              sync: {
+                todoist: null,
+              },
+              priority: taskPriority,
+              title: title,
+              done: false,
+              deleted: false,
+            } as todoItem;
+          } else {
+            todos[routerData.key] = {
+              time: new Date(datetime).toISOString(),
+              title: title,
+              sync: {
+                todoist: routerData.sync.todoist === null ? null : false,
+              },
+              done: routerData.done,
+              priority: taskPriority,
+            } as todoItem;
+          }
+          console.log("todos", todos);
+          chrome.storage.local.set({ todos }, () => {
+            console.log("set that shit");
+            syncTodoist();
+            dispatch("saved");
+          });
+        },
+      );
     }
   };
 

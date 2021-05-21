@@ -28,9 +28,13 @@
   class="{done ? 'hoverBlackActivator' : ''} card todoItem {todoItem.isMoodle
     ? 'pb-1 pt-1 pr-2 pl-2'
     : 'p-1'}"
-  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; background-color: white; border-color: {done
-    ? 'white'
-    : prioData[String(todoItem.priority)]?.color ?? 'none'}; {!todoItem.isMoodle
+  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; background-color: white; {done
+    ? 'border-color: white'
+    : prioData[String(todoItem.priority)]?.color.length === 9 &&
+      prioData[String(todoItem.priority)]?.color.slice(-2) === '00'
+    ? ''
+    : 'border-color: ' +
+      prioData[String(todoItem.priority)]?.color}; {!todoItem.isMoodle
     ? 'border-left-width: 4px'
     : ''}"
 >
@@ -69,7 +73,7 @@
               .getMinutes()
               .toString().length === 1
               ? "0" + new Date(todoItem.time).getMinutes()
-              : new Date(todoItem.time).getMinutes()} - Biologie</b
+              : new Date(todoItem.time).getMinutes()}</b
           >
         </span>
       </span>

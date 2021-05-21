@@ -1,3 +1,4 @@
+import { syncTodoist } from "./../shared/todoist";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -60,16 +61,20 @@ const actions = {
                   .then(
                     (response) => {
                       chrome.storage.local.set(
-                        { "todoist-project-id": response.data.id },
+                        {
+                          "todoist-project-id": response.data.id,
+                          "todoist-active": true,
+                        },
                         () => {
                           resolve({ new: true });
                         },
                       );
                     },
                     (err) => {
-                      alert(
-                        "Es gab einen Fehler! Möglicherweise gibt es schon ein Projekt mit dem Namen 'SchulmoodleJena'?",
+                      Swal.showValidationMessage(
+                        `Es gab einen Fehler! Möglicherweise gibt es schon ein Projekt mit dem Namen 'SchulmoodleJena'?`,
                       );
+
                       alert(err);
                     },
                   );
@@ -77,9 +82,12 @@ const actions = {
             );
           } else {
             //TODO: Import the Data
-            chrome.storage.local.set({ "todoist-project-id": data }, () => {
-              resolve({ new: false });
-            });
+            chrome.storage.local.set(
+              { "todoist-project-id": data, "todoist-active": true },
+              () => {
+                resolve({ new: false });
+              },
+            );
           }
         }),
     }).then((result) => {
@@ -88,16 +96,36 @@ const actions = {
           allowEnterKey: true,
           allowEscapeKey: false,
           allowOutsideClick: false,
-          title: `Todoist Integration einsatzbereit`,
+          title: `Sync`,
           text: ((): string => {
             /*eslint-disable-next-line*/
             //@ts-ignore
             if (result.value.new === true) {
-              return "Wir haben die Liste 'SchulmoodleJena' erstellt. Diese Liste kann umbenannt und verschoben werden.";
+              return "Wir haben die Liste 'SchulmoodleJena' erstellt. Diese Liste kann umbenannt und verschoben werden. Jetzt müssen wir nur noch deine Daten synchronisieren.";
             } else {
-              return "Wir benutzen deine existierende Liste. Diese kann immernoch umbenannt und verschoben werden.";
+              return "Wir benutzen deine existierende Liste. Diese kann immernoch umbenannt und verschoben werden. Jetzt müssen wir nur noch deine Daten synchronisieren.";
             }
           })(),
+          confirmButtonText: "Synchronisieren",
+          preConfirm: () => {
+            return new Promise((resolve) => {
+              try {
+                syncTodoist().then(
+                  () => {
+                    console.log("resolving");
+                    resolve(true);
+                  },
+                  (reason) => {
+                    Swal.showValidationMessage(
+                      `Es gab einen Fehler: ${reason}`,
+                    );
+                  },
+                );
+              } catch (err) {
+                Swal.showValidationMessage(`Es gab einen Fehler: ${err}`);
+              }
+            });
+          },
         }).then(() => {
           const url = new URL(location.href);
           url.searchParams.delete("action");

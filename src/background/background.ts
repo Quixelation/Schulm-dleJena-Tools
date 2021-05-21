@@ -12,6 +12,24 @@ chrome.runtime.onInstalled.addListener(
       );
   },
 );
+
+// Storage: Todos Migration
+chrome.storage.sync.get(["todos"], (values) => {
+  if (values) {
+    const newData = {};
+    Object.keys(values["todos"]).forEach((todoKey) => {
+      newData[todoKey] = {
+        ...values["todos"][todoKey],
+        sync: { todoist: null },
+        priority: { ha: 2, video: 3, exam: 4 },
+        deleted: false,
+        isMoodle: false,
+      } as todoItem;
+    });
+    chrome.storage.local.set({ todos: newData });
+  }
+});
+
 chrome.commands.onCommand.addListener((command): void => {
   if (command === "panik-key") {
     chrome.tabs.query({ url: "*://moodle.jsp.jena.de/*" }, (value): void => {
@@ -64,6 +82,7 @@ chrome.storage.local.get(null, (options): void => {
     todos: {},
     "todos-moodle": {},
     "todos-todoist-lastSynced": null,
+    "todoist-active": false,
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

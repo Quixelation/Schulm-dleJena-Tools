@@ -1,14 +1,14 @@
 const defaultTaskPrio = {
   "1": {
-    color: "#2ECC40",
+    color: "#00000000",
     icon: "flag",
   },
   "2": {
-    color: "#FFDC00",
+    color: "#0074D9",
     icon: "flag",
   },
   "3": {
-    color: "#FF851B",
+    color: "#ff7518",
     icon: "flag",
   },
   "4": {
