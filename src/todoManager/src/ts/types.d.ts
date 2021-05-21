@@ -31,7 +31,7 @@ interface course {
   coursecategory: string;
 }
 
-namespace calData {
+declare namespace calData {
   export interface event {
     id: number;
     name: string;

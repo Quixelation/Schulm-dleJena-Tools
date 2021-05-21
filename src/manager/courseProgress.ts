@@ -1,11 +1,6 @@
-import {
-  courseProgress as courseProgressType,
-  localStorage,
-  storage,
-} from "@shared/types";
 import { manageProgressbar } from "./DashboardCourses";
 
-export default function (params: { options: storage }): void {
+export default function (params: { options: extension.storage }): void {
   const { options } = params;
   checkProgress(
     document.body.innerHTML,
@@ -16,12 +11,12 @@ export default function (params: { options: storage }): void {
 function checkProgress(
   html: string,
   courseId: string,
-): Promise<courseProgressType | false> {
-  return new Promise((resolve, reject) => {
+): Promise<extension.courseProgress | false> {
+  return new Promise((resolve) => {
     const docContainer = document.createElement("body");
     docContainer.innerHTML = html;
     //TODO: Manage TIles-View (better)
-    let result: courseProgressType | false;
+    let result: extension.courseProgress | false;
     if (docContainer.querySelector(".course-content ul.topics") !== null) {
       const completionCheckboxes = docContainer.querySelectorAll(
         ".togglecompletion  input[name='completionstate']",
@@ -58,7 +53,7 @@ function checkProgress(
 }
 
 function calculateProgressPercentage(
-  courseProgress: courseProgressType,
+  courseProgress: extension.courseProgress,
 ): number {
   const result = (100 * courseProgress.completed) / courseProgress.all;
   return isNaN(result) ? 0 : result;

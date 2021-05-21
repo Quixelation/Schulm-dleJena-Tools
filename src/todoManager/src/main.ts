@@ -15,13 +15,13 @@ if (!location.pathname.includes("/mod/quiz/")) {
 }
 export default app;
 
-function deleteTodoItem(key): Promise<void> {
+function deleteTodoItem(key: string): Promise<void> {
   return new Promise((resolve) => {
     chrome.storage.local.get(["todos"], (val: extension.storage.local) => {
       const { todos } = val;
       console.log("Deleting", key, todos);
       todos[key].deleted = true;
-      todos[key].sync.todoist.push(createCommand("item_delete", todos[key]));
+
       chrome.storage.local.set({ todos }, () => {
         resolve();
       });
@@ -46,7 +46,7 @@ function getDateAt0(date: string | number | Date) {
  */
 function closeTodoItem(key: string, force?: boolean): Promise<boolean> {
   console.log("CloseTodoItem called");
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     chrome.storage.local.get(
       ["todo-close-on-complete", "todos"],
       (val: extension.storage.local) => {

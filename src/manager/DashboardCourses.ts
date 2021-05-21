@@ -1,7 +1,6 @@
-import { courseProgress, fächer, storage } from "./../types";
 import { createEmojiImage, createWavesImage } from "./createCourseImage";
 import { getIdFromLink, replaceSpecialChars } from "./utils";
-import { FächerList } from "./..//utils";
+import { FächerList } from "./../utils";
 import { scale as chromaScale } from "chroma-js";
 import {
   card,
@@ -15,11 +14,7 @@ import { activate as activateSortable, sortCourses } from "./sortableCourses";
 import { renewChangeDescriptors } from "./changesManager";
 import { calculateProgressPercentage } from "./courseProgress";
 
-function getViewType(html?: string): "list" | "card" | "summary" {
-  console.log(
-    document.querySelector(getCoursesQuerySelector(false, "card")),
-    getCoursesQuerySelector(false, "card"),
-  );
+function getViewType(): "list" | "card" | "summary" {
   if (document.querySelector(getCoursesQuerySelector(false, "card")) !== null) {
     console.log(document.querySelector(getCoursesQuerySelector(false, "card")));
     return "card";
@@ -436,7 +431,7 @@ function changeAllCards(params: { options: storage }): void {
             options.courseProgress[id] != undefined &&
               options.courseProgress[id] !== false
               ? calculateProgressPercentage(
-                  options.courseProgress[id] as courseProgress,
+                  options.courseProgress[id] as extension.courseProgress,
                 )
               : parseInt(
                   item

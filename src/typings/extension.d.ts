@@ -70,6 +70,10 @@ declare interface taskPriorities {
 }
 
 declare namespace extension {
+  interface courseProgress {
+    all: number;
+    completed: number;
+  }
   export namespace storage {
     export interface sync {
       usecoloredprogress: boolean;
@@ -102,6 +106,7 @@ declare namespace extension {
       "todoist-active": boolean;
       "todos-moodle": { [key: string]: todoItem };
       "todo-close-on-complete": boolean;
+      courseProgress: { [courseId: string]: courseProgress | false };
     }
   }
 

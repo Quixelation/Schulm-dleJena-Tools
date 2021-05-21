@@ -174,13 +174,6 @@ function syncTodoist(): Promise<number> {
   });
 }
 
-function injectProjectId(
-  id: number,
-  command: todoist.command<todoist.commandArgs.item>,
-): todoist.command<todoist.commandArgs.item_project_id> {
-  return { ...command, args: { ...command.args, project_id: id } };
-}
-
 function createCommand(
   action: "item_add" | "item_update" | "item_delete" | "item_close",
   todoItem: todoItem,

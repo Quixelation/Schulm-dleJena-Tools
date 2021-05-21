@@ -15,7 +15,7 @@ chrome.runtime.onInstalled.addListener(
 
 // Storage: Todos Migration
 chrome.storage.sync.get(["todos"], (values) => {
-  if (values) {
+  if (values["todos"]) {
     const newData = {};
     Object.keys(values["todos"]).forEach((todoKey) => {
       newData[todoKey] = {
