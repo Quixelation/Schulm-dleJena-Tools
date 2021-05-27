@@ -1,18 +1,38 @@
-declare interface todoItem {
-  time: string | false;
-  course?: string;
-  title: string;
-  done: boolean;
-  sync: {
-    todoist: boolean | null;
-  };
-  isMoodle: boolean;
+type todoItem =
+  | {
+      isMoodle: false;
+      time: string | false;
+      course?: todoItemCourse;
+      title: string;
+      done: boolean;
+      sync: {
+        todoist: boolean | null;
+      };
+      /**
+       * Je höher, desto wichtiger.
+       * Vetraue nicht dem Todoist Desktop-GUI, wo 1 das wichtigste ist... Das ist falsch!!!
+       */
+      priority: 1 | 2 | 3 | 4;
+      deleted: boolean;
+    }
+  | {
+      isMoodle: true;
+      time: string | false;
+      course?: todoItemCourse;
+      title: string;
+      done: boolean;
+      moodleUrl: string;
+    };
+
+/**
+ * Nur für den TodoManager --> todoItem
+ */
+interface todoItemCourse extends fach {
+  id?: number;
   /**
-   * Je höher, desto wichtiger.
-   * Vetraue nicht dem Todoist Desktop-GUI, wo 1 das wichtigste ist... Das ist falsch!!!
+   * Wurde dies durch das Skript hinzugefügt (true) oder durch den benutzer (false)
    */
-  priority: 1 | 2 | 3 | 4;
-  deleted: boolean;
+  auto: boolean;
 }
 
 declare interface Activity {

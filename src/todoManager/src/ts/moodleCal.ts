@@ -37,19 +37,38 @@ function getCalData(): Promise<calData.result> {
   });
 }
 
+function getCoursesData(): Promise<fächer> {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get(["fächer"], (values: extension.storage.sync) => {
+      resolve(values.fächer);
+    });
+  });
+}
+
 function getEvents(): Promise<{ [key: string]: todoItem }> {
   return new Promise((resolve) => {
-    getCalData().then((fetchResult) => {
+    Promise.all([getCalData(), getCoursesData()]).then((promisesResult) => {
       const events: { [key: string]: todoItem } = {};
-      fetchResult[0].data.weeks.forEach((week) => {
+      promisesResult[0][0].data.weeks.forEach((week) => {
         week.days.forEach((day) => {
-          day.events.forEach((event) => {
+          day.events.forEach((event: calData.event) => {
+            const thisCourse = promisesResult[1][event.course.id];
             events[event.id] = {
               title: event.name,
               isMoodle: true,
               time: new Date(event.timestart * 1000).toISOString(),
-
+              moodleUrl: event.url,
               done: false,
+              course: {
+                auto: true,
+                id: event.course.id,
+                name: thisCourse?.short,
+                color: thisCourse?.color,
+                emoji: thisCourse?.emoji,
+                imageType: thisCourse?.imageType,
+                long: thisCourse?.long,
+                short: thisCourse?.short,
+              },
             } as todoItem;
           });
         });

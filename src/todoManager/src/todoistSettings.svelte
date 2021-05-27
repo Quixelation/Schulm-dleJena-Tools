@@ -69,10 +69,16 @@
       confirm("Wirklich alle Einstellungen der Todo-Prioritäten zurücksetzen?")
     ) {
       todoPrio = defaultTaskPrio;
+    } else {
+      doIt = false;
     }
     if (doIt) {
       chrome.storage.sync.set({ "todo-prio": todoPrio }, () => {
         savingPrio = false;
+        Swal.fire({
+          title: "Gespeichert",
+          icon: "success",
+        });
       });
     } else {
       savingPrio = false;

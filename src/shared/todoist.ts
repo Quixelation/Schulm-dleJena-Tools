@@ -141,18 +141,18 @@ function syncTodoist(): Promise<number> {
                 console.log(values["todos"][todoistItem.id]);
                 output[todoistItem.id] = {
                   title: todoistItem.content,
-
                   sync: {
                     todoist: true,
                   },
                   isMoodle: false,
-                  done: values["todos"][todoistItem.id].done,
+                  done: values["todos"][todoistItem.id]?.done ?? false,
                   time: todoistItem.due?.datetime
                     ? new Date(todoistItem.due.datetime).toISOString()
                     : todoistItem.due?.date
                     ? new Date(todoistItem.due?.date).toISOString()
                     : false,
                   priority: todoistItem.priority,
+                  moodleUrl: null,
                   deleted: false,
                 };
               });
@@ -167,7 +167,8 @@ function syncTodoist(): Promise<number> {
                   resolve(lastSynced);
                 },
               );
-            });
+            }, reject)
+            .catch(reject);
         }
       },
     );

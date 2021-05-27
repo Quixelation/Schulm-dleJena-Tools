@@ -251,7 +251,7 @@
           {:else}
             <br />
           {/if}
-          {#each sorted[date] as todo, index}
+          {#each sorted[date] as todo, index (todo.key)}
             <TodoListItem
               {prioData}
               todoItem={sorted[date][index]}

@@ -3,7 +3,11 @@
   import { changeDoneState } from "./main";
   const dispatch = createEventDispatcher();
   function todoClick(item: string) {
-    !todoItem.isMoodle && dispatch("todoClick");
+    if (todoItem.isMoodle) {
+      location.href = todoItem.moodleUrl;
+    } else {
+      dispatch("todoClick");
+    }
   }
   export let todoItem: todoItem;
 
@@ -55,29 +59,32 @@
   {/if}
   <div
     style="display: flex; flex-direction: column; width:100%; {todoItem.isMoodle
-      ? ''
+      ? 'cursor: alias'
       : 'cursor: pointer'}"
     on:click={() => {
       todoClick(key);
     }}
   >
-    {#if !isFirefox}
-      <span
-        class="colorTransition hoverBlack"
-        style="font-size: 11px; margin-bottom: -3px; {done
-          ? 'color: #80808080;'
-          : 'color: #000000;'} display: flex; align-items: center; "
-        ><span
-          ><b
+    <span
+      class="colorTransition hoverBlack"
+      style="font-size: 11px; margin-bottom: -3px; {done
+        ? 'color: #80808080;'
+        : 'color: #000000;'} display: flex; align-items: center; "
+    >
+      {#if !isFirefox}
+        <span>
+          <b
             >{new Date(todoItem.time).getHours()}:{new Date(todoItem.time)
               .getMinutes()
               .toString().length === 1
               ? "0" + new Date(todoItem.time).getMinutes()
-              : new Date(todoItem.time).getMinutes()}</b
+              : new Date(todoItem.time).getMinutes()}
+            {#if todoItem.isMoodle && todoItem.course?.short}&centerdot; {todoItem
+                .course?.short}{/if}</b
           >
         </span>
-      </span>
-    {/if}
+      {/if}
+    </span>
     <span
       style="font-size: {isFirefox ? '15px' : '13px'}; 
        {done ? 'color: #80808080;' : 'color: #000000'}"
