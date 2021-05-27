@@ -22,6 +22,7 @@
     "src/popup/*",
     "src/todoManager/*",
     "src/changesManager",
+    "src/settings",
     "archive"
   ],
 

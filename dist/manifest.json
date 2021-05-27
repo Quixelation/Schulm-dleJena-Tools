@@ -1,5 +1,6 @@
 {
   "manifest_version": 2,
+
   "version": "2021.5.22",
   "version_name": "2021.5.9 >> 2021.5.22 (development)",
 
@@ -42,19 +43,23 @@
   "author": "Robert Steffen Stündl",
   "content_scripts": [
     {
+
       "matches": ["https://smjt.robertstuendl.com/api/todoist-oauth*"],
       "js": ["generated/todoist-oauth.js"]
+
     },
     {
       "matches": [
         "https://moodle.jsp.jena.de/*",
         "https://moodle.jsp.jena.de/*"
       ],
-      "js": ["generated/manager.js", "generated/todo/bundle.js"],
+      "js": ["generated/manager.js", "generated/todo/bundle.js","generated/settings/build/bundle.js"],
+
       "css": [
         "css/global.css",
         "generated/todo/bundle.css",
-        "css/command-pal/theme-light.css"
+        "css/command-pal/theme-light.css","generated/settings/build/bundle.css"
+        
       ]
     },
     {
@@ -76,6 +81,8 @@
   },
   "web_accessible_resources": [
     "icons/icon.png",
-    "fonts/SansForgetica-Regular.otf"
+    "fonts/SansForgetica-Regular.otf",
+    "generated/settings/index.html"
+
   ]
 }

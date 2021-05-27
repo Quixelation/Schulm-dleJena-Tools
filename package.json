@@ -15,6 +15,7 @@
     "@rollup/plugin-image": "^2.0.6",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.1.0",
+    "@tsconfig/svelte": "^1.0.0",
     "@types/chroma-js": "^2.1.3",
     "@types/chrome": "^0.0.133",
     "@types/sortablejs": "^1.10.6",
@@ -34,6 +35,7 @@
     "rollup-plugin-terser": "^7.0.0",
     "sass": "^1.32.5",
     "svelte": "^3.0.0",
+    "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.6.3",
     "tslib": "^2.1.0",
     "typescript": "^4.1.3"
@@ -57,6 +59,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
+
     "pack": "npm run build && cd dist && web-ext build --overwrite-dest",
     "code": "powershell Compress-Archive tsconfig.json,package.json,package-lock.json,README.md,dist,src code.zip",
     "build": "npm run build:popup && npm run build:todo && npm run build:manager && npm run build:background && npm run build:todoist ",
@@ -65,6 +68,9 @@
     "build:manager": "browserify ./src/manager/index.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/manager.js && node -e \"console.log(new Date())\"",
     "build:background": "browserify ./src/background/background.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/background.js",
     "build:todoist": "browserify ./src/todoist-oauth/index.ts -p [ tsify -p tsconfig.json ] > ./dist/generated/todoist-oauth.js  ",
+    "settings:dev": "cd src/settings && npm run dev",
+    "build:settings": "cd src/settings && npm run build && cd ../..  && xcopy src\\settings\\public\\ dist\\generated\\settings\\ /s /e /y",
+
     "untrack": "git rm -r --cached . && git add . && git commit -m \"fixed untracked files\"",
     "license": "npm-license-generator --out-path=./page/licenses.html",
     "check-licenses": "npx license-compatibility-checker",
