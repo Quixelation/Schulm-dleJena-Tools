@@ -46,7 +46,7 @@ function syncTodoist(): Promise<number> {
           Object.keys(values["todos"]).forEach(async (todoKey) => {
             const currentTodo = values["todos"][todoKey];
 
-            if (currentTodo.sync.todoist === null) {
+            if (currentTodo.sync.todoist === null && !currentTodo.isMoodle) {
               commands.push(
                 axios.post(
                   "https://api.todoist.com/rest/v1/tasks",
@@ -85,7 +85,13 @@ function syncTodoist(): Promise<number> {
                 ),
               );
             }
-            if (currentTodo.deleted) {
+            if (
+              currentTodo.deleted ||
+              checkTodoItemForClose(
+                currentTodo,
+                values["todo-close-on-complete"],
+              )
+            ) {
               commands.push(
                 axios.delete(
                   "https://api.todoist.com/rest/v1/tasks/" +
@@ -191,5 +197,24 @@ function createCommand(
     },
   };
 }
+function getDateAt0(date: string | number | Date) {
+  const newDate = new Date(date);
 
-export { syncTodoist, createCommand };
+  newDate.setHours(0);
+  newDate.setMinutes(0);
+  newDate.setSeconds(0);
+  newDate.setMilliseconds(0);
+  return newDate.valueOf();
+}
+function checkTodoItemForClose(
+  todoItem: todoItem,
+  todoCloseOnComplete: boolean,
+): boolean {
+  return (
+    todoItem.done &&
+    (todoCloseOnComplete ||
+      (todoItem.time &&
+        getDateAt0(new Date(todoItem.time).valueOf()) < getDateAt0(Date.now())))
+  );
+}
+export { syncTodoist, createCommand, checkTodoItemForClose };

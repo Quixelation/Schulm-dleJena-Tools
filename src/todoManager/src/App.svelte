@@ -2,6 +2,8 @@
   import { closeTodoItem, deleteTodoItem } from "./main";
   import TodoistSettings from "./todoistSettings.svelte";
   import CreateTodoPage from "./manageTodoPage.svelte";
+  import { checkTodoItemForClose } from "@/shared/todoist";
+
   window.addEventListener(
     "addTodo",
     (args) => {
@@ -114,19 +116,24 @@
     chrome.storage.local.get(
       ["todos", "todos-moodle"],
       (values: extension.storage.local) => {
-        chromeSyncTodos = cleanTodoList({
+        cleanTodoList({
           ...values.todos,
+        }).then((value) => {
+          chromeSyncTodos = value;
         });
-        moodleCalTodos = cleanTodoList({ ...values["todos-moodle"] });
+        cleanTodoList({ ...values["todos-moodle"] }).then((value) => {
+          moodleCalTodos = value;
+        });
         getEvents().then((value) => {
-          moodleCalTodos = cleanTodoList({ ...value });
+          cleanTodoList({ ...value }).then((value) => {
+            moodleCalTodos = value;
+          });
         });
       },
     );
   };
   getTodos();
   chrome.storage.onChanged.addListener((changes) => {
-    getTodos();
     Object.keys(changes).forEach((key) => {
       if (key === "todo-prio") {
         prioData = changes[key].newValue;
@@ -136,23 +143,30 @@
   /**
    * Entfernt alte Todos
    */
-  function cleanTodoList(list: { [key: string]: todoItem }): {
+  function cleanTodoList(list: { [key: string]: todoItem }): Promise<{
     [key: string]: todoItem;
-  } {
-    Object.keys(list).forEach((todoKey) => {
-      if (
-        !list[todoKey]?.isMoodle &&
-        list[todoKey].done !== false &&
-        list[todoKey]?.time !== false &&
-        getDateAt0(new Date(list[todoKey]?.time).valueOf()) <
-          getDateAt0(Date.now())
-      ) {
-        closeTodoItem(todoKey);
-        // Remove from Object,so the user doesn't see it
-        delete list[todoKey];
-      }
+  }> {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.get(
+        ["todo-close-on-complete"],
+        (values: extension.storage.sync) => {
+          Object.keys(list).forEach((todoKey) => {
+            if (
+              !list[todoKey]?.isMoodle &&
+              checkTodoItemForClose(
+                list[todoKey],
+                values["todo-close-on-complete"],
+              )
+            ) {
+              closeTodoItem(todoKey, list[todoKey].deleted);
+              // Remove from Object,so the user doesn't see it
+              delete list[todoKey];
+            }
+          });
+          resolve(list);
+        },
+      );
     });
-    return list;
   }
   let headerText = (time: number) => {
     if (time === getDateAt0(Date.now())) {

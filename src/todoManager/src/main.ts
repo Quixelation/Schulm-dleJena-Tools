@@ -1,4 +1,8 @@
-import { createCommand, syncTodoist } from "@/shared/todoist";
+import {
+  createCommand,
+  syncTodoist,
+  checkTodoItemForClose,
+} from "@/shared/todoist";
 
 import App from "./App.svelte";
 
@@ -46,6 +50,7 @@ function getDateAt0(date: string | number | Date) {
  */
 function closeTodoItem(key: string, force?: boolean): Promise<boolean> {
   console.log("CloseTodoItem called");
+
   return new Promise((resolve) => {
     chrome.storage.local.get(
       ["todo-close-on-complete", "todos"],
@@ -63,17 +68,11 @@ function closeTodoItem(key: string, force?: boolean): Promise<boolean> {
           cmd: createCommand("item_close", item),
         });
         if (
-          (item.done &&
-            (val["todo-close-on-complete"] ||
-              (item.time &&
-                getDateAt0(new Date(item.time).valueOf()) <
-                  getDateAt0(Date.now())))) ||
+          checkTodoItemForClose(item, val["todo-close-on-complete"]) ||
           force
         ) {
           console.log("Check :D");
-          val["todos"][key].sync.todoist.push(
-            createCommand("item_close", item),
-          );
+          val["todos"][key].deleted = true;
           chrome.storage.local.set({ todos: val["todos"] }, () => {
             resolve(true);
           });

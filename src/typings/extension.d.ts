@@ -1,28 +1,20 @@
-type todoItem =
-  | {
-      isMoodle: false;
-      time: string | false;
-      course?: todoItemCourse;
-      title: string;
-      done: boolean;
-      sync: {
-        todoist: boolean | null;
-      };
-      /**
-       * Je höher, desto wichtiger.
-       * Vetraue nicht dem Todoist Desktop-GUI, wo 1 das wichtigste ist... Das ist falsch!!!
-       */
-      priority: 1 | 2 | 3 | 4;
-      deleted: boolean;
-    }
-  | {
-      isMoodle: true;
-      time: string | false;
-      course?: todoItemCourse;
-      title: string;
-      done: boolean;
-      moodleUrl: string;
-    };
+interface todoItem {
+  isMoodle: boolean;
+  time: string | false;
+  course?: todoItemCourse;
+  title: string;
+  done: boolean;
+  sync: {
+    todoist: boolean | null;
+  };
+  /**
+   * Je höher, desto wichtiger.
+   * Vetraue nicht dem Todoist Desktop-GUI, wo 1 das wichtigste ist... Das ist falsch!!!
+   */
+  priority: 1 | 2 | 3 | 4;
+  deleted: boolean;
+  moodleUrl?: string;
+}
 
 /**
  * Nur für den TodoManager --> todoItem

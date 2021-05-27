@@ -1,3 +1,4 @@
+import axios from "axios";
 import course2json from "./course2json";
 import { homepageCourseProgessChecker } from "./courseProgress";
 import {
@@ -141,28 +142,56 @@ interface contentCheckerOutput extends changesNr {
   status: "success" | "not-supported" | "error";
   errorDesc?: string;
 }
-function checkAll(): Promise<changesNr> {
+
+function getAllCourses(): Promise<Moodle.course[]> {
+  const sessionKey = new URL(
+    (
+      document.querySelector(
+        ".usermenu .dropdown div[data-rel='menu-content'] > a:last-child",
+      ) as HTMLAnchorElement
+    ).href,
+  ).searchParams.get("sesskey");
+  return new Promise((resolve, reject) => {
+    axios
+      .post<
+        [{ error: true } | { error: false; data: { courses: Moodle.course[] } }]
+      >(
+        `https://moodle.jsp.jena.de/lib/ajax/service.php?sesskey=${sessionKey}&info=core_course_get_enrolled_courses_by_timeline_classification`,
+        [
+          {
+            index: 0,
+            methodname:
+              "core_course_get_enrolled_courses_by_timeline_classification",
+            args: {
+              offset: 0,
+              limit: 0,
+              classification: "all",
+              sort: "fullname",
+              customfieldname: "",
+              customfieldvalue: "",
+            },
+          },
+        ],
+      )
+      .then((axiosResponse) => {
+        if (axiosResponse.data?.[0]?.error === true) {
+          reject(axiosResponse.data[0].error);
+        } else {
+          resolve(axiosResponse.data[0].data.courses);
+        }
+      });
+  });
+}
+
+async function checkAll(): Promise<changesNr> {
   console.log("checkAll");
+  const allCourses = await getAllCourses();
+
   return new Promise((resolveMain) => {
     const allIds: string[] = [];
-    document
-      .querySelectorAll(
-        (() => {
-          switch (getViewType()) {
-            case "card":
-              return "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']";
-            case "list":
-              return "ul.list-group li.list-group-item.course-listitem";
-            default:
-              return null;
-          }
-        })(),
-      )
-      .forEach((item) => {
-        const href = item.querySelector("a").href;
-        const id = href.slice(href.indexOf("id=") + 3);
-        allIds.push(id);
-      });
+    allCourses.forEach((item) => {
+      allIds.push(String(item.id));
+    });
     console.log("ids", allIds);
     function contentChecker(id: string): Promise<contentCheckerOutput> {
       return new Promise((resolve) => {
