@@ -4,6 +4,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f99d729c78684fa9b13c342dced4a444)](https://app.codacy.com/gh/Quixelation/Schulm-dleJena-Tools?utm_source=github.com&utm_medium=referral&utm_content=Quixelation/Schulm-dleJena-Tools&utm_campaign=Badge_Grade_Settings)
 [![DeepScan grade](https://deepscan.io/api/teams/13557/projects/16525/branches/357528/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13557&pid=16525&bid=357528) [![CodeFactor](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools/badge)](https://www.codefactor.io/repository/github/quixelation/schulm-dlejena-tools) ![GitHub issues by-label](https://img.shields.io/github/issues-raw/Quixelation/Schulm-dleJena-Tools/bug)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FQuixelation%2FSchulm-dleJena-Tools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FQuixelation%2FSchulm-dleJena-Tools?ref=badge_shield)
 
 ---
 
@@ -99,3 +100,7 @@ Eine Browser-Erweiterung, welche viele neue und coole Funktionen für das Moodle
 ## Versionierung
 
 `<JAHR>.<MONAT>.<TAG>.<Nr?>`
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FQuixelation%2FSchulm-dleJena-Tools.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FQuixelation%2FSchulm-dleJena-Tools?ref=badge_large)
