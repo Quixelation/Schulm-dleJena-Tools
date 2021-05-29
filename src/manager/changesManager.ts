@@ -1,5 +1,5 @@
 import axios from "axios";
-import course2json from "./course2json";
+import course2json, { course2jsonOutput } from "./course2json";
 import { homepageCourseProgessChecker } from "./courseProgress";
 import {
   card,
@@ -11,6 +11,7 @@ import {
   span,
 } from "./htmlBuilder";
 import { saveCourse } from "./syncTopics";
+import { getAllTiles } from "./tileCourseManager";
 
 //TODO: #19 Show number of uncheckable Courses
 
@@ -193,6 +194,7 @@ async function checkAll(): Promise<changesNr> {
       allIds.push(String(item.id));
     });
     console.log("ids", allIds);
+    const allCourseInfo: { [courseId: string]: CourseTopics } = {};
     function contentChecker(id: string): Promise<contentCheckerOutput> {
       return new Promise((resolve) => {
         fetch("https://moodle.jsp.jena.de/course/view.php?id=" + id)
@@ -203,6 +205,27 @@ async function checkAll(): Promise<changesNr> {
 
             // Und dann mit dem normalen ABlauf weitergemacht werden.
             return course2json(data);
+          })
+          .then((e): Promise<course2jsonOutput> => {
+            if (e.status === "not-supported") {
+              return new Promise((resolve, reject) => {
+                getAllTiles(id).then((results) => {
+                  const container = document.createElement("div");
+                  const ulTopics = document.createElement("ul");
+                  ulTopics.classList.add("topics");
+
+                  results.forEach((item) => {
+                    if (item?.result?.[0]?.data?.html) {
+                      ulTopics.innerHTML += item.result[0].data.html;
+                    }
+                  });
+                  container.append(ulTopics);
+                  resolve(course2json(container.innerHTML, true));
+                });
+              });
+            } else {
+              return Promise.resolve(e);
+            }
           })
           .then((e) => {
             if (e.status === "error") {
@@ -229,6 +252,7 @@ async function checkAll(): Promise<changesNr> {
                 status: e.status,
               });
             } else {
+              allCourseInfo[id] = e.list;
               compare(id, e.list).then((c) =>
                 resolve({ ...c, id, content: e.list, status: e.status }),
               );
@@ -251,8 +275,9 @@ async function checkAll(): Promise<changesNr> {
         edited: 0,
         allNew: false,
       };
+
+      console.log("SavingLocalStorage");
       values.forEach((item) => {
-        console.log(item);
         result.changes += item.changes;
         result.added += item.added;
         result.removed += item.removed;
@@ -270,6 +295,7 @@ async function checkAll(): Promise<changesNr> {
 function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
   return new Promise((resolve) => {
     chrome.storage.local.get("courseInfo", (storage: storage) => {
+      console.log("GotLocalStorage");
       const { courseInfo } = storage;
       const oldIds = getIdArrayFromActivities(
         topics2activities(courseInfo[id] ?? {}),
@@ -287,24 +313,39 @@ function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
         removed: 0,
         allNew: false,
       };
-      const diffs = getIdDiff(oldIds, newIds);
-      result.changes = diffs.length;
+      /**
+       * Muss 2x ausgeführt werden mit wechsel der Parameter!
+       * Entfernt-Check: neu, alt
+       * Neu-Check: alt, neu
+       */
+      function diff(a: string[], b: string[]): string[] {
+        return b.filter(function (i) {
+          return a.indexOf(i) < 0;
+        });
+      }
+
+      const diffs_new = diff(oldIds, newIds);
+      const diffs_rem = diff(newIds, oldIds);
+
+      result.changes = diffs_new.length + diffs_rem.length;
       if (oldIds.length === 0) {
         result.allNew = true;
       }
-      diffs.forEach((diff) => {
-        const stringDiff = diff.toString();
-        console.log(oldIds.includes(stringDiff), newIds.includes(stringDiff));
-        if (oldIds.includes(stringDiff) && !newIds.includes(stringDiff)) {
-          result.removed++;
-        } else if (
-          !oldIds.includes(stringDiff) &&
-          newIds.includes(stringDiff)
-        ) {
-          result.added++;
-          console.log("added");
-        }
-      });
+      result.added += diffs_new.length;
+      result.removed += diffs_rem.length;
+      // diffs.forEach((diff) => {
+      //   const stringDiff = diff.toString();
+      //   console.log(oldIds.includes(stringDiff), newIds.includes(stringDiff));
+      //   if (oldIds.includes(stringDiff) && !newIds.includes(stringDiff)) {
+      //     result.removed++;
+      //   } else if (
+      //     !oldIds.includes(stringDiff) &&
+      //     newIds.includes(stringDiff)
+      //   ) {
+      //     result.added++;
+      //     console.log("added");
+      //   }
+      // });
       console.log(id, result);
       resolve(result);
     });
