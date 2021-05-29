@@ -23,8 +23,8 @@
   {/each}
   <span class="sidebar_item section_title "> Kurse </span>
   <div
-    on:click={() => push("/courses/courses")}
-    class:active={$location === "/courses/courses"}
+    on:click={() => push("/editCourses/allCourses")}
+    class:active={$location.startsWith("/editCourses/")}
     class="sidebar_item section_item"
   >
     Kurse bearbeiten
@@ -41,7 +41,7 @@
   {/each}
 </div>
 
-<style>
+<style lang="scss">
   .sidebar {
     display: flex;
     flex-direction: column;
@@ -82,15 +82,23 @@
     padding-left: 15px;
     border-radius: 5px;
     margin-top: 2.5px;
-    transition: background-color 0.1s ease, color 0.1s ease, transform 0.1s ease;
-    cursor: pointer;
+    transition: background-color 0.1s ease, color 0.1s ease,
+      box-shadow 0.1s ease, transform 0.1s ease;
+    cursor: default;
+    margin-bottom: 2.5px;
+    border: 1px solid transparent;
   }
-  .section_item:hover,
-  .section_item:focus {
-    background-color: #ff3e0080;
+  .section_item:not(.active) {
+    cursor: pointer;
+    border-color: #e6e6e6;
+  }
+  .section_item:not(.active):hover,
+  .section_item:not(.active):focus {
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
   }
   .section_item:active {
     transform: translateY(1px);
+    //background-color: #ff3e0080;
   }
   .section_item.active {
     background-color: #ff3e00cc;

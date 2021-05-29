@@ -18,11 +18,12 @@
     value = values[optionCode];
   });
   function change(e) {
+    console.log(e);
     var value;
     if (inputType === "number") {
       value = e.target.value;
     } else {
-      value = e.details;
+      value = e.detail;
     }
     chrome.storage.sync.set({ [optionCode]: value });
   }
@@ -54,7 +55,8 @@
     </div>
   </div>
   <div style="color: #737373">{description}</div>
-  <div class="footer">
+  <!-- TODO: Remove display: none  -->
+  <div class="footer" style="display: none;">
     <slot name="bottomSlot" />
   </div>
 </Card>

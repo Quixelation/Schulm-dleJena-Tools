@@ -19,5 +19,12 @@
       optionCode="dashboardEmojiFontSize"
       inputType="number"
     />
+    <FunctionCard
+      title="Immer den 'realen'/'angepassten' Kurs-Fortschritt anzeigen"
+      description="Passt die Progressbar der Kurse auf dem Dashboard an, sodass nur Aktivitäten, welche abgehakt werden können, in betracht gezogen werden."
+      optionCode="alwaysShowCustomProgress"
+    >
+      <div slot="bottomSlot">Erfahre mehr über <a>Dashboard Knopf →</a></div>
+    </FunctionCard>
   </div>
 </div>

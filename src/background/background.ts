@@ -64,6 +64,7 @@ chrome.storage.sync.get(null, (options): void => {
     sortedCourses: [],
     usecoloredprogress: true,
     tilesToList: false,
+    alwaysShowCustomProgress: false,
     //TODO: Change Colors
     "todo-prio": defaultTaskPrio,
   };
@@ -84,6 +85,7 @@ chrome.storage.local.get(null, (options): void => {
     "todos-todoist-lastSynced": null,
     "todoist-active": false,
     courseProgress: {},
+    lastSeenWhatsNew: null,
   };
   Object.keys(defaultOptions).forEach((item) => {
     options[item] == undefined ? (options[item] = defaultOptions[item]) : "";

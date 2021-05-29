@@ -429,7 +429,8 @@ function changeAllCards(params: { options: storage }): void {
           manageProgressbar(
             id,
             options.courseProgress[id] != undefined &&
-              options.courseProgress[id] !== false
+              options.courseProgress[id] !== false &&
+              options.alwaysShowCustomProgress
               ? calculateProgressPercentage(
                   options.courseProgress[id] as extension.courseProgress,
                 )

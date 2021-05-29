@@ -5,7 +5,10 @@
   import Page_Functions_Allgemein from "./pages/functions/allgemein.svelte";
   import Page_Functions_Login from "./pages/functions/login.svelte";
   import Page_Functions_Dashboard from "./pages/functions/dashboard.svelte";
+  import Page_Functions_Kurse from "./pages/functions/kurse.svelte";
   import Page_Functions_Downloader from "./pages/functions/downloader.svelte";
+  import Page_allCourses from "./pages/editCourses/allCourses.svelte";
+  import Page_editCourse from "./pages/editCourses/editCourse.svelte";
   import Page_404 from "./pages/404.svelte";
   import Page_Über from "./pages/info/über.svelte";
   import Page_Lizensen from "./pages/info/licenses.svelte";
@@ -15,6 +18,9 @@
     "/functions/login": Page_Functions_Login,
     "/functions/dashboard": Page_Functions_Dashboard,
     "/functions/downloader": Page_Functions_Downloader,
+    "/functions/kurse": Page_Functions_Kurse,
+    "/editCourses/allCourses": Page_allCourses,
+    "/editCourses/:id": Page_editCourse,
     "/info/ueber": Page_Über,
     "/info/lizensen": Page_Lizensen,
     "*": Page_404,

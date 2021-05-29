@@ -106,6 +106,7 @@ declare namespace extension {
       dashboardEmojiFontSize: number;
       sortedCourses: string[];
       tilesToList: boolean;
+      alwaysShowCustomProgress: boolean;
     }
 
     export interface local {
@@ -119,6 +120,7 @@ declare namespace extension {
       "todos-moodle": { [key: string]: todoItem };
       "todo-close-on-complete": boolean;
       courseProgress: { [courseId: string]: courseProgress | false };
+      lastSeenWhatsNew: string | null;
     }
   }
 
