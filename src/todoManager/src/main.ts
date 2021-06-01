@@ -18,18 +18,27 @@ if (!location.pathname.includes("/mod/quiz/")) {
   });
 }
 export default app;
-
+/**
+ * @deprecated DO NOT USED & IS NOT IN USE
+ * @param key
+ * @returns
+ */
 function deleteTodoItem(key: string): Promise<void> {
   return new Promise((resolve) => {
-    chrome.storage.local.get(["todos"], (val: extension.storage.local) => {
-      const { todos } = val;
-      console.log("Deleting", key, todos);
-      todos[key].deleted = true;
-
-      chrome.storage.local.set({ todos }, () => {
-        resolve();
-      });
-    });
+    chrome.storage.local.get(
+      ["todos", "todoist-active"],
+      (val: extension.storage.local) => {
+        const { todos } = val;
+        console.log("Deleting", key, todos);
+        todos[key].deleted = true;
+        if (todos[key].sync.todoist === null) {
+          delete todos[key];
+        }
+        chrome.storage.local.set({ todos }, () => {
+          resolve();
+        });
+      },
+    );
   });
 }
 
@@ -73,6 +82,12 @@ function closeTodoItem(key: string, force?: boolean): Promise<boolean> {
         ) {
           console.log("Check :D");
           val["todos"][key].deleted = true;
+          if (val["todos"][key].sync.todoist === null) {
+            console.log(`delete val["todos"][key];`);
+            console.log(val["todos"][key]);
+            delete val["todos"][key];
+            console.log(val["todos"][key]);
+          }
           chrome.storage.local.set({ todos: val["todos"] }, () => {
             resolve(true);
           });

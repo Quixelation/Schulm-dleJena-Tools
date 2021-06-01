@@ -71,16 +71,18 @@
         ? 'color: #80808080;'
         : 'color: #000000;'} display: flex; align-items: center; "
     >
-      {#if !isFirefox}
+      {#if !isFirefox || (todoItem.isMoodle && (todoItem.course?.short || todoItem.course?.long))}
         <span>
           <b
-            >{new Date(todoItem.time).getHours()}:{new Date(todoItem.time)
-              .getMinutes()
-              .toString().length === 1
-              ? "0" + new Date(todoItem.time).getMinutes()
-              : new Date(todoItem.time).getMinutes()}
-            {#if todoItem.isMoodle && todoItem.course?.short}&centerdot; {todoItem
-                .course?.short}{/if}</b
+            >{#if !isFirefox}{new Date(todoItem.time).getHours()}:{new Date(
+                todoItem.time,
+              )
+                .getMinutes()
+                .toString().length === 1
+                ? "0" + new Date(todoItem.time).getMinutes()
+                : new Date(todoItem.time).getMinutes()}{/if}
+            {#if todoItem.isMoodle && (todoItem.course?.short || todoItem.course?.long)}{#if !isFirefox}&centerdot;{/if}
+              {todoItem.course?.short ?? todoItem.course?.long}{/if}</b
           >
         </span>
       {/if}

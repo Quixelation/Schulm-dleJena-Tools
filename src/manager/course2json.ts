@@ -63,6 +63,7 @@ export default function (
       };
     } catch (err) {
       err;
+
       return {
         status: "error",
         desc: "",

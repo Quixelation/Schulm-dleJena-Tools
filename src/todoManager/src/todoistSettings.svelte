@@ -88,13 +88,17 @@
   function toggleTodoist() {
     syncing = true;
     chrome.storage.local.get(
-      ["todoist-active"],
+      ["todoist-active", "todoist-project-id"],
       (vals: extension.storage.local) => {
-        const newValue = !vals["todoist-active"] ?? false;
-        chrome.storage.local.set({ "todoist-active": newValue }, () => {
-          todoistActive = newValue;
-          syncing = false;
-        });
+        if (vals["todoist-project-id"] == null) {
+          location.href = "https://moodle.jsp.jena.de/?action=todoist-loggedin";
+        } else {
+          const newValue = !vals["todoist-active"] ?? false;
+          chrome.storage.local.set({ "todoist-active": newValue }, () => {
+            todoistActive = newValue;
+            syncing = false;
+          });
+        }
       },
     );
   }

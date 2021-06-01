@@ -14,21 +14,25 @@ chrome.runtime.onInstalled.addListener(
 );
 
 // Storage: Todos Migration
-chrome.storage.sync.get(["todos"], (values) => {
-  if (values["todos"]) {
-    const newData = {};
-    Object.keys(values["todos"]).forEach((todoKey) => {
-      newData[todoKey] = {
-        ...values["todos"][todoKey],
-        sync: { todoist: null },
-        priority: { ha: 2, video: 3, exam: 4 },
-        deleted: false,
-        isMoodle: false,
-      } as todoItem;
+chrome.storage.local.get("todos", (values: extension.storage.local) => {
+  if(values["todos"] == null){
+    chrome.storage.sync.get(["todos"], (values) => {
+      if (values["todos"]) {
+        const newData = {};
+        Object.keys(values["todos"]).forEach((todoKey) => {
+          newData[todoKey] = {
+            ...values["todos"][todoKey],
+            sync: { todoist: null },
+            priority: { ha: 2, video: 3, exam: 4 },
+            deleted: false,
+            isMoodle: false,
+          } as todoItem;
+        });
+        chrome.storage.local.set({ todos: newData });
+      }
     });
-    chrome.storage.local.set({ todos: newData });
   }
-});
+})
 
 chrome.commands.onCommand.addListener((command): void => {
   if (command === "panik-key") {

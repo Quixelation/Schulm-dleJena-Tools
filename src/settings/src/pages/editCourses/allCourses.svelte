@@ -28,6 +28,7 @@
         <ListItem
           on:click={() => {
             navigateToCourse(courseKey);
+            scrollTo(0,0);
           }}
           ><span style="width: 32px; display: inline-block"
             >{courses[courseKey].emoji

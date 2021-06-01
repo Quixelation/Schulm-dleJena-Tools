@@ -25,7 +25,7 @@ export default function (params: { options: storage }): void {
     onclick: () => {
       const loadingText = card({
         child: Heading({
-          text: "Alle Kurse werden überprüft...",
+          text: "Alle Kurse werden überprüft: Bitte warten (max. 1 min)!",
           options: {
             type: "h3",
           },
@@ -34,79 +34,83 @@ export default function (params: { options: storage }): void {
 
       changesManagerArea.replaceChild(loadingText, changesManagerCardButton);
 
-      checkAll().then((value) => {
-        changesManagerArea.replaceChild(
-          card({
-            child: vertFlex({
-              children: [
-                Heading({
-                  text: `<b style="color: #0074D9">${
-                    value.changes
-                  }</b> Änderung${value.changes === 1 ? "" : "en"} gefunden`,
-                  options: {
-                    type: "h3",
-                  },
-                  id: "ÄnderungHeading",
-                }),
-                Heading({
-                  text: `<b style="color: #2ECC40; font-weight: bold;">${
-                    value.added
-                  }</b> neue${value.added === 1 ? "r" : ""} Inhalt${
-                    value.added === 1 ? "" : "e"
-                  }`,
-                  options: { type: "h5" },
-                  id: "AddedHeading",
-                }),
-                Heading({
-                  text: `<b style="color: #FF4136; font-weight: bold;">${
-                    value.removed
-                  }</b> Inhalt${value.removed === 1 ? "" : "e"} entfernt`,
-                  options: { type: "h5" },
-                  id: "RemovedHeading",
-                }),
-                value.changes > 0
-                  ? htmlBuilderButton({
-                      style: "margin-top: 10px",
-                      onclick: () => {
-                        document.getElementById(
-                          "SpanHtmlBuilderButtonSaveAllCourseTopics",
-                        ).innerText = "Speichert & Entfernt";
-                        (
+      checkAll()
+        .then((value) => {
+          changesManagerArea.replaceChild(
+            card({
+              child: vertFlex({
+                children: [
+                  Heading({
+                    text: `<b style="color: #0074D9">${
+                      value.changes
+                    }</b> Änderung${value.changes === 1 ? "" : "en"} gefunden`,
+                    options: {
+                      type: "h3",
+                    },
+                    id: "ÄnderungHeading",
+                  }),
+                  Heading({
+                    text: `<b style="color: #2ECC40; font-weight: bold;">${
+                      value.added
+                    }</b> neue${value.added === 1 ? "r" : ""} Inhalt${
+                      value.added === 1 ? "" : "e"
+                    }`,
+                    options: { type: "h5" },
+                    id: "AddedHeading",
+                  }),
+                  Heading({
+                    text: `<b style="color: #FF4136; font-weight: bold;">${
+                      value.removed
+                    }</b> Inhalt${value.removed === 1 ? "" : "e"} entfernt`,
+                    options: { type: "h5" },
+                    id: "RemovedHeading",
+                  }),
+                  value.changes > 0
+                    ? htmlBuilderButton({
+                        style: "margin-top: 10px",
+                        onclick: () => {
                           document.getElementById(
-                            "htmlBuilderButtonSaveAllCourseTopics",
-                          ) as HTMLButtonElement
-                        ).disabled = true;
-                        saveAllCourseTopics().then(() => {
-                          document
-                            .getElementById(
+                            "SpanHtmlBuilderButtonSaveAllCourseTopics",
+                          ).innerText = "Speichert & Entfernt";
+                          (
+                            document.getElementById(
                               "htmlBuilderButtonSaveAllCourseTopics",
-                            )
-                            .remove();
-                          document.getElementById(
-                            "ÄnderungHeading",
-                          ).innerHTML = `<b style="color: #0074D9">0</b> Änderungen gefunden`;
-                          document.getElementById(
-                            "AddedHeading",
-                          ).innerHTML = `<b style="color: #2ECC40; font-weight: bold;">0</b> neue Inhalte`;
-                          document.getElementById(
-                            "RemovedHeading",
-                          ).innerHTML = `<b style="color: #FF4136; font-weight: bold;">0</b> Inhalte entfernt`;
-                        });
-                      },
-                      id: "htmlBuilderButtonSaveAllCourseTopics",
-                      options: { type: "primary" },
-                      child: span({
-                        text: "Alle Änderungen speichern",
-                        id: "SpanHtmlBuilderButtonSaveAllCourseTopics",
-                      }),
-                    })
-                  : null,
-              ],
+                            ) as HTMLButtonElement
+                          ).disabled = true;
+                          saveAllCourseTopics().then(() => {
+                            document
+                              .getElementById(
+                                "htmlBuilderButtonSaveAllCourseTopics",
+                              )
+                              .remove();
+                            document.getElementById(
+                              "ÄnderungHeading",
+                            ).innerHTML = `<b style="color: #0074D9">0</b> Änderungen gefunden`;
+                            document.getElementById(
+                              "AddedHeading",
+                            ).innerHTML = `<b style="color: #2ECC40; font-weight: bold;">0</b> neue Inhalte`;
+                            document.getElementById(
+                              "RemovedHeading",
+                            ).innerHTML = `<b style="color: #FF4136; font-weight: bold;">0</b> Inhalte entfernt`;
+                          });
+                        },
+                        id: "htmlBuilderButtonSaveAllCourseTopics",
+                        options: { type: "primary" },
+                        child: span({
+                          text: "Alle Änderungen speichern",
+                          id: "SpanHtmlBuilderButtonSaveAllCourseTopics",
+                        }),
+                      })
+                    : null,
+                ],
+              }),
             }),
-          }),
-          loadingText,
-        );
-      });
+            loadingText,
+          );
+        })
+        .catch((err) => {
+          alert("Es gab einen Fehler:\n" + err);
+        });
     },
     options: {
       icon: "rocket",

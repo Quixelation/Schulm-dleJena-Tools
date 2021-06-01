@@ -1,7 +1,7 @@
 import App from "./App.svelte";
 try {
   //@ts-ignore
-  document.querySelector("#region-main").style.display = "none";
+  document.querySelector("#region-main").classList.add("HomePageMoodleContent");
   //*New Section
   const newSection = document.createElement("section");
   newSection.className = "block card mb-3";

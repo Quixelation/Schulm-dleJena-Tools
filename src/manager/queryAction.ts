@@ -25,11 +25,24 @@ const actions = {
               const output = {
                 new: "[Neue Liste erstellen]",
               };
-              (response.data as Array<any>).forEach((projectItem) => {
-                output[projectItem.id] = projectItem.name;
-              });
+              (response.data as Array<any>).forEach(
+                (projectItem) => {
+                  output[projectItem.id] = projectItem.name;
+                },
+                (err) =>
+                  alert(
+                    "Bitte melden Sie sich bei dem Entwickler (robert.st.stuendl@gmail.com oder @schulmoodlejenatools auf Insta): Es gab einen Fehler:\n" +
+                      err,
+                  ),
+              );
               resolve(output);
-            });
+            })
+            .catch((err) =>
+              alert(
+                "Bitte melden Sie sich bei dem Entwickler (robert.st.stuendl@gmail.com oder @schulmoodlejenatools auf Insta): Es gab einen Fehler:\n" +
+                  err,
+              ),
+            );
         });
       }),
       inputPlaceholder: "Wähle eine Liste oder [Neue Liste erstellen] aus.",
@@ -77,7 +90,8 @@ const actions = {
 
                       alert(err);
                     },
-                  );
+                  )
+                  .catch((err) => alert("Es gab einen Fehler:\n" + err));
               },
             );
           } else {
