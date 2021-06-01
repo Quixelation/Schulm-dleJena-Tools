@@ -1,5 +1,3 @@
-import { storage } from "@shared/types";
-
 export default function (params: { options: storage }): void {
   const { options } = params;
   const enabled: boolean = options["biggerVideo"] === true;

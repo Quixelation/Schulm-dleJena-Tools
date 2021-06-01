@@ -1,4 +1,3 @@
-import { fächer, storage } from "@shared/types";
 import { getIdFromLink } from "./utils";
 
 export default function (params: { options: storage }): void {

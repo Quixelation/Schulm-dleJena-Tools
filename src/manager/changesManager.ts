@@ -1,5 +1,6 @@
-import { Activity, CourseTopics, storage } from "@shared/types";
-import course2json from "./course2json";
+import axios from "axios";
+import course2json, { course2jsonOutput } from "./course2json";
+import { homepageCourseProgessChecker } from "./courseProgress";
 import {
   card,
   cardButton,
@@ -10,6 +11,7 @@ import {
   span,
 } from "./htmlBuilder";
 import { saveCourse } from "./syncTopics";
+import { getAllTiles } from "./tileCourseManager";
 
 //TODO: #19 Show number of uncheckable Courses
 
@@ -23,7 +25,7 @@ export default function (params: { options: storage }): void {
     onclick: () => {
       const loadingText = card({
         child: Heading({
-          text: "Alle Kurse werden überprüft...",
+          text: "Alle Kurse werden überprüft: Bitte warten (max. 1 min)!",
           options: {
             type: "h3",
           },
@@ -32,77 +34,83 @@ export default function (params: { options: storage }): void {
 
       changesManagerArea.replaceChild(loadingText, changesManagerCardButton);
 
-      checkAll().then((value) => {
-        changesManagerArea.replaceChild(
-          card({
-            child: vertFlex({
-              children: [
-                Heading({
-                  text: `<b style="color: #0074D9">${
-                    value.changes
-                  }</b> Änderung${value.changes === 1 ? "" : "en"} gefunden`,
-                  options: {
-                    type: "h3",
-                  },
-                  id: "ÄnderungHeading",
-                }),
-                Heading({
-                  text: `<b style="color: #2ECC40; font-weight: bold;">${
-                    value.added
-                  }</b> neue${value.added === 1 ? "r" : ""} Inhalt${
-                    value.added === 1 ? "" : "e"
-                  }`,
-                  options: { type: "h5" },
-                  id: "AddedHeading",
-                }),
-                Heading({
-                  text: `<b style="color: #FF4136; font-weight: bold;">${
-                    value.removed
-                  }</b> Inhalt${value.removed === 1 ? "" : "e"} entfernt`,
-                  options: { type: "h5" },
-                  id: "RemovedHeading",
-                }),
-                value.changes > 0
-                  ? htmlBuilderButton({
-                      style: "margin-top: 10px",
-                      onclick: () => {
-                        document.getElementById(
-                          "SpanHtmlBuilderButtonSaveAllCourseTopics",
-                        ).innerText = "Speichert & Entfernt";
-                        (document.getElementById(
-                          "htmlBuilderButtonSaveAllCourseTopics",
-                        ) as HTMLButtonElement).disabled = true;
-                        saveAllCourseTopics().then(() => {
-                          document
-                            .getElementById(
+      checkAll()
+        .then((value) => {
+          changesManagerArea.replaceChild(
+            card({
+              child: vertFlex({
+                children: [
+                  Heading({
+                    text: `<b style="color: #0074D9">${
+                      value.changes
+                    }</b> Änderung${value.changes === 1 ? "" : "en"} gefunden`,
+                    options: {
+                      type: "h3",
+                    },
+                    id: "ÄnderungHeading",
+                  }),
+                  Heading({
+                    text: `<b style="color: #2ECC40; font-weight: bold;">${
+                      value.added
+                    }</b> neue${value.added === 1 ? "r" : ""} Inhalt${
+                      value.added === 1 ? "" : "e"
+                    }`,
+                    options: { type: "h5" },
+                    id: "AddedHeading",
+                  }),
+                  Heading({
+                    text: `<b style="color: #FF4136; font-weight: bold;">${
+                      value.removed
+                    }</b> Inhalt${value.removed === 1 ? "" : "e"} entfernt`,
+                    options: { type: "h5" },
+                    id: "RemovedHeading",
+                  }),
+                  value.changes > 0
+                    ? htmlBuilderButton({
+                        style: "margin-top: 10px",
+                        onclick: () => {
+                          document.getElementById(
+                            "SpanHtmlBuilderButtonSaveAllCourseTopics",
+                          ).innerText = "Speichert & Entfernt";
+                          (
+                            document.getElementById(
                               "htmlBuilderButtonSaveAllCourseTopics",
-                            )
-                            .remove();
-                          document.getElementById(
-                            "ÄnderungHeading",
-                          ).innerHTML = `<b style="color: #0074D9">0</b> Änderungen gefunden`;
-                          document.getElementById(
-                            "AddedHeading",
-                          ).innerHTML = `<b style="color: #2ECC40; font-weight: bold;">0</b> neue Inhalte`;
-                          document.getElementById(
-                            "RemovedHeading",
-                          ).innerHTML = `<b style="color: #FF4136; font-weight: bold;">0</b> Inhalte entfernt`;
-                        });
-                      },
-                      id: "htmlBuilderButtonSaveAllCourseTopics",
-                      options: { type: "primary" },
-                      child: span({
-                        text: "Alle Änderungen speichern",
-                        id: "SpanHtmlBuilderButtonSaveAllCourseTopics",
-                      }),
-                    })
-                  : null,
-              ],
+                            ) as HTMLButtonElement
+                          ).disabled = true;
+                          saveAllCourseTopics().then(() => {
+                            document
+                              .getElementById(
+                                "htmlBuilderButtonSaveAllCourseTopics",
+                              )
+                              .remove();
+                            document.getElementById(
+                              "ÄnderungHeading",
+                            ).innerHTML = `<b style="color: #0074D9">0</b> Änderungen gefunden`;
+                            document.getElementById(
+                              "AddedHeading",
+                            ).innerHTML = `<b style="color: #2ECC40; font-weight: bold;">0</b> neue Inhalte`;
+                            document.getElementById(
+                              "RemovedHeading",
+                            ).innerHTML = `<b style="color: #FF4136; font-weight: bold;">0</b> Inhalte entfernt`;
+                          });
+                        },
+                        id: "htmlBuilderButtonSaveAllCourseTopics",
+                        options: { type: "primary" },
+                        child: span({
+                          text: "Alle Änderungen speichern",
+                          id: "SpanHtmlBuilderButtonSaveAllCourseTopics",
+                        }),
+                      })
+                    : null,
+                ],
+              }),
             }),
-          }),
-          loadingText,
-        );
-      });
+            loadingText,
+          );
+        })
+        .catch((err) => {
+          alert("Es gab einen Fehler:\n" + err);
+        });
     },
     options: {
       icon: "rocket",
@@ -139,34 +147,90 @@ interface contentCheckerOutput extends changesNr {
   status: "success" | "not-supported" | "error";
   errorDesc?: string;
 }
-function checkAll(): Promise<changesNr> {
+
+function getAllCourses(): Promise<Moodle.course[]> {
+  const sessionKey = new URL(
+    (
+      document.querySelector(
+        ".usermenu .dropdown div[data-rel='menu-content'] > a:last-child",
+      ) as HTMLAnchorElement
+    ).href,
+  ).searchParams.get("sesskey");
+  return new Promise((resolve, reject) => {
+    axios
+      .post<
+        [{ error: true } | { error: false; data: { courses: Moodle.course[] } }]
+      >(
+        `https://moodle.jsp.jena.de/lib/ajax/service.php?sesskey=${sessionKey}&info=core_course_get_enrolled_courses_by_timeline_classification`,
+        [
+          {
+            index: 0,
+            methodname:
+              "core_course_get_enrolled_courses_by_timeline_classification",
+            args: {
+              offset: 0,
+              limit: 0,
+              classification: "all",
+              sort: "fullname",
+              customfieldname: "",
+              customfieldvalue: "",
+            },
+          },
+        ],
+      )
+      .then((axiosResponse) => {
+        if (axiosResponse.data?.[0]?.error === true) {
+          reject(axiosResponse.data[0].error);
+        } else {
+          resolve(axiosResponse.data[0].data.courses);
+        }
+      });
+  });
+}
+
+async function checkAll(): Promise<changesNr> {
   console.log("checkAll");
+  const allCourses = await getAllCourses();
+
   return new Promise((resolveMain) => {
     const allIds: string[] = [];
-    document
-      .querySelectorAll(
-        (() => {
-          switch (getViewType()) {
-            case "card":
-              return "div[data-region='paged-content-page'] > .card-deck .card[data-region='course-content']";
-            case "list":
-              return "ul.list-group li.list-group-item.course-listitem";
-            default:
-              return null;
-          }
-        })(),
-      )
-      .forEach((item) => {
-        const href = item.querySelector("a").href;
-        const id = href.slice(href.indexOf("id=") + 3);
-        allIds.push(id);
-      });
+    allCourses.forEach((item) => {
+      allIds.push(String(item.id));
+    });
     console.log("ids", allIds);
+    const allCourseInfo: { [courseId: string]: CourseTopics } = {};
     function contentChecker(id: string): Promise<contentCheckerOutput> {
       return new Promise((resolve) => {
         fetch("https://moodle.jsp.jena.de/course/view.php?id=" + id)
           .then((e) => e.text())
-          .then(course2json)
+          .then((data) => {
+            // Hier können schnell die Progress-Daten mit verarbeitet werden.
+            homepageCourseProgessChecker(data, id);
+
+            // Und dann mit dem normalen ABlauf weitergemacht werden.
+            return course2json(data);
+          })
+          .then((e): Promise<course2jsonOutput> => {
+            if (e.status === "not-supported") {
+              return new Promise((resolve, reject) => {
+                getAllTiles(id).then((results) => {
+                  const container = document.createElement("div");
+                  const ulTopics = document.createElement("ul");
+                  ulTopics.classList.add("topics");
+
+                  results.forEach((item) => {
+                    if (item?.result?.[0]?.data?.html) {
+                      ulTopics.innerHTML += item.result[0].data.html;
+                    }
+                  });
+                  container.append(ulTopics);
+                  resolve(course2json(container.innerHTML, true));
+                });
+              });
+            } else {
+              return Promise.resolve(e);
+            }
+          })
           .then((e) => {
             if (e.status === "error") {
               resolve({
@@ -192,6 +256,7 @@ function checkAll(): Promise<changesNr> {
                 status: e.status,
               });
             } else {
+              allCourseInfo[id] = e.list;
               compare(id, e.list).then((c) =>
                 resolve({ ...c, id, content: e.list, status: e.status }),
               );
@@ -214,8 +279,9 @@ function checkAll(): Promise<changesNr> {
         edited: 0,
         allNew: false,
       };
+
+      console.log("SavingLocalStorage");
       values.forEach((item) => {
-        console.log(item);
         result.changes += item.changes;
         result.added += item.added;
         result.removed += item.removed;
@@ -233,6 +299,7 @@ function checkAll(): Promise<changesNr> {
 function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
   return new Promise((resolve) => {
     chrome.storage.local.get("courseInfo", (storage: storage) => {
+      console.log("GotLocalStorage");
       const { courseInfo } = storage;
       const oldIds = getIdArrayFromActivities(
         topics2activities(courseInfo[id] ?? {}),
@@ -250,24 +317,39 @@ function compare(id: string, jsonCourse: CourseTopics): Promise<changesNr> {
         removed: 0,
         allNew: false,
       };
-      const diffs = getIdDiff(oldIds, newIds);
-      result.changes = diffs.length;
+      /**
+       * Muss 2x ausgeführt werden mit wechsel der Parameter!
+       * Entfernt-Check: neu, alt
+       * Neu-Check: alt, neu
+       */
+      function diff(a: string[], b: string[]): string[] {
+        return b.filter(function (i) {
+          return a.indexOf(i) < 0;
+        });
+      }
+
+      const diffs_new = diff(oldIds, newIds);
+      const diffs_rem = diff(newIds, oldIds);
+
+      result.changes = diffs_new.length + diffs_rem.length;
       if (oldIds.length === 0) {
         result.allNew = true;
       }
-      diffs.forEach((diff) => {
-        const stringDiff = diff.toString();
-        console.log(oldIds.includes(stringDiff), newIds.includes(stringDiff));
-        if (oldIds.includes(stringDiff) && !newIds.includes(stringDiff)) {
-          result.removed++;
-        } else if (
-          !oldIds.includes(stringDiff) &&
-          newIds.includes(stringDiff)
-        ) {
-          result.added++;
-          console.log("added");
-        }
-      });
+      result.added += diffs_new.length;
+      result.removed += diffs_rem.length;
+      // diffs.forEach((diff) => {
+      //   const stringDiff = diff.toString();
+      //   console.log(oldIds.includes(stringDiff), newIds.includes(stringDiff));
+      //   if (oldIds.includes(stringDiff) && !newIds.includes(stringDiff)) {
+      //     result.removed++;
+      //   } else if (
+      //     !oldIds.includes(stringDiff) &&
+      //     newIds.includes(stringDiff)
+      //   ) {
+      //     result.added++;
+      //     console.log("added");
+      //   }
+      // });
       console.log(id, result);
       resolve(result);
     });

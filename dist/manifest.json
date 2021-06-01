@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "version": "2021.5.9",
-  "version_name": "2021.5.9",
+  "version": "2021.6.1",
+  "version_name": "2021.6.1 🏳‍🌈",
 
   "name": "Schulm**dleJena Tools",
   "description": "Inoffizielles Tool für das Moodle™ System der Jenaer Schulen.",
@@ -30,9 +30,31 @@
     "scripts": ["generated/background.js"],
     "persistent": true
   },
-  "permissions": ["storage", "tabs", "unlimitedStorage"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "unlimitedStorage",
+    "webRequest",
+    "webRequestBlocking",
+    "*://smjt.robertstuendl.com/*",
+    "alarms"
+  ],
   "author": "Robert Steffen Stündl",
   "content_scripts": [
+    {
+      "matches": ["https://smjt.robertstuendl.com/api/todoist-oauth*"],
+      "js": ["generated/todoist-oauth.js"]
+    },
+    {
+      "matches": [
+        "https://moodle.jsp.jena.de/",
+        "https://moodle.jsp.jena.de/",
+        "https://moodle.jsp.jena.de/?*",
+        "https://moodle.jsp.jena.de/?*"
+      ],
+      "js": ["generated/settings/build/bundle.js"],
+      "css": ["generated/settings/build/bundle.css"]
+    },
     {
       "matches": [
         "https://moodle.jsp.jena.de/*",
@@ -64,6 +86,7 @@
   },
   "web_accessible_resources": [
     "icons/icon.png",
-    "fonts/SansForgetica-Regular.otf"
+    "fonts/SansForgetica-Regular.otf",
+    "generated/settings/index.html"
   ]
 }

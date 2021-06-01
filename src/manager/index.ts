@@ -16,9 +16,12 @@ import changesManager from "./changesManager";
 //import courseSorting from "./courseSorting";
 import scriptManager from "./scriptManager";
 import noAssignForceDownload from "./noAssignForceDownload";
+
+import courseProgress from "./courseProgress";
 import tileCourseManager from "./tileCourseManager";
-import { storage } from "@/types";
+
 import adjustVideo from "./adjustVideo";
+import queryAction from "./queryAction";
 
 if (!location.pathname.includes("/mod/quiz/")) {
   const newStyle = document.createElement("style");
@@ -92,10 +95,18 @@ if (!location.pathname.includes("/mod/quiz/")) {
       script: noAssignForceDownload,
     },
     {
+      match: location.pathname.startsWith("/course/view.php"),
+      script: courseProgress,
+    },
+    {
       match: (options: storage) =>
         location.pathname.startsWith("/course/view.php") &&
         options["tilesToList"],
       script: tileCourseManager,
+    },
+    {
+      match: null,
+      script: queryAction,
     },
   ]);
 

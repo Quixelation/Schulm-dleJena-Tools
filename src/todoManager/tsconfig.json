@@ -1,11 +1,20 @@
 {
-  "include": ["src/**/*", "src/node_modules", "./../utils.ts", "./scripts/*"],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*",
+    "src/node_modules",
+    "./../utils.ts",
+    "./scripts/*",
+    "./../typings/**/*.ts",
+    "./../shared/**/*.ts"
+  ],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
 
   "compilerOptions": {
+    "typeRoots": ["./../../node_modules/@types", "./../typings/"],
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["../*"]
+      "@/*": ["../*"]
     }
   }
 }

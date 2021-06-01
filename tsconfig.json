@@ -15,14 +15,16 @@
       //For legacy
       "@shared/*": ["./src/*"],
       "src": ["./src/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./src/typings/"]
   },
   "exclude": [
     "src/popup/*",
     "src/todoManager/*",
-    "src/shared/*",
     "src/changesManager",
+    "src/settings",
     "archive"
   ],
-  "include": ["./src/**/*"]
+
+  "include": ["./src/**/*.ts"]
 }

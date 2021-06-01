@@ -1,14 +1,16 @@
 <script lang="ts">
-  import { deleteTodoItem } from "./main";
-
+  import { closeTodoItem, deleteTodoItem } from "./main";
+  import TodoistSettings from "./todoistSettings.svelte";
   import CreateTodoPage from "./manageTodoPage.svelte";
+  import { checkTodoItemForClose } from "@/shared/todoist";
+
   window.addEventListener(
     "addTodo",
     (args) => {
       //@ts-ignore: "args.options"
       router.to("addTodo", args.options);
     },
-    false
+    false,
   );
 
   let router = {
@@ -17,17 +19,13 @@
     to: (location: string, data?: any) => {
       router.route = location;
       router.data = data;
+      if (location === "addTodo" || location === "editTodo") {
+        scrollTo(0, 0);
+      }
     },
   };
 
-  interface todoItem {
-    time: string;
-    type: "ha" | "exam" | "video";
-    course: string;
-    title: string;
-    done: boolean;
-  }
-  function getDateAt0(date: number) {
+  function getDateAt0(date: string | number | Date) {
     let newDate = new Date(date);
 
     newDate.setHours(0);
@@ -37,61 +35,139 @@
     return newDate.valueOf();
   }
   let sorted;
-  function sortTodos(Todos: {
-    [key: number]: todoItem;
-  }): { [key: number]: todoItem[] } {
+  let chromeSyncTodos: { [key: string]: todoItem } = {};
+  let moodleCalTodos: { [key: string]: todoItem } = {};
+  $: sorted = sortTodos({ ...chromeSyncTodos, ...moodleCalTodos });
+
+  function sortTodos(Todos: { [key: string]: todoItem }): {
+    [key: string]: todoItem[];
+  } {
     const sortedObject: { [key: number]: todoItem[] } = {};
     Object.keys(Todos).forEach((key) => {
+      if (
+        Todos[key].deleted === true ||
+        (Todos[key]?.isMoodle &&
+          Todos[key]?.time !== false &&
+          getDateAt0(new Date(Todos[key]?.time).valueOf()) <
+            getDateAt0(Date.now()))
+      ) {
+        delete Todos[key];
+        return;
+      }
       let todo = Todos[key];
+      /* eslint-disable-next-line*/
+      var keyToPushTo = "";
+      if (todo.time !== false) {
+        keyToPushTo = getDateAt0(todo.time).toString();
+      } else {
+        keyToPushTo = "no-date";
+      }
 
-      if (sortedObject[getDateAt0(todo.time)] == null) {
-        sortedObject[getDateAt0(todo.time)] = [];
+      if (sortedObject[keyToPushTo] == null) {
+        sortedObject[keyToPushTo] = [];
       }
       todo["key"] = key;
-      sortedObject[getDateAt0(todo.time)].push(todo);
+      sortedObject[keyToPushTo].push(todo);
     });
     Object.keys(sortedObject).forEach((item) => {
       sortedObject[item] = sortedObject[item].sort(
         (a: todoItem, b: todoItem) => {
-          return new Date(a.time).valueOf() - new Date(b.time).valueOf();
-        }
+          if (a.time && b.time) {
+            return new Date(a.time).valueOf() - new Date(b.time).valueOf();
+          } else {
+            return 1;
+          }
+        },
       );
     });
-    //#region Sort By Date
-    let sortedObjectKeys = Object.keys(sortedObject);
-    sortedObjectKeys = sortedObjectKeys.sort((a, b) => {
-      return parseInt(a) - parseInt(b);
-    });
+
     const finalSorted = {};
-    sortedObjectKeys.forEach((item) => {
-      finalSorted[item] = sortedObject[item];
-    });
+    //#region Sort By Date
+    Object.keys(sortedObject)
+      .sort((a, b) => {
+        if (a === "no-date") {
+          return -1;
+        }
+        if (b === "no-date") {
+          return 1;
+        }
+        return parseInt(a) - parseInt(b);
+      })
+      .forEach((item) => {
+        finalSorted[item] = sortedObject[item];
+      });
     //#endregion
 
     return finalSorted;
   }
   let getTodos = () => {
-    chrome.storage.sync.get(["todos"], (val) => {
-      const Todos: { [key: number]: todoItem } = val.todos;
-      /**
-       * Entfernt alte Todos
-       */
-      Object.keys(Todos).forEach((todoKey) => {
-        if (
-          getDateAt0(new Date(Todos[todoKey]?.time).valueOf()) <
-            getDateAt0(Date.now()) &&
-          Todos[todoKey].done
-        ) {
-          deleteTodoItem(todoKey);
-          // Remove from Object,so the user doesn't see it
-          delete Todos[todoKey];
-        }
-      });
-      sorted = sortTodos(Todos);
-    });
+    // getEvents().then((Todos) => {
+    //   Object.keys(Todos).forEach((todoKey) => {
+    //     if (
+    //       getDateAt0(new Date(Todos[todoKey]?.time).valueOf()) <
+    //         getDateAt0(Date.now()) &&
+    //       Todos[todoKey].done
+    //     ) {
+    //       deleteTodoItem(todoKey);
+    //       // Remove from Object,so the user doesn't see it
+    //       delete Todos[todoKey];
+    //     }
+    //   });
+    chrome.storage.local.get(
+      ["todos", "todos-moodle"],
+      (values: extension.storage.local) => {
+        cleanTodoList({
+          ...values.todos,
+        }).then((value) => {
+          chromeSyncTodos = value;
+        });
+        cleanTodoList({ ...values["todos-moodle"] }).then((value) => {
+          moodleCalTodos = value;
+        });
+        getEvents().then((value) => {
+          cleanTodoList({ ...value }).then((value) => {
+            moodleCalTodos = value;
+          });
+        });
+      },
+    );
   };
   getTodos();
-
+  chrome.storage.onChanged.addListener((changes) => {
+    Object.keys(changes).forEach((key) => {
+      if (key === "todo-prio") {
+        prioData = changes[key].newValue;
+      }
+    });
+  });
+  /**
+   * Entfernt alte Todos
+   */
+  function cleanTodoList(list: { [key: string]: todoItem }): Promise<{
+    [key: string]: todoItem;
+  }> {
+    return new Promise((resolve, reject) => {
+      chrome.storage.sync.get(
+        ["todo-close-on-complete"],
+        (values: extension.storage.sync) => {
+          Object.keys(list).forEach((todoKey) => {
+            if (
+              !list[todoKey]?.isMoodle &&
+              checkTodoItemForClose(
+                list[todoKey],
+                values["todo-close-on-complete"],
+              )
+            ) {
+              closeTodoItem(todoKey, list[todoKey].deleted);
+              // Remove from Object,so the user doesn't see it
+              delete list[todoKey];
+            }
+          });
+          resolve(list);
+        },
+      );
+    });
+  }
   let headerText = (time: number) => {
     if (time === getDateAt0(Date.now())) {
       return "Heute";
@@ -100,7 +176,7 @@
       new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate() - 1
+        new Date().getDate() - 1,
       ).valueOf()
     ) {
       return "Gestern";
@@ -109,7 +185,7 @@
       new Date(
         new Date().getFullYear(),
         new Date().getMonth(),
-        new Date().getDate() + 1
+        new Date().getDate() + 1,
       ).valueOf()
     ) {
       return "Morgen";
@@ -138,6 +214,14 @@
   }
 
   import TodoListItem from "./todoListItem.svelte";
+  import { getCalData, getEvents } from "./ts/moodleCal";
+  import { defaultTaskPrio } from "@/shared/defaults";
+
+  let prioData: taskPriorities = defaultTaskPrio;
+  chrome.storage.sync.get("todo-prio", (values: extension.storage.sync) => {
+    //Should not fail... But if it does, there is a check
+    values["todo-prio"] && (prioData = values["todo-prio"]);
+  });
 </script>
 
 <div class="card-body p-3">
@@ -147,35 +231,50 @@
       style="display: flex; justify-content: space-between; align-items: center;"
     >
       <h5 style="margin: 0px;">Todos</h5>
-      <div
-        class="btn btn-secondary"
-        on:click={() => {
-          router.to("addTodo");
-        }}
-      >
-        <i class="fa fa-plus" />
+      <div>
+        <div
+          class="btn btn-secondary"
+          on:click={() => {
+            router.to("todoistSettings");
+          }}
+        >
+          <i class="fa fa-cog" />
+        </div>
+        <div
+          class="btn btn-secondary"
+          on:click={() => {
+            router.to("addTodo");
+          }}
+        >
+          <i class="fa fa-plus" />
+        </div>
       </div>
     </div>
     <div style="display: flex; flex-direction: column">
       {#if sorted}
         {#each Object.keys(sorted) as date}
-          <div
-            class="MoodleHelperTodoDateHeader"
-            style="font-weight: bold; margin-top: 10px"
-          >
-            {headerText(parseInt(date))}, {getHeaderWeekday(parseInt(date))}. {new Date(
-              parseInt(date)
-            ).getDate()}.{new Date(parseInt(date)).getMonth() + 1}
-          </div>
-          {#each sorted[date] as todo, index}
+          {#if date !== "no-date"}
+            <div
+              class="MoodleHelperTodoDateHeader"
+              style="font-weight: bold; margin-top: 15px; margin-bottom: 5px; font-size:1.15em; "
+            >
+              {headerText(parseInt(date))}, {getHeaderWeekday(parseInt(date))}. {new Date(
+                parseInt(date),
+              ).getDate()}.{new Date(parseInt(date)).getMonth() + 1}
+            </div>
+          {:else}
+            <br />
+          {/if}
+          {#each sorted[date] as todo, index (todo.key)}
             <TodoListItem
+              {prioData}
               todoItem={sorted[date][index]}
               key={sorted[date][index].key}
               on:todoClick={(e) => router.to("editTodo", sorted[date][index])}
             />
 
             {#if index !== sorted[date].length - 1}
-              <hr style="margin: 5px 0px 5px 0px" />
+              <hr style="margin: 2.5px 0px; width: 0" />
             {/if}
           {/each}
         {:else}
@@ -207,6 +306,12 @@
       on:saved={() => {
         router.to("main");
         getTodos();
+      }}
+    />
+  {:else if router.route === "todoistSettings"}
+    <TodoistSettings
+      on:back={() => {
+        router.to("main");
       }}
     />
   {:else}

@@ -3,10 +3,15 @@
   import { changeDoneState } from "./main";
   const dispatch = createEventDispatcher();
   function todoClick(item: string) {
-    dispatch("todoClick");
+    if (todoItem.isMoodle) {
+      location.href = todoItem.moodleUrl;
+    } else {
+      dispatch("todoClick");
+    }
   }
-  export let todoItem;
+  export let todoItem: todoItem;
 
+  export let prioData: taskPriorities;
   export let key;
   let typeIcons = {
     ha: { icon: "file", color: "grey" },
@@ -24,61 +29,70 @@
 </script>
 
 <div
-  class={done ? "hoverBlackActivator" : ""}
-  style="display: flex; align-items: center;width: 100%; justify-content: space-between"
+  class="{done ? 'hoverBlackActivator' : ''} card todoItem {todoItem.isMoodle
+    ? 'pb-1 pt-1 pr-2 pl-2'
+    : 'p-1'}"
+  style="display: flex; align-items: center;width: 100%; flex-direction: row !important; background-color: white; {done
+    ? 'border-color: white'
+    : prioData[String(todoItem.priority)]?.color.length === 9 &&
+      prioData[String(todoItem.priority)]?.color.slice(-2) === '00'
+    ? ''
+    : 'border-color: ' +
+      prioData[String(todoItem.priority)]?.color}; {!todoItem.isMoodle
+    ? 'border-left-width: 4px'
+    : ''}"
 >
+  {#if !todoItem.isMoodle}
+    <input
+      type="checkbox"
+      style="margin-right: 10px; margin-left: 5px;"
+      checked={todoItem.done}
+      on:input={(e) => {
+        //@ts-ignore
+        done = e.target.checked;
+        //@ts-ignore
+        console.log(e.target.checked);
+        //@ts-ignore
+        changeDoneState(key, e.target.checked);
+      }}
+    />
+  {/if}
   <div
+    style="display: flex; flex-direction: column; width:100%; {todoItem.isMoodle
+      ? 'cursor: alias'
+      : 'cursor: pointer'}"
     on:click={() => {
       todoClick(key);
     }}
-    style="display: flex; align-items: center; cursor: pointer; width: 100%"
   >
-    <i
-      class="fa fa-{typeIcons[todoItem.type].icon} colorTransition hoverBlack"
-      style="{done
-        ? 'color: #80808080'
-        : `color: ${
-            typeIcons[todoItem.type].color
-          }`}; margin-right: 8px; margin-left: 4px; width: 15px; text-align: center; "
-    />
-
-    <div style="display: flex; flex-direction: column">
-      {#if !isFirefox}
-        <span
-          class="colorTransition hoverBlack"
-          style="font-size: 11px; margin-bottom: -3px; {done
-            ? 'color: #80808080;'
-            : 'color: #000000;'} display: flex; align-items: center; "
-          ><span
-            >{new Date(todoItem.time).getHours()}:{new Date(todoItem.time)
-              .getMinutes()
-              .toString().length === 1
-              ? "0" + new Date(todoItem.time).getMinutes()
-              : new Date(todoItem.time).getMinutes()}
-          </span>
+    <span
+      class="colorTransition hoverBlack"
+      style="font-size: 11px; margin-bottom: -3px; {done
+        ? 'color: #80808080;'
+        : 'color: #000000;'} display: flex; align-items: center; "
+    >
+      {#if !isFirefox || (todoItem.isMoodle && (todoItem.course?.short || todoItem.course?.long))}
+        <span>
+          <b
+            >{#if !isFirefox}{new Date(todoItem.time).getHours()}:{new Date(
+                todoItem.time,
+              )
+                .getMinutes()
+                .toString().length === 1
+                ? "0" + new Date(todoItem.time).getMinutes()
+                : new Date(todoItem.time).getMinutes()}{/if}
+            {#if todoItem.isMoodle && (todoItem.course?.short || todoItem.course?.long)}{#if !isFirefox}&centerdot;{/if}
+              {todoItem.course?.short ?? todoItem.course?.long}{/if}</b
+          >
         </span>
       {/if}
-      <span
-        style="font-size: {isFirefox ? '15px' : '13px'}; 
-       {done
-          ? 'color: #80808080;'
-          : 'color: #000000'}"
-        class="colorTransition hoverBlack">{todoItem.title}</span
-      >
-    </div>
+    </span>
+    <span
+      style="font-size: {isFirefox ? '15px' : '13px'}; 
+       {done ? 'color: #80808080;' : 'color: #000000'}"
+      class="colorTransition hoverBlack">{todoItem.title}</span
+    >
   </div>
-  <input
-    type="checkbox"
-    checked={todoItem.done}
-    on:input={(e) => {
-      //@ts-ignore
-      done = e.target.checked;
-      //@ts-ignore
-      console.log(e.target.checked);
-      //@ts-ignore
-      changeDoneState(key, e.target.checked);
-    }}
-  />
 </div>
 
 <style lang="scss">
@@ -92,5 +106,6 @@
   }
   .hoverBlackActivator:hover .hoverBlack {
     color: black !important;
+    box-shadow: none !important;
   }
 </style>

@@ -1,4 +1,3 @@
-import { storage } from "@shared/types";
 /**
  * Verhindert den forceDownload für Dokumente in Aufgaben-Seiten
  *

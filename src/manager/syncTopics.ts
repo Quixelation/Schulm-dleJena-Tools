@@ -1,10 +1,12 @@
-import { CourseTopics, localStorage } from "@shared/types";
 import course2json from "./course2json";
 import { getIdFromLink } from "./utils";
 
 export default function (): void {
   try {
-    const list = course2json(document.body.innerHTML);
+    const list = course2json(
+      document.body.innerHTML,
+      Boolean(document.querySelector(".course-content > .tiles")) ?? undefined,
+    );
     console.log("LISTE", list);
     if (list.status === "success") {
       saveCourse(getIdFromLink(location.href), list.list);
