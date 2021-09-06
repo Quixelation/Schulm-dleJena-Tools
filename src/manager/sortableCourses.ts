@@ -107,8 +107,10 @@ async function sortCourses(): Promise<void> {
       const unusedIds = { ...coursesList };
       coursesContainer.innerHTML = "";
       saveOrder.forEach((id) => {
-        console.log({ id, idC: coursesList[id] });
-        coursesContainer.append(coursesList[id]);
+        if (coursesList[id] != undefined || coursesList[id] != null) {
+          console.log({ id, idC: coursesList[id] });
+          coursesContainer.append(coursesList[id]);
+        }
         delete unusedIds[id];
       });
       console.log("unusedId", unusedIds);
